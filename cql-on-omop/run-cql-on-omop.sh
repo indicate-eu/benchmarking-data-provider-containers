@@ -1,6 +1,8 @@
 #!/bin/sh
 
 # TODO(moringenj): should not use --password="${TARGET_DB_PASSWORD}"
+REVIEW_PERIOD="Interval[@1007-04-05T00:00:00.000, @3025-04-20T00:00:00.000)"
+
 # TODO(moringenj): MIMIC is temporary
 CQL_ON_OMOP_DATABASE_PASSWORD=${SOURCE_DB_PASSWORD} \
   java -Xmx24000000000                              \
@@ -23,4 +25,6 @@ CQL_ON_OMOP_DATABASE_PASSWORD=${SOURCE_DB_PASSWORD} \
         --user="${TARGET_DB_USER}"                  \
         --password="${TARGET_DB_PASSWORD}"          \
         --database="${TARGET_DB_DATABASE}"          \
+      -D"IndicateQiElements.Review Period=${REVIEW_PERIOD}" \
+      --result-name='Results'                               \
         --schema="${TARGET_DB_SCHEMA}"
