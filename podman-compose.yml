@@ -14,21 +14,7 @@ services:
 
   cql-on-omop:
     build: cql-on-omop
-    environment:
-      # Connection to "source" OMOP database with clinical data
-      SOURCE_DB_HOST:     host.containers.internal
-      SOURCE_DB_PORT:     5432
-      SOURCE_DB_USER:     postgres
-      SOURCE_DB_PASSWORD: yourpassword
-      SOURCE_DB_DATABASE: ohdsi
-      SOURCE_DB_SCHEMA:   cds_cdm
-      # Connection to "target" OMOP database with indicator results
-      TARGET_DB_HOST:     database
-      TARGET_DB_POST:     5432
-      TARGET_DB_USER:     postgres
-      TARGET_DB_PASSWORD: mysecretpassword
-      TARGET_DB_DATABASE: ohdsi
-      TARGET_DB_SCHEMA:   cds_cdm
+    env_file: databases.env
     stop_signal: SIGQUIT
     networks:
       - database
