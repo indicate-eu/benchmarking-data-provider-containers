@@ -18,6 +18,7 @@ include "IndicateQi07PainSedationDelir"       called "Qi07"
 
 define function ToObservation(indicatorConceptId Integer,
                               result             Tuple{patient     OMOP.Person,
+                                                       period      Interval<DateTime>,
                                                        numerator   Integer,
                                                        denominator Integer,
                                                        qi          Decimal}):
@@ -25,17 +26,15 @@ define function ToObservation(indicatorConceptId Integer,
     {}
   else
     {
-      (1) _
-        let dateTime: Now()
-          return OMOP.Observation{
-                   observationConceptId:   indicatorConceptId,
-                   observationTypeConcept: OMOPFunctions.SC(0),
-                   observationDatetime:    dateTime,
-                   observationDate:        date from dateTime,
-                   //person:                 result.patient,
-                   person:                 null,
-                   valueAsNumber:          result.qi
-                 }
+      OMOP.Observation{
+        observationConceptId:   indicatorConceptId,
+        observationTypeConcept: OMOPFunctions.SC(0),
+        observationDatetime:    start of result.period,
+        observationDate:        date from start of result.period,
+        //person:                 result.patient,
+        person:                 null,
+        valueAsNumber:          result.qi
+      }
     }
 
 context Patient
