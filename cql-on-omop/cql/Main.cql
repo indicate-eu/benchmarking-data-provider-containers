@@ -16,33 +16,42 @@ include "IndicateQi07PainSedationDelir"       called "Qi07"
 //include "IndicateQi08AdvancedCarePlan"        called "Qi08"
 //include "IndicateQi09Mobilisation"            called "Qi09"
 
-define function ToObservation(indicatorConceptId Integer,
-                              result             Tuple{patient     OMOP.Person,
-                                                       period      Interval<DateTime>,
-                                                       numerator   Integer,
-                                                       denominator Integer,
-                                                       qi          Decimal}):
-  if result.qi is null then
-    {}
-  else
-    {
-      OMOP.Observation{
+define NoMatchingConcept: OMOPFunctions.SC(0)
+
+define function ToObservation(
+    indicatorConceptId Integer,
+    result             Tuple{
+                         patient      OMOP.Person,
+                         reviewPeriod Interval<DateTime>,
+                         periods      List<Tuple{
+                                        period      Interval<DateTime>,
+                                        numerator   Integer,
+                                        denominator Integer,
+                                        qi          Decimal
+                                      }>
+                       }
+  ):
+  if Exists((result.periods) p where p.qi is not null) then
+    (result.periods) p
+      where p.qi is not null
+      return all OMOP.Observation{
         observationConceptId:   indicatorConceptId,
-        observationTypeConcept: OMOPFunctions.SC(0),
-        observationDatetime:    start of result.period,
-        observationDate:        date from start of result.period,
-        //person:                 result.patient,
-        person:                 null,
-        valueAsNumber:          result.qi
+        observationTypeConcept: NoMatchingConcept,
+        observationDatetime:    start of p.period,
+        observationDate:        date from start of p.period,
+        person:                 null, // result.patient.personId,
+        valueAsNumber:          p.qi
       }
-    }
+  else
+    {}
+
 
 context Patient
 
 define Results:
   Flatten({
     ToObservation(2000000101, "Qi01".Result),
-    //ToObservation(2000000102, "Qi02".Result),
+    ToObservation(2000000102, "Qi02".Result),
     ToObservation(2000000103, "Qi03".Result),
     ToObservation(2000000104, "Qi04".Result),
     ToObservation(2000000105, "Qi05".Result),

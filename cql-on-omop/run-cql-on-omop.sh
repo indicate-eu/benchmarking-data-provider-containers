@@ -1,6 +1,13 @@
 #!/bin/sh
 
-REVIEW_PERIOD="Interval[@1007-04-05T00:00:00.000, @3025-04-20T00:00:00.000)"
+# The cronjob calls this script daily and we would ideally compute the
+# indicators for the 24-hour period of "yesterday 6:00" to "today
+# 5:59" and be done. However, for multiple indicators, the result for
+# a given 24-hour period depends on data before or even after that
+# period. To accommodate such indicators, include data in generous
+# window around the 24-hour period of interest.
+TODAY=$(date +'@%Y-%m-%dT06:00:00')
+REVIEW_PERIOD="Interval[${TODAY} - 3 days, ${TODAY} + 1 day)"
 
 if [ -n "${SOURCE_DB_DRIVER}" ] ; then
     SOURCE_DB_DRIVER_ARG="--connection-string ${SOURCE_DB_DRIVER}"
