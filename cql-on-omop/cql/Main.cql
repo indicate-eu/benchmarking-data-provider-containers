@@ -7,7 +7,7 @@ include OMOPFunctions
 include "IndicateQiElements" called "E"
 
 include "IndicateQi01Ventilation"             called "Qi01"
-//include "IndicateQi02Weaning"                 called "Qi02"
+include "IndicateQi02Weaning"                 called "Qi02"
 include "IndicateQi03Feeding"                 called "Qi03"
 include "IndicateQi04GlucoseControl"          called "Qi04"
 include "IndicateQi05ThrombembolicPrevention" called "Qi05"
@@ -44,7 +44,6 @@ define function ToObservation(
       }
   else
     {}
-
 
 context Patient
 
