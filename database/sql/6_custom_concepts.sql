@@ -12,7 +12,10 @@ INSERT INTO cds_cdm.vocabulary
 
 INSERT INTO cds_cdm.concept
          (concept_id,    concept_code, domain_id,     vocabulary_id, concept_class_id, concept_name,                                valid_start_date, valid_end_date)
-  VALUES (2_000_000_101, 'qi01',       'Observation', 'INDICATE',    'Observation',    'Result for QI 01 Ventilation',              '2026-01-01',     '2099-12-31'),
+  VALUES -- Internal marker concept
+         (2_000_000_091, 'marker',     'Observation', 'INDICATE',    'Observation',    'Internal marker concept',                   '2026-01-01',     '2099-12-31'),
+         -- Individual Quality Indicators
+         (2_000_000_101, 'qi01',       'Observation', 'INDICATE',    'Observation',    'Result for QI 01 Ventilation',              '2026-01-01',     '2099-12-31'),
          (2_000_000_102, 'qi02',       'Observation', 'INDICATE',    'Observation',    'Result for QI 02 Weaning',                  '2026-01-01',     '2099-12-31'),
          (2_000_000_103, 'qi03',       'Observation', 'INDICATE',    'Observation',    'Result for QI 03 Feeding',                  '2026-01-01',     '2099-12-31'),
          (2_000_000_104, 'qi04',       'Observation', 'INDICATE',    'Observation',    'Result for QI 04 Glucose Control',          '2026-01-01',     '2099-12-31'),

@@ -1,7 +1,8 @@
 FROM cql-on-omop:latest
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes update          \
-    && DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install curl \
+RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes update     \
+    && DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
+         curl postgresql-client                                    \
     && apt-get clean
 
 WORKDIR /app
