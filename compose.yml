@@ -22,6 +22,8 @@ services:
       - source-database-password
       - target-database-password
     stop_signal: SIGQUIT
+    volumes:
+      - ./crontab:/app/crontab:ro
     networks:
       - database
     depends_on:
