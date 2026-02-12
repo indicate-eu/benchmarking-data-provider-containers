@@ -11,10 +11,10 @@ include "IndicateQi02Weaning"                 called "Qi02"
 include "IndicateQi03Feeding"                 called "Qi03"
 include "IndicateQi04GlucoseControl"          called "Qi04"
 include "IndicateQi05ThrombembolicPrevention" called "Qi05"
-//include "IndicateQi06InfectionRate"           called "Qi06"
+include "IndicateQi06InfectionRate"           called "Qi06"
 include "IndicateQi07PainSedationDelir"       called "Qi07"
-//include "IndicateQi08AdvancedCarePlan"        called "Qi08"
-//include "IndicateQi09Mobilisation"            called "Qi09"
+include "IndicateQi08AdvancedCarePlaning"     called "Qi08"
+include "IndicateQi09Mobilisation"            called "Qi09"
 
 define NoMatchingConcept: OMOPFunctions.SC(0)
 
@@ -54,8 +54,8 @@ define Results:
     ToObservation(2000000103, "Qi03".Result),
     ToObservation(2000000104, "Qi04".Result),
     ToObservation(2000000105, "Qi05".Result),
-    //ToObservation(2000000106, "Qi06".Result),
-    ToObservation(2000000107, "Qi07".Result)
-    //ToObservation(2000000108, "Qi08".Result),
-    //ToObservation(2000000109, "Qi09".Result)
+    ToObservation(2000000106, "Qi06".Result),
+    ToObservation(2000000107, "Qi07".Result),
+    ToObservation(2000000108, "Qi08".Result),
+    ToObservation(2000000109, "Qi09".Result)
   })
