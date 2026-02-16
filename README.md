@@ -2,12 +2,12 @@
 
 This repository contains scripts and data for creating containers that
 INDICATE data providers can deploy in order to implement the
-evaluation of quality indicators for the INDICATE quality benchmarking
-dashboard.
+evaluation of quality indicators as well as communication with the
+central hub for the INDICATE quality benchmarking dashboard.
 
 ## Containers
 
-This project creates two container images:
+This project creates the following container images:
 
 1. The `database` container contains a PostgreSQL database initialized with OMOP CDM tables and a collection of terminology.
    At runtime, the database is used to store the results of evaluating quality indicators.
@@ -19,6 +19,9 @@ This project creates two container images:
 2. The `cql-on-omop` container contains an evaluation engine for CQL libraries.
    This engine applies CQL libraries which implement the INDICATE quality indicators to a database containing clinical data (which is distinct from the database in the `database` container).
    The results computed by the CQL libraries are stored in the `database` container for local inspection, aggregation and distribution as explained above.
+
+3. The `data-exchange` container contains a simple program that uploads quality indicator results.
+   To this end, the program fetches aggregated quality indicator results from the `database` container and uploads them, together with a unique id for the data provider, to the hub node of the INDICATE quality indicator dashboard architecture.
 
 ## Dependencies
 
@@ -39,6 +42,10 @@ This project creates two container images:
    TODO
 
 2. INDICATE Quality Indicator CQL Libraries
+
+   TODO
+
+3. INDICATE Data Exchange Client
 
    TODO
 
@@ -81,7 +88,12 @@ To create and start the containers, run
 docker-compose run -d
 ```
 
-in the root directory of this repository.
+in the root directory of this repository.  When started for the first
+time, the `data-exchange` service will generate a data
+provider-specific unique id which will be used for submitting quality
+indicator results without identifying information.  A backup of this
+id should be made immediately since there is no way re-create or
+restore it if lost.
 
 ### Stop
 

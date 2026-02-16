@@ -26,19 +26,41 @@ services:
       - ./crontab:/app/crontab:ro
     networks:
       - database
+      - trigger
     depends_on:
       - database
+      - data-exchange
 
-networks:
-  database:
-    external: no
-
-volumes:
-  data:
-    external: no
+  # The data-exchange service takes quality indicator results from the
+  # database service and sends them to the INDICATE hub.
+  data-exchange:
+    build: data-exchange
+    env_file: databases.env # TODO: needs only qi database
+    environment:
+      DATA_EXCHANGE_ENDPOINT: http://host.containers.internal:8080
+    secrets:
+      - source: target-database-password # TODO: change "source" and "target"
+        target: database-password
+    networks:
+      - database
+      - trigger
+    volumes:
+      - ./provider-id:/run/provider-id
+    depends_on:
+      - database
 
 secrets:
   source-database-password:
     file: source-database-password
   target-database-password:
     file: target-database-password
+
+volumes:
+  data:
+    external: no
+
+networks:
+  database:
+    external: no
+  trigger:
+    external: no

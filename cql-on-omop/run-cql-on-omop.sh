@@ -87,3 +87,8 @@ sql_in_target_db \
 "INSERT INTO ${TARGET_DB_SCHEMA}.observation
         (observation_concept_id, observation_type_concept_id, observation_datetime, observation_date, person_id)
  VALUES (${MARKER_CONCEPT_ID},   0,                           localtimestamp,       current_date,     0);"
+
+# Notify data exchange service
+echo -e "\e[1mNotifying data exchange service\e[0m"
+TRIGGER_URL=http://data-exchange:8080/trigger
+curl --silent "${TRIGGER_URL}"
