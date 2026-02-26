@@ -23,6 +23,10 @@ This project creates the following container images:
 3. The `data-exchange` container contains a simple program that uploads aggregated quality indicator results to the INDICATE central hub..
    To this end, the program fetches aggregated quality indicator results from the `database` container and uploads them, together with a unique id for the data provider, to the hub node of the INDICATE quality indicator dashboard architecture.
 
+4. The `dashboard` container contains the web-based quality indicator dashboard application that is the main purpose of the whole architecture.
+   At the moment, the `dashboard` container communicates with the INDICATE central hub to retrieve aggregated quality indicator results from all data providers and present the results in different web-based views.
+   Later, the `dashboard` container may be extended to also communicate with the `database` container in order to display patient-level quality indicator results that are specific to the data provider and must also not leave the systems of the data provider for privacy and data protection reasons.
+
 ## Dependencies
 
 * PostgreSQL
@@ -52,6 +56,12 @@ This project creates the following container images:
    Container Registry at
    https://github.com/umg-minai/indicate-data-exchange-client/pkgs/container/indicate-data-exchange-client.
 
+4. Dashboard
+
+   This dependency will be obtained automatically from the GitHub
+   Container Registry at
+   https://github.com/umg-minai/indicate-dashboard/pkgs/container/indicate-dashboard.
+
 ### Set up Database Access
 
 1. Add connection data for the OMOP database which provides the
@@ -77,6 +87,13 @@ If default settings for communication with the INDICATE data exchange
 server are not appropriate, customize the settings as described below.
 
 1. TODO DATA_EXCHANGE_ENDPOINT
+
+### Set a Provider Display Name
+
+Some views of the `dashboard` container display quality indicator results for multiple data provider and highlight the results for the data provider running the dashboard.
+This works because the data provider (and only the data provider) can recognize its "own" results based on the unique provider id.
+This highlighting can be augmented by specifying a human-readable name that should be displayed alongside the highlighted results.
+The chosen name, which is an arbitrary string, should be written into the file `provider-id/name` relative to the root directory of this repository.
 
 ### Build the Images
 

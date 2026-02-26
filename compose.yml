@@ -53,6 +53,26 @@ services:
     depends_on:
       - database
 
+  # The dashboard services presents a web-based dashboard with quality
+  # indicator results from all data providers. These results are
+  # fetched from the INDICATE hub using the data exchange API. Later,
+  # the dashboard could also present patient-level results for just
+  # the local data provider.
+  dashboard:
+    image: ghcr.io/umg-minai/indicate-dashboard:latest
+    env_file: data-exchange.env
+    environment:
+      LISTEN_ADDRESS:     0.0.0.0
+      LISTEN_PORT:        8080
+      PROVIDER_ID_FILE:   /run/provider-id/id # TODO: should wait until the id is generated
+      PROVIDER_NAME_FILE: /run/provider-id/name
+    volumes:
+      - ./provider-id:/run/provider-id
+    ports:
+      - 8000:8080
+    depends-on:
+      - data-exchange # for provider id generation but this is racy
+
 secrets:
   source-database-password:
     file: source-database-password
