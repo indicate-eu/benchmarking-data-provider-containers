@@ -91,6 +91,9 @@ sql_in_target_db \
  VALUES (${MARKER_CONCEPT_ID},   0,                           localtimestamp,       current_date,     0);"
 
 # Notify data exchange service
+DATA_EXCHANGE_CONTAINER=data-exchange
 echo -e "\e[1mNotifying data exchange service\e[0m"
-TRIGGER_URL=http://data-exchange:8080/trigger
-curl --silent "${TRIGGER_URL}"
+TRIGGER_URL=http://${DATA_EXCHANGE_CONTAINER}:8080/trigger
+if ! curl --silent --fail "${TRIGGER_URL}" > /dev/null ; then
+    echo -e "\e[1;31mData exchange service reported error; see ${DATA_EXCHANGE_CONTAINER} container\e[0m"
+fi
