@@ -83,17 +83,21 @@ CQL_ON_OMOP_DATABASE_PASSWORD=$(cat /run/secrets/source-database-password) \
         --schema="${TARGET_DB_SCHEMA}"                                     \
         --no-print-notes
 
-# Insert marker for this run
-echo -e "\e[1mInserting marker into database\e[0m"
-sql_in_target_db \
-"INSERT INTO ${TARGET_DB_SCHEMA}.observation
+if [ $? -eq 0 ] ; then
+    # Insert marker for this run
+    echo -e "\e[1mInserting marker into database\e[0m"
+    sql_in_target_db \
+        "INSERT INTO ${TARGET_DB_SCHEMA}.observation
         (observation_concept_id, observation_type_concept_id, observation_datetime, observation_date, person_id)
  VALUES (${MARKER_CONCEPT_ID},   0,                           localtimestamp,       current_date,     0);"
 
-# Notify data exchange service
-DATA_EXCHANGE_CONTAINER=data-exchange
-echo -e "\e[1mNotifying data exchange service\e[0m"
-TRIGGER_URL=http://${DATA_EXCHANGE_CONTAINER}:8080/trigger
-if ! curl --silent --fail "${TRIGGER_URL}" > /dev/null ; then
-    echo -e "\e[1;31mData exchange service reported error; see ${DATA_EXCHANGE_CONTAINER} container\e[0m"
+    # Notify data exchange service
+    DATA_EXCHANGE_CONTAINER=data-exchange
+    echo -e "\e[1mNotifying data exchange service\e[0m"
+    TRIGGER_URL=http://${DATA_EXCHANGE_CONTAINER}:8080/trigger
+    if ! curl --silent --fail "${TRIGGER_URL}" > /dev/null ; then
+        echo -e "\e[1;31mData exchange service reported error; see ${DATA_EXCHANGE_CONTAINER} container\e[0m"
+    fi
+else
+    echo -e "\e[31mFailed to compute quality indicators; not notifying data exchange service\e[0m"
 fi
