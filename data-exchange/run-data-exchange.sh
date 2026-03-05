@@ -26,11 +26,11 @@ fi
 
 # Run data exchange client with provider id and database access
 # variables.
-export DATABASE_PASSWORD=$(cat /run/secrets/database-password)
-PROVIDER_ID=${ID}               \
-DATABASE_HOST=${TARGET_DB_HOST} \
-DATABASE_PORT=${TARGET_DB_PORT} \
-DATABASE_USER=${TARGET_DB_USER} \
-DATABASE_NAME=${TARGET_DB_DATABASE} \
-DATA_EXCHANGE_ENDPOINT=${DATA_EXCHANGE_ENDPOINT} \
-  python3 indicate_data_exchange_client/main.py
+DATABASE_HOST=${TARGET_DB_HOST}                       \
+DATABASE_PORT=${TARGET_DB_PORT}                       \
+DATABASE_USER=${TARGET_DB_USER}                       \
+DATABASE_PASSWORD_FILE=/run/secrets/database-password \
+DATABASE_NAME=${TARGET_DB_DATABASE}                   \
+PROVIDER_ID_FILE="${ID_FILE}"                         \
+DATA_EXCHANGE_ENDPOINT=${DATA_EXCHANGE_ENDPOINT}      \
+  exec python3 indicate_data_exchange_client/main.py
