@@ -39,7 +39,8 @@ This project creates the following container images:
 
 1. cql-on-omop
 
-   TODO
+   This dependency will be obtained automatically from the GitHub Container Registry at
+   https://github.com/umg-minai/cql-on-omop/pkgs/container/cql-on-omop.
 
 2. INDICATE Quality Indicator CQL Libraries
 
