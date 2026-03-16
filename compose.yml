@@ -13,7 +13,7 @@ services:
     networks:
       - database
     volumes:
-      - data:/var/lib/postgresql
+      - ./database-data:/var/lib/postgresql
 
   # The cql-on-omop service reads from the clinical database, computes
   # quality indicators and stores results in the database service.
