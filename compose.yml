@@ -59,7 +59,7 @@ services:
   # the dashboard could also present patient-level results for just
   # the local data provider.
   dashboard:
-    image: ghcr.io/umg-minai/indicate-dashboard:latest
+    image: ghcr.io/indicate-eu/benchmarking-dashboard:latest
     env_file: data-exchange.env
     environment:
       LISTEN_ADDRESS:     0.0.0.0

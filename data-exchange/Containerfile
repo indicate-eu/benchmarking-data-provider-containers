@@ -1,4 +1,4 @@
-FROM ghcr.io/umg-minai/indicate-data-exchange-client:latest
+FROM ghcr.io/indicate-eu/benchmarking-data-exchange-client:latest
 
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes update     \
