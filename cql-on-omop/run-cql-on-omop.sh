@@ -54,12 +54,11 @@ REVIEW_PERIOD="Interval[${PREVIOUS_RUN_TIMESTAMP}, ${NOW})"
 
 echo -e "\e[1mComputing quality indicators\e[0m"
 # TODO(moringenj): should not use --password for target db
-# TODO(moringenj): MIMIC is temporary
 CQL_ON_OMOP_DATABASE_PASSWORD=$(cat /run/secrets/source-database-password) \
   java -Xmx24000000000                                                     \
     -jar cql-on-omop-${CQL_ON_OMOP_VERSION}.jar                            \
     batch                                                                  \
-    --omop-version=v5.4.MIMIC \
+    --omop-version=v5.4                                                    \
       ${SOURCE_DB_CONNECTION_STRING_ARG}                                   \
       ${SOURCE_DB_DRIVER_ARG}                                              \
       --host="${SOURCE_DB_HOST}"                                           \
