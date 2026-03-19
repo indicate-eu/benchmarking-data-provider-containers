@@ -28,7 +28,7 @@ This project creates the following containers:
 ## Dependencies
 
 The following software is used by the containers in this compose project.
-The list is provided for reference - there is no need to install any software on the host system or within container manually.
+The list is provided for reference - there is no need to install any software on the host system or within containers manually.
 
 * PostgreSQL
 
@@ -42,7 +42,8 @@ The list is provided for reference - there is no need to install any software on
 
 * Quality Indicator CQL Libraries
 
-  TODO describe
+  This repository contains in the sub-directory `cql-on-omop/cql` a copy of the CQL libraries that implement the INDICATE quality indicators.
+  At the moment, this sub-directory is manually updated when changes to the quality indicators are made.
 
 * INDICATE Data Exchange Client
 
