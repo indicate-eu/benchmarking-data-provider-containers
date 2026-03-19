@@ -1,9 +1,6 @@
 ## Introduction
 
-This repository contains scripts and data for creating containers that
-INDICATE data providers can deploy in order to implement the
-evaluation of quality indicators as well as communication with the
-central hub for the INDICATE quality benchmarking dashboard.
+This repository contains scripts and data for creating containers that INDICATE data providers can deploy in order to implement the evaluation of quality indicators as well as communication with the central hub for the INDICATE quality benchmarking dashboard.
 
 ## Containers
 
@@ -29,44 +26,38 @@ This project creates the following container images:
 
 ## Dependencies
 
+The following software is used by the containers in this compose project.
+The list is provided for reference - there is no need to install any software on the host system or within container manually.
+
 * PostgreSQL
 
-* https://github.com/umg-minai/cql-on-omop
+* supercronic - A task scheduling engine for containers
 
-* https://github.com/aptible/supercronic
+  This dependency will be downloaded automatically from the GitHub project https://github.com/aptible/supercronic.
 
-* INDICATE CQL Libraries
+* cql-on-omop
 
-## Build
+  This dependency will be obtained automatically from the GitHub Container Registry at https://github.com/umg-minai/cql-on-omop/pkgs/container/cql-on-omop.
 
-### Obtain Dependencies
+* Quality Indicator CQL Libraries
 
-1. cql-on-omop
+  TODO describe
 
-   This dependency will be obtained automatically from the GitHub Container Registry at
-   https://github.com/umg-minai/cql-on-omop/pkgs/container/cql-on-omop.
+* INDICATE Data Exchange Client
 
-2. INDICATE Quality Indicator CQL Libraries
+  This dependency is obtained automatically from the GitHub Container Registry at https://github.com/indicate-eu/benchmarking-data-exchange-client/pkgs/container/benchmarking-data-exchange-client
 
-   TODO
+* INDICATE Dashboard Application
 
-3. INDICATE Data Exchange Client
+   This dependency is obtained automatically from the GitHub Container Registry at https://github.com/indicate-eu/benchmarking-dashboard/pkgs/container/benchmarking-dashboard
 
-   This dependency will be obtained automatically from the GitHub
-   Container Registry at
-   https://github.com/umg-minai/indicate-data-exchange-client/pkgs/container/indicate-data-exchange-client.
-
-4. Dashboard
-
-   This dependency will be obtained automatically from the GitHub
-   Container Registry at
-   https://github.com/umg-minai/indicate-dashboard/pkgs/container/indicate-dashboard.
+## Configuration and Build
 
 ### Set up Database Access
 
-1. Add connection data for the OMOP database which provides the
-   clinical data to `databases.env` in the root directory of this
-   repository.
+1. Add connection data for the OMOP CDM-formatted database which
+   provides the clinical data to `source-database.env` in the root
+   directory of this repository.
 
 2. Enter the database password for that database into the file
    `source-database-password` in the root directory of this
@@ -83,10 +74,8 @@ This project creates the following container images:
 
 ### Set up Data Exchange (optional)
 
-If default settings for communication with the INDICATE data exchange
-server are not appropriate, customize the settings as described below.
-
-1. TODO DATA_EXCHANGE_ENDPOINT
+If default settings for communication with the INDICATE Hub are not appropriate, customize the settings in the `data-exchange.env` in the root directory of this repository.
+Concretely, set `DATA_EXCHANGE_ENDPOINT` to the URL under which the data exchange endpoint of the INDICATE Hub can be reached.
 
 ### Set a Provider Display Name
 
