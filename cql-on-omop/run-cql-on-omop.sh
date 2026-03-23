@@ -29,7 +29,7 @@ function sql_in_target_db() {
     rm -f "${PGPASS_FILE}"
 }
 
-MARKER_CONCEPT_ID=2_000_000_091
+MARKER_CONCEPT_ID=2_000_100_091
 
 PREVIOUS_RUN=$(sql_in_target_db \
 "SELECT max(observation_datetime) FROM ${TARGET_DB_SCHEMA}.observation

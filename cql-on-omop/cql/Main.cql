@@ -49,13 +49,13 @@ context Patient
 
 define Results:
   Flatten({
-    ToObservation(2000000101, "Qi01".Result),
-    ToObservation(2000000102, "Qi02".Result),
-    ToObservation(2000000103, "Qi03".Result),
-    ToObservation(2000000104, "Qi04".Result),
-    ToObservation(2000000105, "Qi05".Result),
-    ToObservation(2000000106, "Qi06".Result),
-    ToObservation(2000000107, "Qi07".Result),
-    ToObservation(2000000108, "Qi08".Result),
-    ToObservation(2000000109, "Qi09".Result)
+    ToObservation(2000100101, "Qi01".Result),
+    ToObservation(2000100102, "Qi02".Result),
+    ToObservation(2000100103, "Qi03".Result),
+    ToObservation(2000100104, "Qi04".Result),
+    ToObservation(2000100105, "Qi05".Result),
+    ToObservation(2000100106, "Qi06".Result),
+    ToObservation(2000100107, "Qi07".Result),
+    ToObservation(2000100108, "Qi08".Result),
+    ToObservation(2000100109, "Qi09".Result)
   })

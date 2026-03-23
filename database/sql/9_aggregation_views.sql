@@ -12,7 +12,7 @@ SELECT   MAX(observation_id)                                        AS observati
          AVG(value_as_number)                                       AS average_value,
          COUNT(*)                                                   AS observation_count
 FROM     cds_cdm.observation
-WHERE    observation_concept_id >= 2000000100 -- only quality indicator observations
+WHERE    observation_concept_id >= 2_000_100_100 -- only quality indicator observations
 GROUP BY observation_concept_id,
          DATE_TRUNC('day', observation_datetime)
 ORDER BY period_start, observation_concept_id;
@@ -26,7 +26,7 @@ SELECT   MAX(observation_id)                                          AS observa
          AVG(value_as_number)                                         AS average_value,
          COUNT(*)                                                     AS observation_count
 FROM     cds_cdm.observation
-WHERE    observation_concept_id >= 2000000100 -- only quality indicator observations
+WHERE    observation_concept_id >= 2_000_100_100 -- only quality indicator observations
 GROUP BY observation_concept_id,
          DATE_TRUNC('week', observation_datetime)
 ORDER BY period_start, observation_concept_id;
@@ -40,7 +40,7 @@ SELECT   MAX(observation_id)                                            AS obser
          AVG(value_as_number)                                           AS average_value,
          COUNT(*)                                                       AS observation_count
 FROM     cds_cdm.observation
-WHERE    observation_concept_id >= 2000000100 -- only quality indicator observations
+WHERE    observation_concept_id >= 2_000_100_100 -- only quality indicator observations
 GROUP BY observation_concept_id,
          DATE_TRUNC('month', observation_datetime)
 ORDER BY period_start, observation_concept_id;
@@ -54,7 +54,7 @@ SELECT   MAX(observation_id)                                          AS observa
          AVG(value_as_number)                                         AS average_value,
          COUNT(*)                                                     AS observation_count
 FROM     cds_cdm.observation
-WHERE    observation_concept_id >= 2000000100 -- only quality indicator observations
+WHERE    observation_concept_id >= 2_000_100_100 -- only quality indicator observations
 GROUP BY observation_concept_id,
          DATE_TRUNC('year', observation_datetime)
 ORDER BY period_start, observation_concept_id;
