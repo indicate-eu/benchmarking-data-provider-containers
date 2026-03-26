@@ -93,8 +93,8 @@ if [ $? -eq 0 ] ; then
     # Notify data exchange service
     DATA_EXCHANGE_CONTAINER=data-exchange
     echo -e "\e[1mNotifying data exchange service\e[0m"
-    TRIGGER_URL=http://${DATA_EXCHANGE_CONTAINER}:8080/trigger
-    if ! curl --silent --fail "${TRIGGER_URL}" > /dev/null ; then
+    TRIGGER_URL=http://${DATA_EXCHANGE_CONTAINER}:8080/api/trigger
+    if ! curl --silent --fail --data-ascii '' "${TRIGGER_URL}" > /dev/null ; then
         echo -e "\e[1;31mData exchange service reported error; see ${DATA_EXCHANGE_CONTAINER} container\e[0m"
     fi
 else
