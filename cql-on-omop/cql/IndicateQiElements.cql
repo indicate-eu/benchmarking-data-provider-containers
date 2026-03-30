@@ -1,3 +1,6 @@
+// This file contains general definitions that are shared between the
+// different quality indicators.
+
 library "IndicateQiElements" version '1.0.0'
 
 using OMOP version 'v5.4'

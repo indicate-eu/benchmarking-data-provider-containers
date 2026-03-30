@@ -7,16 +7,6 @@
 //   and should be enough to meet individuals daily calorie requirement.
 //   The calorie target is calculated by the insulin requirement and/or
 //   phosphate measurements in a blood sample on a daily basis.
-//
-// Numerator:
-//   For each 24 hour period starting at admission + 24 hours the calorie
-//   intake has to be 10 % lower/higher than the individualised daily calorie
-//   target.
-//   First 24 hours and incomplete last 24 hour period are excluded.
-//
-// Denominator:
-//   Number of 24 hour periods.
-//   First 24 hours and incomplete last 24 hour period are excluded.
 
 library "IndicateQi03Feeding" version '1.0.0'
 

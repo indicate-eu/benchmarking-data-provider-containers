@@ -1,16 +1,12 @@
-// Name     08 - Advanced Care Planing
+// Name     08 - Advance Care Plan
 // Version  1.0
 //
 // Description:
 //
 //   Critically ill patients on an intensive care unit or their
 //   relatives should be consulted regarding care/treatment plans.
-//
-// Numerator:
-//
-// Denominator:
 
-library "IndicateQi08AdvancedCarePlaning" version '1.0.0'
+library "IndicateQi08AdvanceCarePlan" version '1.0.0'
 
 using OMOP version 'v5.4'
 

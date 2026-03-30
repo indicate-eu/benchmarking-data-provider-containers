@@ -5,15 +5,8 @@
 //   Venous thromboembolism (VTE) is a frequent complication that
 //   contributes significantly to morbidity and mortality among critically
 //   ill patients.  Pharmacologic thromboprophylaxis should reduce VTE.
-//
-// Numerator:
-//   Number of 24 hour periods starting with the second 24 hour period
-//   in which at least one of the listed drugs has been used.
-//
-// Denominator:
-//   Number of 24 hour periods.
 
-library "IndicateQi05ThrombembolicPrevention" version '1.0.0'
+library "IndicateQi05ThromboembolicPrevention" version '1.0.0'
 
 using OMOP version 'v5.4'
 

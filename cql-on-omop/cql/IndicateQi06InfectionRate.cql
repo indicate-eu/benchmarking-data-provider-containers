@@ -4,12 +4,6 @@
 // Description:
 //   This quality indicator compares the incidence of ventilator
 //   associated pneumonia and catheter-related infections.
-//
-// Numerator:
-//   -
-//
-// Denominator:
-//   -
 
 library "IndicateQi06InfectionRate" version '1.0.0'
 

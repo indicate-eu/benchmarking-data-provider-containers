@@ -10,11 +10,6 @@
 //   table).  The plateau pressure should be lower or equal 30 cmH2O.  The
 //   inspiratory pressure difference (driving pressure, Pdelta) should be
 //   lower or equal 14 cmH2O.
-//
-// Numerator:
-//
-// Denominator:
-//
 
 library "IndicateQi01Ventilation" version '1.0.0'
 
@@ -23,6 +18,7 @@ using OMOP version 'v5.4'
 include OMOPHelpers
 include TimePeriods called T
 include IndicateQiElements called elm
+include VentilationProcedures
 
 code "ARDS Condition": '4195694' from elm.OMOPSV // ICD10 based code: '45552897'
 
@@ -37,8 +33,6 @@ code "Invasive Ventilation Procedure": '37158404' from elm.OMOPSV
 concept "Ventilation Procedure": {
   "Invasive Ventilation Procedure"
 }
-
-code "Ventilation Mode": '37042784' from elm.OMOPSV
 
 code "PaO2/FiO2 Measurement": '3029943' from elm.OMOPSV
 
@@ -131,9 +125,6 @@ define "PEEP Measurements":
     return all m
     sort by measurementDatetime
 
-define "Ventilation Mode Obserations":
-  [Observation: "Ventilation Mode"]
-
 define "Plateau Pressure Measurements":
   [Measurement: "Plateau Pressure Measurement"] m
     return all m
@@ -158,7 +149,7 @@ define "Peak Inspiratory Pressure Measurements":
     sort by datetime desc
 
 define "Ventilation Procedures":
-  [ProcedureOccurrence: "Ventilation Procedure"]
+  [ProcedureOccurrence: VentilationProcedures."PCV or VCV Ventilation Procedure"]
 
 define "Intubation Tube Exposures":
   [DeviceExposure: "Intubation Tube"]
@@ -193,6 +184,20 @@ define function "Peak Inspiratory Pressure LOCF"(targetTime DateTime):
   First("Peak Inspiratory Pressure Measurements" m
           where m.datetime same hour or before targetTime
           return all m.quantity)
+
+define function "Ventilation Mode"(targetTime DateTime):
+  (1) _
+    let procedure: First("Ventilation Procedures" p
+                           where targetTime during (convert p to Interval<DateTime>)
+                           return all p)
+      return case
+               when procedure.procedureConcept ~ VentilationProcedures."Pressure Driven Ventilation Procedure"
+                 then 'Pressure Driven'
+               when procedure.procedureConcept ~ VentilationProcedures."Volume Driven Ventilation Procedure"
+                 then 'Volume Driven'
+               else
+                 null
+             end
 
 define "Usable Tidal Volume Measurements":
   [Measurement: "Tidal Volume Measurement"] m
@@ -260,12 +265,14 @@ define function "Is Conforming Tidal Volume"(tidalVolume Measurement):
 
 define function "Effective Plateau Pressure"(peepMeasurement Measurement):
   (1) _
-    let peepMeasurementTime: convert peepMeasurement to DateTime
-      // TODO(moringenj): Implement ventilation mode
-      return if false then // "Ventilation Mode" ~ "Volume Driven Ventilation" then
-               "Plateau Pressure Measurement LOCF"(peepMeasurementTime)
-             else
+    let peepMeasurementTime:        convert peepMeasurement to DateTime,
+        ventilationMode:            "Ventilation Mode"(peepMeasurementTime),
+        plateauPressureMeasurement: "Plateau Pressure Measurement LOCF"(peepMeasurementTime)
+      return if     plateauPressureMeasurement is null
+                and ventilationMode = 'Pressure Driven' then
                "Peak Inspiratory Pressure LOCF"(peepMeasurementTime)
+             else
+               plateauPressureMeasurement
 
 define function "Is Conforming PEEP"(peepMeasurement Measurement):
   (1) _

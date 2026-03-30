@@ -3,12 +3,7 @@
 //
 // Description:
 //
-//
-// Numerator:
-//   Number of 24-hour periods with mobilisation procedure.
-//
-// Denominator:
-//   Number of 24-hour periods.
+//   TODO(moringenj): missing in formal definition
 
 library "IndicateQi09Mobilisation" version '1.0.0'
 
@@ -20,7 +15,7 @@ include IndicateQiElements called elm
 
 code Mobilisation: '4327195' from elm.OMOPSV
 
-code "Order to not Mobilise": '4266013' from elm.OMOPSV
+code "Order to not Mobilise": '2100000008' from elm.OMOPSV
 
 context Patient
 

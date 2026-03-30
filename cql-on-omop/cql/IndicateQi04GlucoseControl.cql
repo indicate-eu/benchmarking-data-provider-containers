@@ -7,15 +7,6 @@
 //   per shift and possibly corrective treatments are required.  The type
 //   of treatment differs depending on the type of derangement of blood
 //   glucose disorder, and is not included in this quality indicator.
-//
-// Numerator:
-//  (All ICU patients) - (all patients with <= 10 mmol/l glucose )
-//  (includes all patients with glucose > 10 mmol/l and all patients without
-//  any glucose measurement)
-//
-// Denominator:
-//  All patients admitted to the intensive care unit during
-//  the period reviewed.
 
 library "IndicateQi04GlucoseControl" version '1.0.0'
 
@@ -136,11 +127,10 @@ define function "Successful Glucose Control"(previousMeasurement Measurement,
                    nextMeasurement,
                    "Time between consecutive non-Acceptable Glucose Levels"
                  )
-             and (   "Is Acceptable Glucose Level"(convert nextMeasurement to Quantity)
-                  or "Acceptable Follow-up Glucose Level"(
-                       convert measurement     to Quantity,
-                       convert nextMeasurement to Quantity
-                     ))))
+             and "Acceptable Follow-up Glucose Level"(
+                   convert measurement     to Quantity,
+                   convert nextMeasurement to Quantity
+                 )))
 
 define function "Acceptable Glucose Measurements"(measurements List<Tuple{previous Measurement, current Measurement, next Measurement}>,
                                                   isFirstShift Boolean):

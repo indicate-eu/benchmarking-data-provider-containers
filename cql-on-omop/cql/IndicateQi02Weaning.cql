@@ -5,11 +5,6 @@
 //   The duration of mechanical ventilation should be as short as
 //   possible. Daily spontaneous breathing trials seem to be important for a
 //   fast weaning.
-//
-// Numerator:
-//
-// Denominator:
-//
 
 library "IndicateQi02Weaning" version '1.0.0'
 

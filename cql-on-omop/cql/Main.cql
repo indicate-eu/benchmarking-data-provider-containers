@@ -6,15 +6,15 @@ include OMOPFunctions
 
 include "IndicateQiElements" called "E"
 
-include "IndicateQi01Ventilation"             called "Qi01"
-include "IndicateQi02Weaning"                 called "Qi02"
-include "IndicateQi03Feeding"                 called "Qi03"
-include "IndicateQi04GlucoseControl"          called "Qi04"
-include "IndicateQi05ThrombembolicPrevention" called "Qi05"
-include "IndicateQi06InfectionRate"           called "Qi06"
-include "IndicateQi07PainSedationDelir"       called "Qi07"
-include "IndicateQi08AdvancedCarePlaning"     called "Qi08"
-include "IndicateQi09Mobilisation"            called "Qi09"
+include "IndicateQi01Ventilation"              called "Qi01"
+include "IndicateQi02Weaning"                  called "Qi02"
+include "IndicateQi03Feeding"                  called "Qi03"
+include "IndicateQi04GlucoseControl"           called "Qi04"
+include "IndicateQi05ThromboembolicPrevention" called "Qi05"
+include "IndicateQi06InfectionRate"            called "Qi06"
+include "IndicateQi07PainSedationDelir"        called "Qi07"
+include "IndicateQi08AdvanceCarePlan"          called "Qi08"
+include "IndicateQi09Mobilisation"             called "Qi09"
 
 define NoMatchingConcept: OMOPFunctions.SC(0)
 

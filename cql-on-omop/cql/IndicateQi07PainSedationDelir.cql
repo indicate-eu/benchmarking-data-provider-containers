@@ -8,10 +8,6 @@
 //   important for early treatment and enforced by national guidelines
 //   regularly, at least once per shift.  Due to the lack of monitoring
 //   devices the assessment of scores is critical.
-//
-// Numerator:
-//
-// Denominator:
 
 library "IndicateQi07PainSedationDelir" version '1.0.0'
 
