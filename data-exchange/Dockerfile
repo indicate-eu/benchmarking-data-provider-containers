@@ -10,6 +10,3 @@ COPY --chmod=755 run-data-exchange.sh /app/run-data-exchange.sh
 WORKDIR /app
 
 CMD [ "/app/run-data-exchange.sh" ]
-
-#HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-#  CMD curl TODO exit 1
