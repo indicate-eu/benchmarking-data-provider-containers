@@ -1,6 +1,5 @@
 FROM ghcr.io/indicate-eu/benchmarking-data-exchange-client:latest
 
-
 RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes update     \
     && DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
          uuid                                                      \
