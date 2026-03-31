@@ -79,7 +79,7 @@ services:
     ports:
       # Expose web-based dashboard on the host as http://<host>:8000
       - 8000:8080
-    depends-on:
+    depends_on:
       - data-exchange # for provider id generation but this is racy
 
 secrets:
