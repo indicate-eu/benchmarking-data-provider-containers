@@ -98,7 +98,6 @@ define function incidence(period       Interval<DateTime>,
       (eventCount / relevantDays) * 1000
   end
 
-// TODO(moringenj): Direct calculation from CVC code (without insertion and removal)
 define function "CVC Periods in Period via Device Exposure"(period Interval<DateTime>):
   collapse(
     ("CVC Device Exposures") exposure
@@ -122,7 +121,6 @@ define function "CVC Periods in Period via Insertion and Removal"(period Interva
                                     Interval[startTime, end of period]
                                   else
                                     Interval[startTime, convert removal to DateTime]
-
                      return all cvcPeriod intersect period
   )
 

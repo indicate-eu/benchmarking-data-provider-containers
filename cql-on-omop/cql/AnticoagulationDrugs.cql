@@ -31,6 +31,7 @@
 // * Tioclomarol (1 entries) [modified 2026-02-12]
 // * Warfarin (35 entries) [modified 2026-02-12]
 // * Ximelagatran (1 entries) [modified 2026-02-12]
+// * Certoparin (9 entries) [modified 2026-03-23]
 
 // Do not edit
 
@@ -38,7 +39,8 @@ library "AnticoagulationDrugs"
 
 include IndicateQiElements called E
 
-code "AMNIOTIC FLUID (BOVINE) 11 X / Bos taurus brain preparation 10 X / Bos taurus ovary preparation 11 X / Bos taurus placenta preparation 10 X / Bos taurus spleen preparation 11 X / Bos taurus testicle preparation 10 X / ... Delayed Release Oral Capsule": '43689326' from E.OMOPSV
+code "acenocoumarol 1 MG Oral Tablet": '19060033' from E.OMOPSV
+code "acenocoumarol 4 MG Oral Tablet": '19060034' from E.OMOPSV
 code "Aesculus hippocastanum bark extract 0.05 MG/MG / heparin 0.05 UNT/MG / Thiamine 0.0025 MG/MG Topical Ointment": '41088162' from E.OMOPSV
 code "Aesculus hippocastanum bark extract 0.0501 MG/MG / heparin 0.0501 UNT/MG / Thiamine 0.0025 MG/MG Topical Ointment": '42711564' from E.OMOPSV
 code "Allantoin 0.0025 MG/MG / dexpanthenol 0.0025 MG/MG / heparin 0.12 UNT/MG / Oxyphenbutazone 0.03 MG/MG Topical Cream": '41119348' from E.OMOPSV
@@ -53,127 +55,8 @@ code "Allantoin 0.01 MG/MG / Allium cepa whole extract 0.1 MG/MG / heparin 0.050
 code "Allantoin 0.01 MG/MG / heparin 0.05 UNT/MG / Onion extract 0.1 MG/MG Vaginal Gel": '43708692' from E.OMOPSV
 code "Allantoin 0.0333 MG/MG / Allium cepa whole extract 0.333 MG/MG / heparin 0.167 UNT/MG Topical Gel": '40838549' from E.OMOPSV
 code "Allantoin 20 MG / Aluminum carbonate 12 MG / Bismuth 100 MG / dexpanthenol 100 MG / heparin 200 UNT / Hydrocortisone 5 MG / Procaine 4 MG Rectal Suppository": '40900730' from E.OMOPSV
-code "Arnica extract 0.1 MG/MG / guaiazulene 0.00005 MG/MG / heparin 0.00004 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.00005 MG/MG Topical Gel": '41243987' from E.OMOPSV
-code "Arnica extract 0.1 MG/MG / guaiazulene 0.00005 MG/MG / heparin 0.04 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.00005 MG/MG Topical Gel": '41305972' from E.OMOPSV
-code "Arnica extract 0.1 MG/MG / guaiazulene 0.00005 MG/MG / heparin 0.04 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.00005 MG/MG Topical Ointment": '41150570' from E.OMOPSV
-code "Arnica extract 0.1 MG/MG / guaiazulene 0.0000501 MG/MG / heparin 0.04 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.0000501 MG/MG Topical Gel": '42720822' from E.OMOPSV
-code "Arnica extract 0.1 MG/MG / guaiazulene 0.0000501 MG/MG / heparin 0.04 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.0000501 MG/MG Topical Ointment": '42722171' from E.OMOPSV
-code "Benzocaine 0.03 MG/MG / dexpanthenol 0.025 MG/MG / heparin 0.05 UNT/MG / Menthol 0.003 MG/MG / prednisolone 0.0005 MG/MG / Tyrothricin 0.001 MG/MG / Vitamin B 12 0.0001 MG/MG Topical Ointment": '41024775' from E.OMOPSV
-code "Benzocaine 60 MG / dexpanthenol 50 MG / heparin 200 UNT / Menthol 0.05 MG / prednisolone 2 MG / Vitamin B 12 0.4 MG Rectal Suppository": '40869058' from E.OMOPSV
-code "Benzocaine 900 MG / dexpanthenol 750 MG / heparin 2500 UNT / Menthol 30 MG / prednisolone 25 MG / Tyrothricin 10 MG / Vitamin B 12 5 MG Rectal Suppository": '40869057' from E.OMOPSV
-code "Benzocaine 900 MG / dexpanthenol 750 MG / heparin 2500 UNT / Menthol 30 MG / prednisolone 70 MG / Tyrothricin 10 MG / Vitamin B 12 5 MG Rectal Suppository": '41024776' from E.OMOPSV
-code "Certoparin": '19016072' from E.OMOPSV
-code "Citric Acid 0.37 MG/ML / heparin 2 UNT/ML / Sodium Chloride 9 MG/ML / Sodium Phosphate, Dibasic 4.3 MG/ML Injection": '44071751' from E.OMOPSV
-code "Citric Acid 1 MG/ML / Glucose 50 MG/ML / heparin 50 UNT/ML / Sodium Phosphate, Dibasic 4.1 MG/ML Injection": '44045916' from E.OMOPSV
-code "Clorindione 2 MG Oral Tablet": '40993001' from E.OMOPSV
-code "Dalteparin 10 UNT/ML Injectable Solution": '41054962' from E.OMOPSV
-code "Dalteparin 100 MG/ML Injectable Solution": '36894581' from E.OMOPSV
-code "Dalteparin 1000 UNT/ML Injectable Solution": '41117763' from E.OMOPSV
-code "Dalteparin 1000 UNT/ML Prefilled Syringe": '35153406' from E.OMOPSV
-code "Dalteparin 10000 UNT/ML Injection": '43263317' from E.OMOPSV
-code "Dalteparin 12.5 UNT/ML Injectable Solution": '40868000' from E.OMOPSV
-code "Dalteparin 12.5 UNT/ML Prefilled Syringe": '41211730' from E.OMOPSV
-code "Dalteparin 12500 UNT/ML Injectable Solution": '43623979' from E.OMOPSV
-code "Dalteparin 12500 UNT/ML Injection": '43290508' from E.OMOPSV
-code "Dalteparin 12500000 UNT/ML Prefilled Syringe": '41273546' from E.OMOPSV
-code "Dalteparin 2.5 UNT/ML Injectable Solution": '40868003' from E.OMOPSV
-code "Dalteparin 2.5 UNT/ML Prefilled Syringe": '41242646' from E.OMOPSV
-code "Dalteparin 226 MG/ML Injectable Solution": '42731154' from E.OMOPSV
-code "Dalteparin 227 MG/ML Injectable Solution": '36880992' from E.OMOPSV
-code "Dalteparin 228 MG/ML Injectable Solution": '42716535' from E.OMOPSV
-code "Dalteparin 24 UNT/ML Prefilled Syringe": '41273544' from E.OMOPSV
-code "Dalteparin 25 UNT/ML Injectable Solution": '40868001' from E.OMOPSV
-code "Dalteparin 25 UNT/ML Prefilled Syringe": '41117765' from E.OMOPSV
-code "Dalteparin 250 UNT/ML Prefilled Syringe": '35134341' from E.OMOPSV
-code "Dalteparin 2500 UNT/ML Injection": '44045837' from E.OMOPSV
-code "Dalteparin 2500 UNT/ML Prefilled Syringe": '42482044' from E.OMOPSV
-code "Dalteparin 25000 UNT/ML Injection": '43268801' from E.OMOPSV
-code "Dalteparin 36000 IU/ML Prefilled Syringe": '42875889' from E.OMOPSV
-code "Dalteparin 5000 UNT Injectable Solution": '35158595' from E.OMOPSV
-code "Dalteparin 5000 UNT/ML Prefilled Syringe": '40961514' from E.OMOPSV
-code "Dalteparin 6250 UNT/ML Injectable Solution": '41023718' from E.OMOPSV
-code "Dalteparin 900 MG/ML Injectable Solution": '36891680' from E.OMOPSV
-code "Dexamethasone 0.0002 MG/MG / heparin 0.05 UNT/MG / Sodium Ichtosylate 0.06 MG/MG Topical Cream": '41180273' from E.OMOPSV
-code "Diclofenac 0.00001 MG/MG / heparin 0.4 UNT/MG Transdermal System": '43023167' from E.OMOPSV
-code "Diclofenac 0.01 MG/MG / heparin 0.4 UNT/MG Transdermal System": '43134660' from E.OMOPSV
-code "Dihydroergotamine 0.5 MG / heparin 5000 UNT Prefilled Syringe": '41054768' from E.OMOPSV
-code "Dihydroergotamine 0.714 MG/ML / heparin 7500 UNT/ML / Lidocaine 10 MG/ML Injectable Solution": '40961317' from E.OMOPSV
-code "Dihydroergotamine 0.714 MG/ML / heparin 7500 UNT/ML Injectable Solution": '40961318' from E.OMOPSV
-code "Dihydroergotamine 1 MG/ML / heparin 5000 UNT/ML / Lidocaine 10 MG/ML Injectable Solution": '40867800' from E.OMOPSV
-code "Enoxaparin 1 UNT/ML Injectable Solution": '41148892' from E.OMOPSV
-code "Enoxaparin 10 MG/ML Injectable Solution": '40867638' from E.OMOPSV
-code "Enoxaparin 10 UNT/ML Injectable Solution": '41023342' from E.OMOPSV
-code "Enoxaparin 10 UNT/ML Prefilled Syringe": '40961166' from E.OMOPSV
-code "Enoxaparin 100 MG/ML Injection": '36881946' from E.OMOPSV
-code "Enoxaparin 10000 UNT/ML Injectable Solution": '43803627' from E.OMOPSV
-code "Enoxaparin 10000 UNT/ML Prefilled Syringe": '41211417' from E.OMOPSV
-code "Enoxaparin 13.3 UNT/ML Prefilled Syringe": '40836551' from E.OMOPSV
-code "Enoxaparin 133 MG/ML Prefilled Syringe": '41054605' from E.OMOPSV
-code "Enoxaparin 15 UNT/ML Prefilled Syringe": '41054606' from E.OMOPSV
-code "Enoxaparin 150 MG/ML Injectable Solution": '44123442' from E.OMOPSV
-code "Enoxaparin 150 MG/ML Injection": '36886730' from E.OMOPSV
-code "Enoxaparin 15000 UNT/ML Injectable Solution": '36259706' from E.OMOPSV
-code "Enoxaparin 15000 UNT/ML Prefilled Syringe": '36783760' from E.OMOPSV
-code "Enoxaparin 20 MG/ML Injectable Solution": '40929839' from E.OMOPSV
-code "Enoxaparin 30 UNT/ML Prefilled Syringe": '40898729' from E.OMOPSV
-code "Enoxaparin 33.3 MG/ML Injectable Solution": '41148895' from E.OMOPSV
-code "Enoxaparin 5 UNT/ML Prefilled Syringe": '41023347' from E.OMOPSV
-code "Enoxaparin 6 UNT/ML Prefilled Syringe": '41211416' from E.OMOPSV
-code "Enoxaparin 7.5 UNT/ML Prefilled Syringe": '40836552' from E.OMOPSV
-code "Escin 0.01 MG/MG / heparin 0.00005 UNT/MG / Salicylic Acid 0.05 MG/MG Topical Gel": '41273129' from E.OMOPSV
-code "Escin 0.01 MG/MG / heparin 0.0000501 UNT/MG / Salicylic Acid 0.05 MG/MG Topical Gel": '42729919' from E.OMOPSV
-code "Escin 0.02 MG/MG / heparin 0.0001 UNT/MG / Phospholipids 0.01 MG/MG Topical Gel": '41086096' from E.OMOPSV
-code "Flufenamic Acid 0.035 MG/MG / heparin 0.1 UNT/MG / Niacin 0.0125 MG/MG / Salicylic Acid 0.05 MG/MG Topical Ointment": '41148608' from E.OMOPSV
-code "Gentamicin 0.02 MG/ML / heparin 3500 UNT/ML / Vancomycin 0.1 MG/ML Injectable Solution": '40754281' from E.OMOPSV
-code "Glucose 50 MG/ML / heparin 100 UNT/ML Injection": '44071643' from E.OMOPSV
-code "Glucose 50 MG/ML / heparin 40 UNT/ML Injectable Solution": '44058816' from E.OMOPSV
-code "Glucose 50 MG/ML / heparin 40 UNT/ML Injection": '44084523' from E.OMOPSV
-code "Glucose 50 MG/ML / heparin 50 UNT/ML Injection": '44110321' from E.OMOPSV
-code "Melagatran 10 MG/ML Prefilled Syringe": '40866445' from E.OMOPSV
-code "Nadroparin 10 UNT/ML Prefilled Syringe": '41240930' from E.OMOPSV
-code "Nadroparin 100 MG/ML Injectable Solution": '43786302' from E.OMOPSV
-code "Nadroparin 11.4 UNT/ML Prefilled Syringe": '41021916' from E.OMOPSV
-code "Nadroparin 19 UNT/ML Prefilled Syringe": '41053174' from E.OMOPSV
-code "Nadroparin 190 MG/ML Injectable Solution": '43786295' from E.OMOPSV
-code "Nadroparin 1900 UNT/ML Injectable Solution": '41147479' from E.OMOPSV
-code "Nadroparin 19000 UNT/ML Injection": '43275002' from E.OMOPSV
-code "Nadroparin 19000 UNT/ML Prefilled Syringe": '36883845' from E.OMOPSV
-code "Nadroparin 25.3 UNT/ML Prefilled Syringe": '40959721' from E.OMOPSV
-code "Nadroparin 633 UNT/ML Injectable Solution": '41021915' from E.OMOPSV
-code "Nadroparin 8.6 UNT/ML Prefilled Syringe": '40866226' from E.OMOPSV
-code "Nadroparin 9.5 UNT/ML Injectable Solution": '41084729' from E.OMOPSV
-code "Nadroparin 9.5 UNT/ML Prefilled Syringe": '40959720' from E.OMOPSV
-code "Nadroparin 9.53 UNT/ML Injectable Solution": '42728545' from E.OMOPSV
-code "Nadroparin 9500 UNT/ML Injection": '43275004' from E.OMOPSV
-code "Nadroparin 9500 UNT/ML Prefilled Syringe": '36894582' from E.OMOPSV
-code "Phenprocoumon 1.5 MG Oral Tablet": '43837037' from E.OMOPSV
-code "Phenprocoumon 10 MG/ML Injectable Solution": '41302483' from E.OMOPSV
-code "Warfarin 0.02 MG/ML Oral Solution": '21134742' from E.OMOPSV
-code "Warfarin 0.1 MG/ML Oral Solution": '21124844' from E.OMOPSV
-code "Warfarin 0.2 MG/ML Oral Solution": '21066141' from E.OMOPSV
-code "Warfarin 0.2 MG/ML Oral Suspension": '21174173' from E.OMOPSV
-code "Warfarin 0.3 MG/ML Oral Solution": '21095537' from E.OMOPSV
-code "Warfarin 0.4 MG/ML Oral Solution": '21105427' from E.OMOPSV
-code "Warfarin 0.4 MG/ML Oral Suspension": '21036677' from E.OMOPSV
-code "Warfarin 0.5 MG/ML Oral Solution": '21174174' from E.OMOPSV
-code "Warfarin 0.6 MG/ML Oral Solution": '21105428' from E.OMOPSV
-code "Warfarin 0.6 MG/ML Oral Suspension": '21164395' from E.OMOPSV
-code "Warfarin 0.8 MG/ML Oral Solution": '21134748' from E.OMOPSV
-code "Warfarin 0.832 MG/ML Oral Solution": '21134735' from E.OMOPSV
-code "Warfarin 1 MG Oral Capsule": '40753383' from E.OMOPSV
-code "Warfarin 1 MG/ML Oral Solution": '21046557' from E.OMOPSV
-code "Warfarin 1 MG/ML Oral Suspension": '21026882' from E.OMOPSV
-code "Warfarin 2 MG/ML Oral Granules": '35146532' from E.OMOPSV
-code "Warfarin 2 MG/ML Oral Solution": '21115242' from E.OMOPSV
-code "Warfarin 2 MG/ML Oral Suspension": '21174175' from E.OMOPSV
-code "Warfarin 3 MG Oral Capsule": '40753374' from E.OMOPSV
-code "Warfarin 5 MG Injectable Suspension": '44096725' from E.OMOPSV
-code "Warfarin 5 MG Oral Capsule": '40753366' from E.OMOPSV
-code "Warfarin 5 MG/ML Oral Solution": '21105415' from E.OMOPSV
-code "Ximelagatran 24 MG Oral Tablet": '40896006' from E.OMOPSV
-code "acenocoumarol 1 MG Oral Tablet": '19060033' from E.OMOPSV
-code "acenocoumarol 4 MG Oral Tablet": '19060034' from E.OMOPSV
 code "alpha Tocopherol 3 MG / Desonide 0.5 MG / heparin 500 UNT / Lidocaine 10 MG / Ruscosides 20 MG / Vitamin A 5000 UNT Rectal Suppository": '43134659' from E.OMOPSV
+code "AMNIOTIC FLUID (BOVINE) 11 X / Bos taurus brain preparation 10 X / Bos taurus ovary preparation 11 X / Bos taurus placenta preparation 10 X / Bos taurus spleen preparation 11 X / Bos taurus testicle preparation 10 X / ... Delayed Release Oral Capsule": '43689326' from E.OMOPSV
 code "apixaban 2.5 MG Delayed Release Oral Tablet": '43139238' from E.OMOPSV
 code "apixaban 2.5 MG Oral Tablet": '43013026' from E.OMOPSV
 code "apixaban 5 MG Delayed Release Oral Tablet": '43139239' from E.OMOPSV
@@ -187,6 +70,11 @@ code "argatroban 100 MG/ML Injection": '40220925' from E.OMOPSV
 code "argatroban 100 MG/ML Prefilled Syringe": '42480206' from E.OMOPSV
 code "argatroban 40 MG/ML Injectable Solution": '40962802' from E.OMOPSV
 code "argatroban 5 MG/ML Injectable Solution": '42966026' from E.OMOPSV
+code "Arnica extract 0.1 MG/MG / guaiazulene 0.00005 MG/MG / heparin 0.00004 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.00005 MG/MG Topical Gel": '41243987' from E.OMOPSV
+code "Arnica extract 0.1 MG/MG / guaiazulene 0.00005 MG/MG / heparin 0.04 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.00005 MG/MG Topical Gel": '41305972' from E.OMOPSV
+code "Arnica extract 0.1 MG/MG / guaiazulene 0.00005 MG/MG / heparin 0.04 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.00005 MG/MG Topical Ointment": '41150570' from E.OMOPSV
+code "Arnica extract 0.1 MG/MG / guaiazulene 0.0000501 MG/MG / heparin 0.04 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.0000501 MG/MG Topical Gel": '42720822' from E.OMOPSV
+code "Arnica extract 0.1 MG/MG / guaiazulene 0.0000501 MG/MG / heparin 0.04 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.0000501 MG/MG Topical Ointment": '42722171' from E.OMOPSV
 code "bemiparin 125 MG/ML Prefilled Syringe": '42925118' from E.OMOPSV
 code "bemiparin 12500 UNT/ML Injectable Solution": '36404328' from E.OMOPSV
 code "bemiparin 175 MG/ML Prefilled Syringe": '42925114' from E.OMOPSV
@@ -197,6 +85,10 @@ code "bemiparin sodium 17500 UNT/ML Prefilled Syringe": '42902551' from E.OMOPSV
 code "bemiparin sodium 22500 UNT/ML Prefilled Syringe": '42902773' from E.OMOPSV
 code "bemiparin sodium 25000 UNT/ML Prefilled Syringe": '42902628' from E.OMOPSV
 code "bemiparin sodium 40000 UNT/ML Prefilled Syringe": '42902724' from E.OMOPSV
+code "Benzocaine 0.03 MG/MG / dexpanthenol 0.025 MG/MG / heparin 0.05 UNT/MG / Menthol 0.003 MG/MG / prednisolone 0.0005 MG/MG / Tyrothricin 0.001 MG/MG / Vitamin B 12 0.0001 MG/MG Topical Ointment": '41024775' from E.OMOPSV
+code "Benzocaine 60 MG / dexpanthenol 50 MG / heparin 200 UNT / Menthol 0.05 MG / prednisolone 2 MG / Vitamin B 12 0.4 MG Rectal Suppository": '40869058' from E.OMOPSV
+code "Benzocaine 900 MG / dexpanthenol 750 MG / heparin 2500 UNT / Menthol 30 MG / prednisolone 25 MG / Tyrothricin 10 MG / Vitamin B 12 5 MG Rectal Suppository": '40869057' from E.OMOPSV
+code "Benzocaine 900 MG / dexpanthenol 750 MG / heparin 2500 UNT / Menthol 30 MG / prednisolone 70 MG / Tyrothricin 10 MG / Vitamin B 12 5 MG Rectal Suppository": '41024776' from E.OMOPSV
 code "betrixaban 40 MG Oral Capsule": '1592993' from E.OMOPSV
 code "betrixaban 80 MG Oral Capsule": '1593001' from E.OMOPSV
 code "bisabolol 0.003 MG/MG / heparin 0.0002 UNT/MG Topical Cream": '44187526' from E.OMOPSV
@@ -208,6 +100,19 @@ code "bivalirudin 250 MG Injectable Suspension": '44059183' from E.OMOPSV
 code "bivalirudin 250 MG Injection": '19074279' from E.OMOPSV
 code "bivalirudin 250 MG Prefilled Syringe": '36888705' from E.OMOPSV
 code "bivalirudin 5 MG/ML Injection": '793488' from E.OMOPSV
+code "Certoparin": '19016072' from E.OMOPSV
+code "certoparin 10 UNT/ML Injectable Solution": '41243163' from E.OMOPSV
+code "certoparin 10 UNT/ML Prefilled Syringe": '40868520' from E.OMOPSV
+code "certoparin 10000 UNT/ML Injectable Solution": '43660807' from E.OMOPSV
+code "certoparin 6 UNT/ML Injectable Solution": '41212204' from E.OMOPSV
+code "certoparin 6000 UNT/ML / Dihydroergotamine 1 MG/ML Injectable Solution": '41149738' from E.OMOPSV
+code "certoparin 6000 UNT/ML Injectable Solution": '19016075' from E.OMOPSV
+code "certoparin 83.3 MG/ML Injectable Solution": '43714526' from E.OMOPSV
+code "certoparin 83.5 MG/ML Injectable Solution": '42712720' from E.OMOPSV
+code "certoparin sodium 10000 UNT/ML Prefilled Syringe": '42902725' from E.OMOPSV
+code "Citric Acid 0.37 MG/ML / heparin 2 UNT/ML / Sodium Chloride 9 MG/ML / Sodium Phosphate, Dibasic 4.3 MG/ML Injection": '44071751' from E.OMOPSV
+code "Citric Acid 1 MG/ML / Glucose 50 MG/ML / heparin 50 UNT/ML / Sodium Phosphate, Dibasic 4.1 MG/ML Injection": '44045916' from E.OMOPSV
+code "Clorindione 2 MG Oral Tablet": '40993001' from E.OMOPSV
 code "dabigatran etexilate 110 MG Oral Capsule": '35606208' from E.OMOPSV
 code "dabigatran etexilate 110 MG Oral Pellet": '1758804' from E.OMOPSV
 code "dabigatran etexilate 150 MG Oral Capsule": '40228154' from E.OMOPSV
@@ -217,17 +122,44 @@ code "dabigatran etexilate 30 MG Oral Pellet": '1758815' from E.OMOPSV
 code "dabigatran etexilate 40 MG Oral Pellet": '1758819' from E.OMOPSV
 code "dabigatran etexilate 50 MG Oral Pellet": '1758823' from E.OMOPSV
 code "dabigatran etexilate 75 MG Oral Capsule": '40228161' from E.OMOPSV
+code "Dalteparin 10 UNT/ML Injectable Solution": '41054962' from E.OMOPSV
+code "Dalteparin 100 MG/ML Injectable Solution": '36894581' from E.OMOPSV
+code "Dalteparin 1000 UNT/ML Injectable Solution": '41117763' from E.OMOPSV
+code "Dalteparin 1000 UNT/ML Prefilled Syringe": '35153406' from E.OMOPSV
 code "dalteparin 10000 IU/ML Injectable Solution": '2068884' from E.OMOPSV
 code "dalteparin 10000 IU/ML Injection": '2927919' from E.OMOPSV
+code "Dalteparin 10000 UNT/ML Injection": '43263317' from E.OMOPSV
+code "Dalteparin 12.5 UNT/ML Injectable Solution": '40868000' from E.OMOPSV
+code "Dalteparin 12.5 UNT/ML Prefilled Syringe": '41211730' from E.OMOPSV
 code "dalteparin 12500 IU/ML Injectable Solution": '35869695' from E.OMOPSV
 code "dalteparin 12500 IU/ML Injection": '2927914' from E.OMOPSV
 code "dalteparin 12500 IU/ML Prefilled Syringe": '2068880' from E.OMOPSV
+code "Dalteparin 12500 UNT/ML Injectable Solution": '43623979' from E.OMOPSV
+code "Dalteparin 12500 UNT/ML Injection": '43290508' from E.OMOPSV
+code "Dalteparin 12500000 UNT/ML Prefilled Syringe": '41273546' from E.OMOPSV
+code "Dalteparin 2.5 UNT/ML Injectable Solution": '40868003' from E.OMOPSV
+code "Dalteparin 2.5 UNT/ML Prefilled Syringe": '41242646' from E.OMOPSV
+code "Dalteparin 226 MG/ML Injectable Solution": '42731154' from E.OMOPSV
+code "Dalteparin 227 MG/ML Injectable Solution": '36880992' from E.OMOPSV
+code "Dalteparin 228 MG/ML Injectable Solution": '42716535' from E.OMOPSV
+code "Dalteparin 24 UNT/ML Prefilled Syringe": '41273544' from E.OMOPSV
+code "Dalteparin 25 UNT/ML Injectable Solution": '40868001' from E.OMOPSV
+code "Dalteparin 25 UNT/ML Prefilled Syringe": '41117765' from E.OMOPSV
+code "Dalteparin 250 UNT/ML Prefilled Syringe": '35134341' from E.OMOPSV
 code "dalteparin 2500 IU/ML Injectable Solution": '2068887' from E.OMOPSV
+code "Dalteparin 2500 UNT/ML Injection": '44045837' from E.OMOPSV
+code "Dalteparin 2500 UNT/ML Prefilled Syringe": '42482044' from E.OMOPSV
 code "dalteparin 25000 IU/ML Injectable Solution": '35869692' from E.OMOPSV
 code "dalteparin 25000 IU/ML Injection": '2927906' from E.OMOPSV
 code "dalteparin 25000 IU/ML Prefilled Syringe": '2068876' from E.OMOPSV
+code "Dalteparin 25000 UNT/ML Injection": '43268801' from E.OMOPSV
+code "Dalteparin 36000 IU/ML Prefilled Syringe": '42875889' from E.OMOPSV
+code "Dalteparin 5000 UNT Injectable Solution": '35158595' from E.OMOPSV
+code "Dalteparin 5000 UNT/ML Prefilled Syringe": '40961514' from E.OMOPSV
 code "dalteparin 55.2 MG/ML Injectable Solution": '19131463' from E.OMOPSV
+code "Dalteparin 6250 UNT/ML Injectable Solution": '41023718' from E.OMOPSV
 code "dalteparin 75 MG/ML Injectable Solution": '19104360' from E.OMOPSV
+code "Dalteparin 900 MG/ML Injectable Solution": '36891680' from E.OMOPSV
 code "dalteparin sodium 10000 UNT/ML Injectable Solution": '40176336' from E.OMOPSV
 code "dalteparin sodium 10000 UNT/ML Prefilled Syringe": '42902583' from E.OMOPSV
 code "dalteparin sodium 12500 UNT/ML Prefilled Syringe": '42903352' from E.OMOPSV
@@ -243,29 +175,60 @@ code "danaparoid 1250 UNT/ML Injection": '43285310' from E.OMOPSV
 code "danaparoid 1250 UNT/ML Prefilled Syringe": '42479142' from E.OMOPSV
 code "desirudin 15 MG Injectable Solution": '41149199' from E.OMOPSV
 code "desirudin 15 MG Injection": '19102223' from E.OMOPSV
+code "Dexamethasone 0.0002 MG/MG / heparin 0.05 UNT/MG / Sodium Ichtosylate 0.06 MG/MG Topical Cream": '41180273' from E.OMOPSV
 code "dexpanthenol 0.025 MG/MG / Dimethyl Sulfoxide 0.15 MG/MG / heparin 0.0005 UNT/MG Topical Gel": '40930105' from E.OMOPSV
 code "dexpanthenol 0.025 MG/MG / Dimethyl Sulfoxide 0.15 MG/MG / heparin 0.0005 UNT/MG Urethral Suppository": '40836781' from E.OMOPSV
 code "dexpanthenol 0.025 MG/MG / Dimethyl Sulfoxide 0.15 MG/MG / heparin 0.000501 UNT/MG Topical Gel": '42712662' from E.OMOPSV
+code "Diclofenac 0.00001 MG/MG / heparin 0.4 UNT/MG Transdermal System": '43023167' from E.OMOPSV
+code "Diclofenac 0.01 MG/MG / heparin 0.4 UNT/MG Transdermal System": '43134660' from E.OMOPSV
 code "dicumarol 100 MG Oral Tablet": '19108504' from E.OMOPSV
 code "dicumarol 25 MG Oral Capsule": '19108493' from E.OMOPSV
 code "dicumarol 25 MG Oral Tablet": '1325125' from E.OMOPSV
 code "dicumarol 50 MG Oral Capsule": '19108503' from E.OMOPSV
 code "dicumarol 50 MG Oral Tablet": '19076408' from E.OMOPSV
+code "Dihydroergotamine 0.5 MG / heparin 5000 UNT Prefilled Syringe": '41054768' from E.OMOPSV
+code "Dihydroergotamine 0.714 MG/ML / heparin 7500 UNT/ML / Lidocaine 10 MG/ML Injectable Solution": '40961317' from E.OMOPSV
+code "Dihydroergotamine 0.714 MG/ML / heparin 7500 UNT/ML Injectable Solution": '40961318' from E.OMOPSV
+code "Dihydroergotamine 1 MG/ML / heparin 5000 UNT/ML / Lidocaine 10 MG/ML Injectable Solution": '40867800' from E.OMOPSV
 code "edoxaban 15 MG Delayed Release Oral Tablet": '36787912' from E.OMOPSV
 code "edoxaban 15 MG Disintegrating Oral Tablet": '35141149' from E.OMOPSV
 code "edoxaban 30 MG Delayed Release Oral Tablet": '36787920' from E.OMOPSV
 code "edoxaban 30 MG Disintegrating Oral Tablet": '35137111' from E.OMOPSV
 code "edoxaban 60 MG Delayed Release Oral Tablet": '36787907' from E.OMOPSV
 code "edoxaban 60 MG Disintegrating Oral Tablet": '35137677' from E.OMOPSV
+code "Enoxaparin 1 UNT/ML Injectable Solution": '41148892' from E.OMOPSV
+code "Enoxaparin 10 MG/ML Injectable Solution": '40867638' from E.OMOPSV
+code "Enoxaparin 10 UNT/ML Injectable Solution": '41023342' from E.OMOPSV
+code "Enoxaparin 10 UNT/ML Prefilled Syringe": '40961166' from E.OMOPSV
+code "Enoxaparin 100 MG/ML Injection": '36881946' from E.OMOPSV
 code "enoxaparin 10000 IU/ML Injectable Solution": '35869699' from E.OMOPSV
+code "Enoxaparin 10000 UNT/ML Injectable Solution": '43803627' from E.OMOPSV
+code "Enoxaparin 10000 UNT/ML Prefilled Syringe": '41211417' from E.OMOPSV
+code "Enoxaparin 13.3 UNT/ML Prefilled Syringe": '40836551' from E.OMOPSV
+code "Enoxaparin 133 MG/ML Prefilled Syringe": '41054605' from E.OMOPSV
+code "Enoxaparin 15 UNT/ML Prefilled Syringe": '41054606' from E.OMOPSV
+code "Enoxaparin 150 MG/ML Injectable Solution": '44123442' from E.OMOPSV
+code "Enoxaparin 150 MG/ML Injection": '36886730' from E.OMOPSV
+code "Enoxaparin 15000 UNT/ML Injectable Solution": '36259706' from E.OMOPSV
+code "Enoxaparin 15000 UNT/ML Prefilled Syringe": '36783760' from E.OMOPSV
+code "Enoxaparin 20 MG/ML Injectable Solution": '40929839' from E.OMOPSV
+code "Enoxaparin 30 UNT/ML Prefilled Syringe": '40898729' from E.OMOPSV
+code "Enoxaparin 33.3 MG/ML Injectable Solution": '41148895' from E.OMOPSV
+code "Enoxaparin 5 UNT/ML Prefilled Syringe": '41023347' from E.OMOPSV
+code "Enoxaparin 6 UNT/ML Prefilled Syringe": '41211416' from E.OMOPSV
 code "enoxaparin 60 MG/ML Injectable Solution": '19104488' from E.OMOPSV
+code "Enoxaparin 7.5 UNT/ML Prefilled Syringe": '40836552' from E.OMOPSV
 code "enoxaparin sodium 100 MG/ML Injectable Solution": '40160948' from E.OMOPSV
 code "enoxaparin sodium 100 MG/ML Prefilled Syringe": '42902906' from E.OMOPSV
 code "enoxaparin sodium 150 MG/ML Prefilled Syringe": '42902627' from E.OMOPSV
+code "Escin 0.01 MG/MG / heparin 0.00005 UNT/MG / Salicylic Acid 0.05 MG/MG Topical Gel": '41273129' from E.OMOPSV
+code "Escin 0.01 MG/MG / heparin 0.0000501 UNT/MG / Salicylic Acid 0.05 MG/MG Topical Gel": '42729919' from E.OMOPSV
+code "Escin 0.02 MG/MG / heparin 0.0001 UNT/MG / Phospholipids 0.01 MG/MG Topical Gel": '41086096' from E.OMOPSV
 code "ethylene glycol 0.05 MG/MG / heparin 0.0005 UNT/MG Topical Gel": '40836390' from E.OMOPSV
 code "ethylene glycol 0.0501 MG/MG / heparin 0.000501 UNT/MG Topical Gel": '42712754' from E.OMOPSV
 code "factor IX 30 UNT/ML / factor VII 24 UNT/ML / factor X 30 UNT/ML / heparin 12.5 UNT/ML / Prothrombin 30 UNT/ML Injectable Solution": '41179762' from E.OMOPSV
 code "factor IX 600 UNT / factor VII 500 UNT / factor X 600 UNT / heparin 250 UNT / Prothrombin 600 UNT Injectable Solution": '41179763' from E.OMOPSV
+code "Flufenamic Acid 0.035 MG/MG / heparin 0.1 UNT/MG / Niacin 0.0125 MG/MG / Salicylic Acid 0.05 MG/MG Topical Ointment": '41148608' from E.OMOPSV
 code "fluindione 20 MG Extended Release Oral Tablet": '19134706' from E.OMOPSV
 code "fluindione 20 MG Oral Tablet": '43147543' from E.OMOPSV
 code "fondaparinux 12.5 MG/ML Injectable Solution": '44084416' from E.OMOPSV
@@ -274,6 +237,11 @@ code "fondaparinux 5 MG/ML Injectable Solution": '44058691' from E.OMOPSV
 code "fondaparinux 5 MG/ML Injection": '43282915' from E.OMOPSV
 code "fondaparinux sodium 12.5 MG/ML Prefilled Syringe": '42902397' from E.OMOPSV
 code "fondaparinux sodium 5 MG/ML Prefilled Syringe": '42903069' from E.OMOPSV
+code "Gentamicin 0.02 MG/ML / heparin 3500 UNT/ML / Vancomycin 0.1 MG/ML Injectable Solution": '40754281' from E.OMOPSV
+code "Glucose 50 MG/ML / heparin 100 UNT/ML Injection": '44071643' from E.OMOPSV
+code "Glucose 50 MG/ML / heparin 40 UNT/ML Injectable Solution": '44058816' from E.OMOPSV
+code "Glucose 50 MG/ML / heparin 40 UNT/ML Injection": '44084523' from E.OMOPSV
+code "Glucose 50 MG/ML / heparin 50 UNT/ML Injection": '44110321' from E.OMOPSV
 code "glycol salicylate 0.05 MG/MG / heparin 0.5 UNT/MG / LEVOMENTHOL 0.005 MG/MG Vaginal Gel": '43833542' from E.OMOPSV
 code "glycol salicylate 0.05 MG/MG / heparin 0.5 UNT/MG Vaginal Gel": '43708208' from E.OMOPSV
 code "heparin 0.00005 UNT/MG / LEVOMENTHOL 0.002 MG/MG / Salicylic Acid 0.1 MG/MG Topical Gel": '41303737' from E.OMOPSV
@@ -530,11 +498,28 @@ code "lepirudin 50 MG Injectable Suspension": '44071379' from E.OMOPSV
 code "lepirudin 50 MG Injection": '21112177' from E.OMOPSV
 code "lepirudin 50 MG Prefilled Syringe": '36883971' from E.OMOPSV
 code "lepirudin 50 MG/ML Injectable Solution": '19023526' from E.OMOPSV
+code "Melagatran 10 MG/ML Prefilled Syringe": '40866445' from E.OMOPSV
+code "Nadroparin 10 UNT/ML Prefilled Syringe": '41240930' from E.OMOPSV
+code "Nadroparin 100 MG/ML Injectable Solution": '43786302' from E.OMOPSV
+code "Nadroparin 11.4 UNT/ML Prefilled Syringe": '41021916' from E.OMOPSV
+code "Nadroparin 19 UNT/ML Prefilled Syringe": '41053174' from E.OMOPSV
+code "Nadroparin 190 MG/ML Injectable Solution": '43786295' from E.OMOPSV
+code "Nadroparin 1900 UNT/ML Injectable Solution": '41147479' from E.OMOPSV
 code "nadroparin 19000 IU/ML Injection": '2917151' from E.OMOPSV
 code "nadroparin 19000 UNT/ML Injectable Solution": '19001019' from E.OMOPSV
+code "Nadroparin 19000 UNT/ML Injection": '43275002' from E.OMOPSV
+code "Nadroparin 19000 UNT/ML Prefilled Syringe": '36883845' from E.OMOPSV
+code "Nadroparin 25.3 UNT/ML Prefilled Syringe": '40959721' from E.OMOPSV
 code "nadroparin 25000 UNT/ML Injectable Solution": '19001015' from E.OMOPSV
+code "Nadroparin 633 UNT/ML Injectable Solution": '41021915' from E.OMOPSV
+code "Nadroparin 8.6 UNT/ML Prefilled Syringe": '40866226' from E.OMOPSV
+code "Nadroparin 9.5 UNT/ML Injectable Solution": '41084729' from E.OMOPSV
+code "Nadroparin 9.5 UNT/ML Prefilled Syringe": '40959720' from E.OMOPSV
+code "Nadroparin 9.53 UNT/ML Injectable Solution": '42728545' from E.OMOPSV
 code "nadroparin 9500 IU/ML Injection": '2917158' from E.OMOPSV
 code "nadroparin 9500 UNT/ML Injectable Solution": '19001016' from E.OMOPSV
+code "Nadroparin 9500 UNT/ML Injection": '43275004' from E.OMOPSV
+code "Nadroparin 9500 UNT/ML Prefilled Syringe": '36894582' from E.OMOPSV
 code "parnaparin 100 UNT/ML Prefilled Syringe": '35145372' from E.OMOPSV
 code "parnaparin 10600 UNT/ML Prefilled Syringe": '2046467' from E.OMOPSV
 code "parnaparin 10700 UNT/ML Prefilled Syringe": '2046463' from E.OMOPSV
@@ -545,6 +530,8 @@ code "phenindione 10 MG Oral Tablet": '19021888' from E.OMOPSV
 code "phenindione 25 MG Oral Tablet": '19004009' from E.OMOPSV
 code "phenindione 50 MG Oral Tablet": '19004010' from E.OMOPSV
 code "phenprocoumon 1 MG/ML Oral Suspension": '1235796' from E.OMOPSV
+code "Phenprocoumon 1.5 MG Oral Tablet": '43837037' from E.OMOPSV
+code "Phenprocoumon 10 MG/ML Injectable Solution": '41302483' from E.OMOPSV
 code "phenprocoumon 3 MG Oral Tablet": '19079272' from E.OMOPSV
 code "reviparin 17.2 UNT/ML Prefilled Syringe": '41240196' from E.OMOPSV
 code "reviparin 1750 UNT Injectable Solution": '40990210' from E.OMOPSV
@@ -611,7 +598,29 @@ code "tinzaparin sodium 20000 UNT/ML Injectable Solution": '40180717' from E.OMO
 code "tinzaparin sodium 20000 UNT/ML Prefilled Syringe": '42902916' from E.OMOPSV
 code "tioclomarol 4 MG Oral Tablet": '19107417' from E.OMOPSV
 code "warfarin 0.002 MG/MG Oral Granules": '35831300' from E.OMOPSV
+code "Warfarin 0.02 MG/ML Oral Solution": '21134742' from E.OMOPSV
+code "Warfarin 0.1 MG/ML Oral Solution": '21124844' from E.OMOPSV
+code "Warfarin 0.2 MG/ML Oral Solution": '21066141' from E.OMOPSV
+code "Warfarin 0.2 MG/ML Oral Suspension": '21174173' from E.OMOPSV
+code "Warfarin 0.3 MG/ML Oral Solution": '21095537' from E.OMOPSV
+code "Warfarin 0.4 MG/ML Oral Solution": '21105427' from E.OMOPSV
+code "Warfarin 0.4 MG/ML Oral Suspension": '21036677' from E.OMOPSV
+code "Warfarin 0.5 MG/ML Oral Solution": '21174174' from E.OMOPSV
+code "Warfarin 0.6 MG/ML Oral Solution": '21105428' from E.OMOPSV
+code "Warfarin 0.6 MG/ML Oral Suspension": '21164395' from E.OMOPSV
+code "Warfarin 0.8 MG/ML Oral Solution": '21134748' from E.OMOPSV
+code "Warfarin 0.832 MG/ML Oral Solution": '21134735' from E.OMOPSV
+code "Warfarin 1 MG Oral Capsule": '40753383' from E.OMOPSV
+code "Warfarin 1 MG/ML Oral Solution": '21046557' from E.OMOPSV
+code "Warfarin 1 MG/ML Oral Suspension": '21026882' from E.OMOPSV
+code "Warfarin 2 MG/ML Oral Granules": '35146532' from E.OMOPSV
+code "Warfarin 2 MG/ML Oral Solution": '21115242' from E.OMOPSV
+code "Warfarin 2 MG/ML Oral Suspension": '21174175' from E.OMOPSV
+code "Warfarin 3 MG Oral Capsule": '40753374' from E.OMOPSV
+code "Warfarin 5 MG Injectable Suspension": '44096725' from E.OMOPSV
+code "Warfarin 5 MG Oral Capsule": '40753366' from E.OMOPSV
 code "warfarin 5 MG/ML Injectable Solution": '1235144' from E.OMOPSV
+code "Warfarin 5 MG/ML Oral Solution": '21105415' from E.OMOPSV
 code "warfarin sodium 0.5 MG Oral Tablet": '40163508' from E.OMOPSV
 code "warfarin sodium 1 MG Oral Tablet": '40163510' from E.OMOPSV
 code "warfarin sodium 10 MG Oral Tablet": '40163518' from E.OMOPSV
@@ -623,9 +632,11 @@ code "warfarin sodium 4 MG Oral Tablet": '40163546' from E.OMOPSV
 code "warfarin sodium 5 MG Oral Tablet": '40163554' from E.OMOPSV
 code "warfarin sodium 6 MG Oral Tablet": '40163560' from E.OMOPSV
 code "warfarin sodium 7.5 MG Oral Tablet": '40163566' from E.OMOPSV
+code "Ximelagatran 24 MG Oral Tablet": '40896006' from E.OMOPSV
 
 concept "Anticoagulation Drugs": {
-  "AMNIOTIC FLUID (BOVINE) 11 X / Bos taurus brain preparation 10 X / Bos taurus ovary preparation 11 X / Bos taurus placenta preparation 10 X / Bos taurus spleen preparation 11 X / Bos taurus testicle preparation 10 X / ... Delayed Release Oral Capsule",
+  "acenocoumarol 1 MG Oral Tablet",
+  "acenocoumarol 4 MG Oral Tablet",
   "Aesculus hippocastanum bark extract 0.05 MG/MG / heparin 0.05 UNT/MG / Thiamine 0.0025 MG/MG Topical Ointment",
   "Aesculus hippocastanum bark extract 0.0501 MG/MG / heparin 0.0501 UNT/MG / Thiamine 0.0025 MG/MG Topical Ointment",
   "Allantoin 0.0025 MG/MG / dexpanthenol 0.0025 MG/MG / heparin 0.12 UNT/MG / Oxyphenbutazone 0.03 MG/MG Topical Cream",
@@ -640,127 +651,8 @@ concept "Anticoagulation Drugs": {
   "Allantoin 0.01 MG/MG / heparin 0.05 UNT/MG / Onion extract 0.1 MG/MG Vaginal Gel",
   "Allantoin 0.0333 MG/MG / Allium cepa whole extract 0.333 MG/MG / heparin 0.167 UNT/MG Topical Gel",
   "Allantoin 20 MG / Aluminum carbonate 12 MG / Bismuth 100 MG / dexpanthenol 100 MG / heparin 200 UNT / Hydrocortisone 5 MG / Procaine 4 MG Rectal Suppository",
-  "Arnica extract 0.1 MG/MG / guaiazulene 0.00005 MG/MG / heparin 0.00004 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.00005 MG/MG Topical Gel",
-  "Arnica extract 0.1 MG/MG / guaiazulene 0.00005 MG/MG / heparin 0.04 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.00005 MG/MG Topical Gel",
-  "Arnica extract 0.1 MG/MG / guaiazulene 0.00005 MG/MG / heparin 0.04 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.00005 MG/MG Topical Ointment",
-  "Arnica extract 0.1 MG/MG / guaiazulene 0.0000501 MG/MG / heparin 0.04 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.0000501 MG/MG Topical Gel",
-  "Arnica extract 0.1 MG/MG / guaiazulene 0.0000501 MG/MG / heparin 0.04 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.0000501 MG/MG Topical Ointment",
-  "Benzocaine 0.03 MG/MG / dexpanthenol 0.025 MG/MG / heparin 0.05 UNT/MG / Menthol 0.003 MG/MG / prednisolone 0.0005 MG/MG / Tyrothricin 0.001 MG/MG / Vitamin B 12 0.0001 MG/MG Topical Ointment",
-  "Benzocaine 60 MG / dexpanthenol 50 MG / heparin 200 UNT / Menthol 0.05 MG / prednisolone 2 MG / Vitamin B 12 0.4 MG Rectal Suppository",
-  "Benzocaine 900 MG / dexpanthenol 750 MG / heparin 2500 UNT / Menthol 30 MG / prednisolone 25 MG / Tyrothricin 10 MG / Vitamin B 12 5 MG Rectal Suppository",
-  "Benzocaine 900 MG / dexpanthenol 750 MG / heparin 2500 UNT / Menthol 30 MG / prednisolone 70 MG / Tyrothricin 10 MG / Vitamin B 12 5 MG Rectal Suppository",
-  "Certoparin",
-  "Citric Acid 0.37 MG/ML / heparin 2 UNT/ML / Sodium Chloride 9 MG/ML / Sodium Phosphate, Dibasic 4.3 MG/ML Injection",
-  "Citric Acid 1 MG/ML / Glucose 50 MG/ML / heparin 50 UNT/ML / Sodium Phosphate, Dibasic 4.1 MG/ML Injection",
-  "Clorindione 2 MG Oral Tablet",
-  "Dalteparin 10 UNT/ML Injectable Solution",
-  "Dalteparin 100 MG/ML Injectable Solution",
-  "Dalteparin 1000 UNT/ML Injectable Solution",
-  "Dalteparin 1000 UNT/ML Prefilled Syringe",
-  "Dalteparin 10000 UNT/ML Injection",
-  "Dalteparin 12.5 UNT/ML Injectable Solution",
-  "Dalteparin 12.5 UNT/ML Prefilled Syringe",
-  "Dalteparin 12500 UNT/ML Injectable Solution",
-  "Dalteparin 12500 UNT/ML Injection",
-  "Dalteparin 12500000 UNT/ML Prefilled Syringe",
-  "Dalteparin 2.5 UNT/ML Injectable Solution",
-  "Dalteparin 2.5 UNT/ML Prefilled Syringe",
-  "Dalteparin 226 MG/ML Injectable Solution",
-  "Dalteparin 227 MG/ML Injectable Solution",
-  "Dalteparin 228 MG/ML Injectable Solution",
-  "Dalteparin 24 UNT/ML Prefilled Syringe",
-  "Dalteparin 25 UNT/ML Injectable Solution",
-  "Dalteparin 25 UNT/ML Prefilled Syringe",
-  "Dalteparin 250 UNT/ML Prefilled Syringe",
-  "Dalteparin 2500 UNT/ML Injection",
-  "Dalteparin 2500 UNT/ML Prefilled Syringe",
-  "Dalteparin 25000 UNT/ML Injection",
-  "Dalteparin 36000 IU/ML Prefilled Syringe",
-  "Dalteparin 5000 UNT Injectable Solution",
-  "Dalteparin 5000 UNT/ML Prefilled Syringe",
-  "Dalteparin 6250 UNT/ML Injectable Solution",
-  "Dalteparin 900 MG/ML Injectable Solution",
-  "Dexamethasone 0.0002 MG/MG / heparin 0.05 UNT/MG / Sodium Ichtosylate 0.06 MG/MG Topical Cream",
-  "Diclofenac 0.00001 MG/MG / heparin 0.4 UNT/MG Transdermal System",
-  "Diclofenac 0.01 MG/MG / heparin 0.4 UNT/MG Transdermal System",
-  "Dihydroergotamine 0.5 MG / heparin 5000 UNT Prefilled Syringe",
-  "Dihydroergotamine 0.714 MG/ML / heparin 7500 UNT/ML / Lidocaine 10 MG/ML Injectable Solution",
-  "Dihydroergotamine 0.714 MG/ML / heparin 7500 UNT/ML Injectable Solution",
-  "Dihydroergotamine 1 MG/ML / heparin 5000 UNT/ML / Lidocaine 10 MG/ML Injectable Solution",
-  "Enoxaparin 1 UNT/ML Injectable Solution",
-  "Enoxaparin 10 MG/ML Injectable Solution",
-  "Enoxaparin 10 UNT/ML Injectable Solution",
-  "Enoxaparin 10 UNT/ML Prefilled Syringe",
-  "Enoxaparin 100 MG/ML Injection",
-  "Enoxaparin 10000 UNT/ML Injectable Solution",
-  "Enoxaparin 10000 UNT/ML Prefilled Syringe",
-  "Enoxaparin 13.3 UNT/ML Prefilled Syringe",
-  "Enoxaparin 133 MG/ML Prefilled Syringe",
-  "Enoxaparin 15 UNT/ML Prefilled Syringe",
-  "Enoxaparin 150 MG/ML Injectable Solution",
-  "Enoxaparin 150 MG/ML Injection",
-  "Enoxaparin 15000 UNT/ML Injectable Solution",
-  "Enoxaparin 15000 UNT/ML Prefilled Syringe",
-  "Enoxaparin 20 MG/ML Injectable Solution",
-  "Enoxaparin 30 UNT/ML Prefilled Syringe",
-  "Enoxaparin 33.3 MG/ML Injectable Solution",
-  "Enoxaparin 5 UNT/ML Prefilled Syringe",
-  "Enoxaparin 6 UNT/ML Prefilled Syringe",
-  "Enoxaparin 7.5 UNT/ML Prefilled Syringe",
-  "Escin 0.01 MG/MG / heparin 0.00005 UNT/MG / Salicylic Acid 0.05 MG/MG Topical Gel",
-  "Escin 0.01 MG/MG / heparin 0.0000501 UNT/MG / Salicylic Acid 0.05 MG/MG Topical Gel",
-  "Escin 0.02 MG/MG / heparin 0.0001 UNT/MG / Phospholipids 0.01 MG/MG Topical Gel",
-  "Flufenamic Acid 0.035 MG/MG / heparin 0.1 UNT/MG / Niacin 0.0125 MG/MG / Salicylic Acid 0.05 MG/MG Topical Ointment",
-  "Gentamicin 0.02 MG/ML / heparin 3500 UNT/ML / Vancomycin 0.1 MG/ML Injectable Solution",
-  "Glucose 50 MG/ML / heparin 100 UNT/ML Injection",
-  "Glucose 50 MG/ML / heparin 40 UNT/ML Injectable Solution",
-  "Glucose 50 MG/ML / heparin 40 UNT/ML Injection",
-  "Glucose 50 MG/ML / heparin 50 UNT/ML Injection",
-  "Melagatran 10 MG/ML Prefilled Syringe",
-  "Nadroparin 10 UNT/ML Prefilled Syringe",
-  "Nadroparin 100 MG/ML Injectable Solution",
-  "Nadroparin 11.4 UNT/ML Prefilled Syringe",
-  "Nadroparin 19 UNT/ML Prefilled Syringe",
-  "Nadroparin 190 MG/ML Injectable Solution",
-  "Nadroparin 1900 UNT/ML Injectable Solution",
-  "Nadroparin 19000 UNT/ML Injection",
-  "Nadroparin 19000 UNT/ML Prefilled Syringe",
-  "Nadroparin 25.3 UNT/ML Prefilled Syringe",
-  "Nadroparin 633 UNT/ML Injectable Solution",
-  "Nadroparin 8.6 UNT/ML Prefilled Syringe",
-  "Nadroparin 9.5 UNT/ML Injectable Solution",
-  "Nadroparin 9.5 UNT/ML Prefilled Syringe",
-  "Nadroparin 9.53 UNT/ML Injectable Solution",
-  "Nadroparin 9500 UNT/ML Injection",
-  "Nadroparin 9500 UNT/ML Prefilled Syringe",
-  "Phenprocoumon 1.5 MG Oral Tablet",
-  "Phenprocoumon 10 MG/ML Injectable Solution",
-  "Warfarin 0.02 MG/ML Oral Solution",
-  "Warfarin 0.1 MG/ML Oral Solution",
-  "Warfarin 0.2 MG/ML Oral Solution",
-  "Warfarin 0.2 MG/ML Oral Suspension",
-  "Warfarin 0.3 MG/ML Oral Solution",
-  "Warfarin 0.4 MG/ML Oral Solution",
-  "Warfarin 0.4 MG/ML Oral Suspension",
-  "Warfarin 0.5 MG/ML Oral Solution",
-  "Warfarin 0.6 MG/ML Oral Solution",
-  "Warfarin 0.6 MG/ML Oral Suspension",
-  "Warfarin 0.8 MG/ML Oral Solution",
-  "Warfarin 0.832 MG/ML Oral Solution",
-  "Warfarin 1 MG Oral Capsule",
-  "Warfarin 1 MG/ML Oral Solution",
-  "Warfarin 1 MG/ML Oral Suspension",
-  "Warfarin 2 MG/ML Oral Granules",
-  "Warfarin 2 MG/ML Oral Solution",
-  "Warfarin 2 MG/ML Oral Suspension",
-  "Warfarin 3 MG Oral Capsule",
-  "Warfarin 5 MG Injectable Suspension",
-  "Warfarin 5 MG Oral Capsule",
-  "Warfarin 5 MG/ML Oral Solution",
-  "Ximelagatran 24 MG Oral Tablet",
-  "acenocoumarol 1 MG Oral Tablet",
-  "acenocoumarol 4 MG Oral Tablet",
   "alpha Tocopherol 3 MG / Desonide 0.5 MG / heparin 500 UNT / Lidocaine 10 MG / Ruscosides 20 MG / Vitamin A 5000 UNT Rectal Suppository",
+  "AMNIOTIC FLUID (BOVINE) 11 X / Bos taurus brain preparation 10 X / Bos taurus ovary preparation 11 X / Bos taurus placenta preparation 10 X / Bos taurus spleen preparation 11 X / Bos taurus testicle preparation 10 X / ... Delayed Release Oral Capsule",
   "apixaban 2.5 MG Delayed Release Oral Tablet",
   "apixaban 2.5 MG Oral Tablet",
   "apixaban 5 MG Delayed Release Oral Tablet",
@@ -774,6 +666,11 @@ concept "Anticoagulation Drugs": {
   "argatroban 100 MG/ML Prefilled Syringe",
   "argatroban 40 MG/ML Injectable Solution",
   "argatroban 5 MG/ML Injectable Solution",
+  "Arnica extract 0.1 MG/MG / guaiazulene 0.00005 MG/MG / heparin 0.00004 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.00005 MG/MG Topical Gel",
+  "Arnica extract 0.1 MG/MG / guaiazulene 0.00005 MG/MG / heparin 0.04 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.00005 MG/MG Topical Gel",
+  "Arnica extract 0.1 MG/MG / guaiazulene 0.00005 MG/MG / heparin 0.04 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.00005 MG/MG Topical Ointment",
+  "Arnica extract 0.1 MG/MG / guaiazulene 0.0000501 MG/MG / heparin 0.04 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.0000501 MG/MG Topical Gel",
+  "Arnica extract 0.1 MG/MG / guaiazulene 0.0000501 MG/MG / heparin 0.04 UNT/MG / Lecithin 0.01 MG/MG / Matricaria chamomilla flowering top oil 0.0000501 MG/MG Topical Ointment",
   "bemiparin 125 MG/ML Prefilled Syringe",
   "bemiparin 12500 UNT/ML Injectable Solution",
   "bemiparin 175 MG/ML Prefilled Syringe",
@@ -784,6 +681,10 @@ concept "Anticoagulation Drugs": {
   "bemiparin sodium 22500 UNT/ML Prefilled Syringe",
   "bemiparin sodium 25000 UNT/ML Prefilled Syringe",
   "bemiparin sodium 40000 UNT/ML Prefilled Syringe",
+  "Benzocaine 0.03 MG/MG / dexpanthenol 0.025 MG/MG / heparin 0.05 UNT/MG / Menthol 0.003 MG/MG / prednisolone 0.0005 MG/MG / Tyrothricin 0.001 MG/MG / Vitamin B 12 0.0001 MG/MG Topical Ointment",
+  "Benzocaine 60 MG / dexpanthenol 50 MG / heparin 200 UNT / Menthol 0.05 MG / prednisolone 2 MG / Vitamin B 12 0.4 MG Rectal Suppository",
+  "Benzocaine 900 MG / dexpanthenol 750 MG / heparin 2500 UNT / Menthol 30 MG / prednisolone 25 MG / Tyrothricin 10 MG / Vitamin B 12 5 MG Rectal Suppository",
+  "Benzocaine 900 MG / dexpanthenol 750 MG / heparin 2500 UNT / Menthol 30 MG / prednisolone 70 MG / Tyrothricin 10 MG / Vitamin B 12 5 MG Rectal Suppository",
   "betrixaban 40 MG Oral Capsule",
   "betrixaban 80 MG Oral Capsule",
   "bisabolol 0.003 MG/MG / heparin 0.0002 UNT/MG Topical Cream",
@@ -795,6 +696,19 @@ concept "Anticoagulation Drugs": {
   "bivalirudin 250 MG Injection",
   "bivalirudin 250 MG Prefilled Syringe",
   "bivalirudin 5 MG/ML Injection",
+  "Certoparin",
+  "certoparin 10 UNT/ML Injectable Solution",
+  "certoparin 10 UNT/ML Prefilled Syringe",
+  "certoparin 10000 UNT/ML Injectable Solution",
+  "certoparin 6 UNT/ML Injectable Solution",
+  "certoparin 6000 UNT/ML / Dihydroergotamine 1 MG/ML Injectable Solution",
+  "certoparin 6000 UNT/ML Injectable Solution",
+  "certoparin 83.3 MG/ML Injectable Solution",
+  "certoparin 83.5 MG/ML Injectable Solution",
+  "certoparin sodium 10000 UNT/ML Prefilled Syringe",
+  "Citric Acid 0.37 MG/ML / heparin 2 UNT/ML / Sodium Chloride 9 MG/ML / Sodium Phosphate, Dibasic 4.3 MG/ML Injection",
+  "Citric Acid 1 MG/ML / Glucose 50 MG/ML / heparin 50 UNT/ML / Sodium Phosphate, Dibasic 4.1 MG/ML Injection",
+  "Clorindione 2 MG Oral Tablet",
   "dabigatran etexilate 110 MG Oral Capsule",
   "dabigatran etexilate 110 MG Oral Pellet",
   "dabigatran etexilate 150 MG Oral Capsule",
@@ -804,17 +718,44 @@ concept "Anticoagulation Drugs": {
   "dabigatran etexilate 40 MG Oral Pellet",
   "dabigatran etexilate 50 MG Oral Pellet",
   "dabigatran etexilate 75 MG Oral Capsule",
+  "Dalteparin 10 UNT/ML Injectable Solution",
+  "Dalteparin 100 MG/ML Injectable Solution",
+  "Dalteparin 1000 UNT/ML Injectable Solution",
+  "Dalteparin 1000 UNT/ML Prefilled Syringe",
   "dalteparin 10000 IU/ML Injectable Solution",
   "dalteparin 10000 IU/ML Injection",
+  "Dalteparin 10000 UNT/ML Injection",
+  "Dalteparin 12.5 UNT/ML Injectable Solution",
+  "Dalteparin 12.5 UNT/ML Prefilled Syringe",
   "dalteparin 12500 IU/ML Injectable Solution",
   "dalteparin 12500 IU/ML Injection",
   "dalteparin 12500 IU/ML Prefilled Syringe",
+  "Dalteparin 12500 UNT/ML Injectable Solution",
+  "Dalteparin 12500 UNT/ML Injection",
+  "Dalteparin 12500000 UNT/ML Prefilled Syringe",
+  "Dalteparin 2.5 UNT/ML Injectable Solution",
+  "Dalteparin 2.5 UNT/ML Prefilled Syringe",
+  "Dalteparin 226 MG/ML Injectable Solution",
+  "Dalteparin 227 MG/ML Injectable Solution",
+  "Dalteparin 228 MG/ML Injectable Solution",
+  "Dalteparin 24 UNT/ML Prefilled Syringe",
+  "Dalteparin 25 UNT/ML Injectable Solution",
+  "Dalteparin 25 UNT/ML Prefilled Syringe",
+  "Dalteparin 250 UNT/ML Prefilled Syringe",
   "dalteparin 2500 IU/ML Injectable Solution",
+  "Dalteparin 2500 UNT/ML Injection",
+  "Dalteparin 2500 UNT/ML Prefilled Syringe",
   "dalteparin 25000 IU/ML Injectable Solution",
   "dalteparin 25000 IU/ML Injection",
   "dalteparin 25000 IU/ML Prefilled Syringe",
+  "Dalteparin 25000 UNT/ML Injection",
+  "Dalteparin 36000 IU/ML Prefilled Syringe",
+  "Dalteparin 5000 UNT Injectable Solution",
+  "Dalteparin 5000 UNT/ML Prefilled Syringe",
   "dalteparin 55.2 MG/ML Injectable Solution",
+  "Dalteparin 6250 UNT/ML Injectable Solution",
   "dalteparin 75 MG/ML Injectable Solution",
+  "Dalteparin 900 MG/ML Injectable Solution",
   "dalteparin sodium 10000 UNT/ML Injectable Solution",
   "dalteparin sodium 10000 UNT/ML Prefilled Syringe",
   "dalteparin sodium 12500 UNT/ML Prefilled Syringe",
@@ -830,29 +771,60 @@ concept "Anticoagulation Drugs": {
   "danaparoid 1250 UNT/ML Prefilled Syringe",
   "desirudin 15 MG Injectable Solution",
   "desirudin 15 MG Injection",
+  "Dexamethasone 0.0002 MG/MG / heparin 0.05 UNT/MG / Sodium Ichtosylate 0.06 MG/MG Topical Cream",
   "dexpanthenol 0.025 MG/MG / Dimethyl Sulfoxide 0.15 MG/MG / heparin 0.0005 UNT/MG Topical Gel",
   "dexpanthenol 0.025 MG/MG / Dimethyl Sulfoxide 0.15 MG/MG / heparin 0.0005 UNT/MG Urethral Suppository",
   "dexpanthenol 0.025 MG/MG / Dimethyl Sulfoxide 0.15 MG/MG / heparin 0.000501 UNT/MG Topical Gel",
+  "Diclofenac 0.00001 MG/MG / heparin 0.4 UNT/MG Transdermal System",
+  "Diclofenac 0.01 MG/MG / heparin 0.4 UNT/MG Transdermal System",
   "dicumarol 100 MG Oral Tablet",
   "dicumarol 25 MG Oral Capsule",
   "dicumarol 25 MG Oral Tablet",
   "dicumarol 50 MG Oral Capsule",
   "dicumarol 50 MG Oral Tablet",
+  "Dihydroergotamine 0.5 MG / heparin 5000 UNT Prefilled Syringe",
+  "Dihydroergotamine 0.714 MG/ML / heparin 7500 UNT/ML / Lidocaine 10 MG/ML Injectable Solution",
+  "Dihydroergotamine 0.714 MG/ML / heparin 7500 UNT/ML Injectable Solution",
+  "Dihydroergotamine 1 MG/ML / heparin 5000 UNT/ML / Lidocaine 10 MG/ML Injectable Solution",
   "edoxaban 15 MG Delayed Release Oral Tablet",
   "edoxaban 15 MG Disintegrating Oral Tablet",
   "edoxaban 30 MG Delayed Release Oral Tablet",
   "edoxaban 30 MG Disintegrating Oral Tablet",
   "edoxaban 60 MG Delayed Release Oral Tablet",
   "edoxaban 60 MG Disintegrating Oral Tablet",
+  "Enoxaparin 1 UNT/ML Injectable Solution",
+  "Enoxaparin 10 MG/ML Injectable Solution",
+  "Enoxaparin 10 UNT/ML Injectable Solution",
+  "Enoxaparin 10 UNT/ML Prefilled Syringe",
+  "Enoxaparin 100 MG/ML Injection",
   "enoxaparin 10000 IU/ML Injectable Solution",
+  "Enoxaparin 10000 UNT/ML Injectable Solution",
+  "Enoxaparin 10000 UNT/ML Prefilled Syringe",
+  "Enoxaparin 13.3 UNT/ML Prefilled Syringe",
+  "Enoxaparin 133 MG/ML Prefilled Syringe",
+  "Enoxaparin 15 UNT/ML Prefilled Syringe",
+  "Enoxaparin 150 MG/ML Injectable Solution",
+  "Enoxaparin 150 MG/ML Injection",
+  "Enoxaparin 15000 UNT/ML Injectable Solution",
+  "Enoxaparin 15000 UNT/ML Prefilled Syringe",
+  "Enoxaparin 20 MG/ML Injectable Solution",
+  "Enoxaparin 30 UNT/ML Prefilled Syringe",
+  "Enoxaparin 33.3 MG/ML Injectable Solution",
+  "Enoxaparin 5 UNT/ML Prefilled Syringe",
+  "Enoxaparin 6 UNT/ML Prefilled Syringe",
   "enoxaparin 60 MG/ML Injectable Solution",
+  "Enoxaparin 7.5 UNT/ML Prefilled Syringe",
   "enoxaparin sodium 100 MG/ML Injectable Solution",
   "enoxaparin sodium 100 MG/ML Prefilled Syringe",
   "enoxaparin sodium 150 MG/ML Prefilled Syringe",
+  "Escin 0.01 MG/MG / heparin 0.00005 UNT/MG / Salicylic Acid 0.05 MG/MG Topical Gel",
+  "Escin 0.01 MG/MG / heparin 0.0000501 UNT/MG / Salicylic Acid 0.05 MG/MG Topical Gel",
+  "Escin 0.02 MG/MG / heparin 0.0001 UNT/MG / Phospholipids 0.01 MG/MG Topical Gel",
   "ethylene glycol 0.05 MG/MG / heparin 0.0005 UNT/MG Topical Gel",
   "ethylene glycol 0.0501 MG/MG / heparin 0.000501 UNT/MG Topical Gel",
   "factor IX 30 UNT/ML / factor VII 24 UNT/ML / factor X 30 UNT/ML / heparin 12.5 UNT/ML / Prothrombin 30 UNT/ML Injectable Solution",
   "factor IX 600 UNT / factor VII 500 UNT / factor X 600 UNT / heparin 250 UNT / Prothrombin 600 UNT Injectable Solution",
+  "Flufenamic Acid 0.035 MG/MG / heparin 0.1 UNT/MG / Niacin 0.0125 MG/MG / Salicylic Acid 0.05 MG/MG Topical Ointment",
   "fluindione 20 MG Extended Release Oral Tablet",
   "fluindione 20 MG Oral Tablet",
   "fondaparinux 12.5 MG/ML Injectable Solution",
@@ -861,6 +833,11 @@ concept "Anticoagulation Drugs": {
   "fondaparinux 5 MG/ML Injection",
   "fondaparinux sodium 12.5 MG/ML Prefilled Syringe",
   "fondaparinux sodium 5 MG/ML Prefilled Syringe",
+  "Gentamicin 0.02 MG/ML / heparin 3500 UNT/ML / Vancomycin 0.1 MG/ML Injectable Solution",
+  "Glucose 50 MG/ML / heparin 100 UNT/ML Injection",
+  "Glucose 50 MG/ML / heparin 40 UNT/ML Injectable Solution",
+  "Glucose 50 MG/ML / heparin 40 UNT/ML Injection",
+  "Glucose 50 MG/ML / heparin 50 UNT/ML Injection",
   "glycol salicylate 0.05 MG/MG / heparin 0.5 UNT/MG / LEVOMENTHOL 0.005 MG/MG Vaginal Gel",
   "glycol salicylate 0.05 MG/MG / heparin 0.5 UNT/MG Vaginal Gel",
   "heparin 0.00005 UNT/MG / LEVOMENTHOL 0.002 MG/MG / Salicylic Acid 0.1 MG/MG Topical Gel",
@@ -1117,11 +1094,28 @@ concept "Anticoagulation Drugs": {
   "lepirudin 50 MG Injection",
   "lepirudin 50 MG Prefilled Syringe",
   "lepirudin 50 MG/ML Injectable Solution",
+  "Melagatran 10 MG/ML Prefilled Syringe",
+  "Nadroparin 10 UNT/ML Prefilled Syringe",
+  "Nadroparin 100 MG/ML Injectable Solution",
+  "Nadroparin 11.4 UNT/ML Prefilled Syringe",
+  "Nadroparin 19 UNT/ML Prefilled Syringe",
+  "Nadroparin 190 MG/ML Injectable Solution",
+  "Nadroparin 1900 UNT/ML Injectable Solution",
   "nadroparin 19000 IU/ML Injection",
   "nadroparin 19000 UNT/ML Injectable Solution",
+  "Nadroparin 19000 UNT/ML Injection",
+  "Nadroparin 19000 UNT/ML Prefilled Syringe",
+  "Nadroparin 25.3 UNT/ML Prefilled Syringe",
   "nadroparin 25000 UNT/ML Injectable Solution",
+  "Nadroparin 633 UNT/ML Injectable Solution",
+  "Nadroparin 8.6 UNT/ML Prefilled Syringe",
+  "Nadroparin 9.5 UNT/ML Injectable Solution",
+  "Nadroparin 9.5 UNT/ML Prefilled Syringe",
+  "Nadroparin 9.53 UNT/ML Injectable Solution",
   "nadroparin 9500 IU/ML Injection",
   "nadroparin 9500 UNT/ML Injectable Solution",
+  "Nadroparin 9500 UNT/ML Injection",
+  "Nadroparin 9500 UNT/ML Prefilled Syringe",
   "parnaparin 100 UNT/ML Prefilled Syringe",
   "parnaparin 10600 UNT/ML Prefilled Syringe",
   "parnaparin 10700 UNT/ML Prefilled Syringe",
@@ -1132,6 +1126,8 @@ concept "Anticoagulation Drugs": {
   "phenindione 25 MG Oral Tablet",
   "phenindione 50 MG Oral Tablet",
   "phenprocoumon 1 MG/ML Oral Suspension",
+  "Phenprocoumon 1.5 MG Oral Tablet",
+  "Phenprocoumon 10 MG/ML Injectable Solution",
   "phenprocoumon 3 MG Oral Tablet",
   "reviparin 17.2 UNT/ML Prefilled Syringe",
   "reviparin 1750 UNT Injectable Solution",
@@ -1198,7 +1194,29 @@ concept "Anticoagulation Drugs": {
   "tinzaparin sodium 20000 UNT/ML Prefilled Syringe",
   "tioclomarol 4 MG Oral Tablet",
   "warfarin 0.002 MG/MG Oral Granules",
+  "Warfarin 0.02 MG/ML Oral Solution",
+  "Warfarin 0.1 MG/ML Oral Solution",
+  "Warfarin 0.2 MG/ML Oral Solution",
+  "Warfarin 0.2 MG/ML Oral Suspension",
+  "Warfarin 0.3 MG/ML Oral Solution",
+  "Warfarin 0.4 MG/ML Oral Solution",
+  "Warfarin 0.4 MG/ML Oral Suspension",
+  "Warfarin 0.5 MG/ML Oral Solution",
+  "Warfarin 0.6 MG/ML Oral Solution",
+  "Warfarin 0.6 MG/ML Oral Suspension",
+  "Warfarin 0.8 MG/ML Oral Solution",
+  "Warfarin 0.832 MG/ML Oral Solution",
+  "Warfarin 1 MG Oral Capsule",
+  "Warfarin 1 MG/ML Oral Solution",
+  "Warfarin 1 MG/ML Oral Suspension",
+  "Warfarin 2 MG/ML Oral Granules",
+  "Warfarin 2 MG/ML Oral Solution",
+  "Warfarin 2 MG/ML Oral Suspension",
+  "Warfarin 3 MG Oral Capsule",
+  "Warfarin 5 MG Injectable Suspension",
+  "Warfarin 5 MG Oral Capsule",
   "warfarin 5 MG/ML Injectable Solution",
+  "Warfarin 5 MG/ML Oral Solution",
   "warfarin sodium 0.5 MG Oral Tablet",
   "warfarin sodium 1 MG Oral Tablet",
   "warfarin sodium 10 MG Oral Tablet",
@@ -1209,5 +1227,6 @@ concept "Anticoagulation Drugs": {
   "warfarin sodium 4 MG Oral Tablet",
   "warfarin sodium 5 MG Oral Tablet",
   "warfarin sodium 6 MG Oral Tablet",
-  "warfarin sodium 7.5 MG Oral Tablet"
+  "warfarin sodium 7.5 MG Oral Tablet",
+  "Ximelagatran 24 MG Oral Tablet"
 }
