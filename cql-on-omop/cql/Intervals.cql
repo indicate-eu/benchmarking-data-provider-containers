@@ -263,7 +263,7 @@ define function SameValue(left Any, right Any):
 define function PointsToIntervals(Points  List<Tuple{time DateTime, value Any}>,
                                   EndTime DateTime):
   if Exists(Points) then
-    PointsToIntervalsInternal(
+    PointsToIntervalsInterval(
       // Add sentinal after last proper element
       flatten({(Points) p where p.time < EndTime return all p, {null}}
               as List<List<Tuple{time DateTime, value Any}>>),
@@ -277,7 +277,7 @@ define function PointsToIntervals(Points  List<Tuple{time DateTime, value Any}>,
 // 1. This function is not called when Intervals is the empty list
 // 2. PointsToIntervals2 adds a final "sentinel" element to Intervals
 //    before calling this function
-define function PointsToIntervalsInternal(Intervals List<Tuple{time DateTime, value Any}>,
+define function PointsToIntervalsInterval(Intervals List<Tuple{time DateTime, value Any}>,
                                           EndTime   DateTime):
   ((Intervals) e aggregate r starting ({previous: null , intervals: {}}):
     if e is null then // sentinel

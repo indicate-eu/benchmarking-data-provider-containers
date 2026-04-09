@@ -31,7 +31,7 @@
 // * Tioclomarol (1 entries) [modified 2026-02-12]
 // * Warfarin (35 entries) [modified 2026-02-12]
 // * Ximelagatran (1 entries) [modified 2026-02-12]
-// * Certoparin (9 entries) [modified 2026-03-23]
+// * Certoparin (9 entries) [modified 2026-04-01]
 
 // Do not edit
 
@@ -100,7 +100,6 @@ code "bivalirudin 250 MG Injectable Suspension": '44059183' from E.OMOPSV
 code "bivalirudin 250 MG Injection": '19074279' from E.OMOPSV
 code "bivalirudin 250 MG Prefilled Syringe": '36888705' from E.OMOPSV
 code "bivalirudin 5 MG/ML Injection": '793488' from E.OMOPSV
-code "Certoparin": '19016072' from E.OMOPSV
 code "certoparin 10 UNT/ML Injectable Solution": '41243163' from E.OMOPSV
 code "certoparin 10 UNT/ML Prefilled Syringe": '40868520' from E.OMOPSV
 code "certoparin 10000 UNT/ML Injectable Solution": '43660807' from E.OMOPSV
@@ -696,7 +695,6 @@ concept "Anticoagulation Drugs": {
   "bivalirudin 250 MG Injection",
   "bivalirudin 250 MG Prefilled Syringe",
   "bivalirudin 5 MG/ML Injection",
-  "Certoparin",
   "certoparin 10 UNT/ML Injectable Solution",
   "certoparin 10 UNT/ML Prefilled Syringe",
   "certoparin 10000 UNT/ML Injectable Solution",

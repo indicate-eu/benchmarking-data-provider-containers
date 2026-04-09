@@ -18,7 +18,7 @@ code "Advance Care Plan Agreed": '36685263' from elm.OMOPSV
 
 code "Consultation with Patient": '37164964' from elm.OMOPSV
 
-code "Decision Authority Documented": '3040278' from elm.OMOPSV
+code "Decision Authority Documented": '1032192' from elm.OMOPSV
 
 context Patient
 

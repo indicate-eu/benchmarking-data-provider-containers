@@ -19,85 +19,48 @@ include TimePeriods called T
 
 // Pain Assessment
 
-// BPS (Behavior Pain Scale) codes
-// code "BPS Assessment (Procedure)": '?' from elm.OMOPSV
-// code "BPS Score (Measurement)": '?' from elm.OMOPSV
-// code "BPS Scale (Measurement)": '?' from elm.OMOPSV
-
-// NPRS (Numeric (Pain) Rating Scale) codes
-//code "NPRS Assessment (Procedure)": '37174733' from elm.OMOPSV
-//code "NPRS Score (Measurement)":    '37151630' from elm.OMOPSV
-code "NPRS Scale (Measurement)":    '37151627' from elm.OMOPSV
-
-// VAPS (Visual Analog (Pain) Scale) codes
-//code "VAPS Assessment (Procedure)": '40492247' from elm.OMOPSV
-//code "VAPS Score (Measurement)":    '40481449' from elm.OMOPSV
-code "VAPS Scale (Measurement)":    '4165600'  from elm.OMOPSV
+code "Behavioral Pain Scale (Measurement)":     '2100000007' from elm.OMOPSV
+code "Numeric Pain Rating Scale (Measurement)": '37151627' from elm.OMOPSV
+code "Visual Analog Pain Scale (Measurement)":  '4165600'  from elm.OMOPSV
 
 concept "Pain Assessment Measurement": {
-    //"BPS Scale (Measurement)",
-    "NPRS Scale (Measurement)",
-    "VAPS Scale (Measurement)"
+    "Behavioral Pain Scale (Measurement)",
+    "Numeric Pain Rating Scale (Measurement)",
+    "Visual Analog Pain Scale (Measurement)"
 }
 
 // Sedation Assessment
 
-// RASS (Richmond Agitation-sedation Scale) codes
-//code "RASS Assessment (Procedure)": '1450954' from elm.OMOPSV
-//code "RASS Score (Measurement)":    '1450955' from elm.OMOPSV
-//code "RASS Scale (Measurement) 1":  '1447532' from elm.OMOPSV
-code "RASS Scale (Measurement) 2":  '36684829' from elm.OMOPSV
-concept "RASS Scale (Measurement)": {
-  /*"RASS Scale (Measurement) 1",*/ "RASS Scale (Measurement) 2"
-}
-
-// RSS (Ramsay Sedation Scale) codes
-// https://athena.ohdsi.org/search-terms/terms/4105091
-// https://athena.ohdsi.org/search-terms/terms/1093862
-// https://athena.ohdsi.org/search-terms/terms/1091379
-// https://athena.ohdsi.org/search-terms/terms/1091117
-//code "RSS Assessment (Procedure)": '?' from elm.OMOPSV
-//code "RSS Score (Measurement)":    '?' from elm.OMOPSV
-code "RSS Scale (Measurement)":    '4105091' from elm.OMOPSV
+code "Richmond Agitation-Sedation Scale (Measurement)": '36684829' from elm.OMOPSV
+code "Ramsay Sedation Scale (Measurement)":             '4105091' from elm.OMOPSV
 
 concept "Sedation Assessment Measurement": {
-  //"RASS Scale (Measurement) 1",
-  "RASS Scale (Measurement) 2",
-  "RSS Scale (Measurement)"
+  "Richmond Agitation-Sedation Scale (Measurement)",
+  "Ramsay Sedation Scale (Measurement)"
 }
 
 // Delirium Assessment
 
-// CAM (Confusion Assessment Method) codes
-// TODO(moringenj): I could not find anything for CAM-ICU
-code "CAM Assessment (Procedure)": '1450961' from elm.OMOPSV
-code "CAM Score (Measurement)":    '1450962' from elm.OMOPSV
-code "CAM Scale (Measurement)":    '1447712' from elm.OMOPSV
-
-// TODO(moringenj): 3D-CAM
-
-// 4AT (4 A's Test for delirium screening) codes
-code "4AT Assessment (Procedure)": '3662220' from elm.OMOPSV
-code "4AT Score (Measurement)":    '3662221' from elm.OMOPSV
-code "4AT Scale (Measurement)":    '3662219' from elm.OMOPSV
-
-// TODO(moringenj): DOS (Delirium Observation Score)
-
-// TODO(moringenj): DRS (Delirium Rating Scale score)
-
-// TODO(moringenj): NU-DESC (Nursing Delirium Screening Scale score)
-
-// TODO(moringenj): DDS (Delirium Detection Score)
-
-// ICDSC (Intensive Care Delirium Screening Checklist Score) codes
-code "ICDSC Assessment (Procedure)": '1450964' from elm.OMOPSV
-code "ICDSC Score (Measurement)":    '1450965' from elm.OMOPSV
-code "ICDSC Scale (Measurement)":    '1447893' from elm.OMOPSV
+code "3-minute Diagnostic Interview for CAM-defined Delirium (3D-CAM)":   '2100000000' from elm.OMOPSV
+code "4AT - 4 A's Test (Measurement)":                                    '3662219' from elm.OMOPSV // TODO
+code "Confusion Assessment Method for the Intensive Care Unit (CAM-ICU)": '2100000001' from elm.OMOPSV
+code "Delirium Detection Score (DDS)":                                    '2100000002' from elm.OMOPSV
+code "Delirium Observation Screening (DOS) scale":                        '2100000004' from elm.OMOPSV
+code "Delirium Rating Scale-revised-98 (DRS-R-98)":                       '2100000006' from elm.OMOPSV
+code "Intensive Care Delirium Screening Checklist (ICDSC)":               '2100000003' from elm.OMOPSV
+code "Nursing Delirium Screening Scale (Nu-DESC)":                        '2100000005' from elm.OMOPSV
+code "Glasgow Coma Score Total":                                          '3007194' from elm.OMOPSV
 
 concept "Delirium Assessment Measurement": {
-  "CAM Score (Measurement)",
-  "4AT Score (Measurement)",
-  "ICDSC Score (Measurement)"
+  "3-minute Diagnostic Interview for CAM-defined Delirium (3D-CAM)",
+  "4AT - 4 A's Test (Measurement)",
+  "Confusion Assessment Method for the Intensive Care Unit (CAM-ICU)",
+  "Delirium Detection Score (DDS)",
+  "Delirium Observation Screening (DOS) scale",
+  "Delirium Rating Scale-revised-98 (DRS-R-98)",
+  "Intensive Care Delirium Screening Checklist (ICDSC)",
+  "Nursing Delirium Screening Scale (Nu-DESC)",
+  "Glasgow Coma Score Total"
 }
 
 context Patient
@@ -128,10 +91,7 @@ define function "Measurements during Shift with Neighbors"(
     measurements List<Measurement>,
     shift        Interval<DateTime>
   ):
-  // The weird as List<...> is due to a bug in the type inference of the CQL
-  // engine.
-  (elm."Measurements with Neighbors"(measurements)
-   as List<Tuple{previous Measurement, current Measurement, next Measurement}>) m
+  (elm."Measurements with Neighbors"(measurements)) m
     where (convert m.current to DateTime) during shift
     return all m
 
@@ -161,8 +121,8 @@ define function "Conforming Shifts in Visit"(shifts List<Interval<DateTime>>):
 
 // Quality Indicator
 
-define function "Is in Initial Population"(visit Interval<DateTime>):
-  AgeInYearsAt(convert visit to DateTime) >= 18
+define function "Is in Initial Population"(visit VisitOccurrence):
+  AgeInYearsAt(start of (convert visit to Interval<DateTime>)) >= 18
 
 define "Visit Results":
   (T."Visits with 24-hour Periods") visitWithPeriods

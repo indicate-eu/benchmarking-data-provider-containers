@@ -154,20 +154,23 @@ define function LimitPeriod(tp List<Interval<DateTime>>, rp Interval<DateTime>):
     (tp) p return all p intersect (rp)
 
 define function "Measurements with Neighbors"(measurements List<Measurement>):
-  ((Flatten({Tail(measurements), {null}})) m aggregate r
-    starting ({minusTwo: null, minusOne: First(measurements), results: {}}):
-    {
-      minusTwo: r.minusOne,
-      minusOne: m,
-      results:  Flatten({
-                          r.results,
-                          {{
-                            previous: r.minusTwo,
-                            current:  r.minusOne,
-                            next:     m
-                          }}
-                        })
-    }).results
+  (((Flatten({Tail(measurements), {null}})) m aggregate r
+     starting ({minusTwo: null, minusOne: First(measurements), results: {}}):
+     {
+       minusTwo: r.minusOne,
+       minusOne: m,
+       results:  Flatten({
+                           r.results,
+                           {{
+                             previous: r.minusTwo,
+                             current:  r.minusOne,
+                             next:     m
+                           }}
+                         })
+     }).results
+     // The weird as List<...> is due to a weakness in the type inference of
+     // the CQL engine.
+     as List<Tuple{previous Measurement, current Measurement, next Measurement}>)
 
 // Quality Indicator Result Formatting
 
@@ -197,4 +200,3 @@ define function "Overall Result"(
     reviewPeriod: "Review Period",
     periods:      Flatten(periodResultsByVisit)
   }
-

@@ -254,7 +254,7 @@ define function "24-hour Periods with appropriate Calorie Intake"(periods List<I
 // Quality Indicator
 
 define function "Is in Initial Population"(visit VisitOccurrence):
-  AgeInYearsAt(convert visit to DateTime) >= 18
+  AgeInYearsAt(start of (convert visit to Interval<DateTime>)) >= 18
 
 // TODO(moringenj): Use contraindication to enteral feeding
 define "Visit Results":

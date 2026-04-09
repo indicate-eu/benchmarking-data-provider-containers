@@ -43,7 +43,7 @@ define function "24-hour Periods with conforming Medication"(periods List<Interv
 // Quality Indicator
 
 define function "Is in Initial Population"(visit VisitOccurrence):
-  AgeInYearsAt(convert visit to DateTime) >= 18
+  AgeInYearsAt(start of (convert visit to Interval<DateTime>)) >= 18
 
 define "Visit Results":
   (T."Visits with 24-hour Periods") visitWithPeriods

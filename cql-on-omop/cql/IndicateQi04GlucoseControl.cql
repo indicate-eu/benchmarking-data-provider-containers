@@ -162,8 +162,7 @@ define function "Conforming Glucose Measurements"(measurements List<Tuple{previo
 
 define function "Measurements during Shift Plus Neighbors"(shift Interval<DateTime>):
   (1) _
-    let measurementsWithNeighbors: (elm."Measurements with Neighbors"("Valid Glucose Measurements")
-                                    as List<Tuple{previous Measurement, current Measurement, next Measurement}>)
+    let measurementsWithNeighbors: elm."Measurements with Neighbors"("Valid Glucose Measurements")
       return (measurementsWithNeighbors) m
                where (convert m.current to DateTime) during shift
                return all m
@@ -188,7 +187,7 @@ define function "Conforming Shifts in Visit"(shifts List<Interval<DateTime>>):
 // Quality Indicator
 
 define function "Is in Initial Population"(visit VisitOccurrence):
-  AgeInYearsAt(convert visit to DateTime) >= 18
+  AgeInYearsAt(start of (convert visit to Interval<DateTime>)) >= 18
 
 define "Visit Results":
   (T."Visits with 24-hour Periods") visitWithPeriods
