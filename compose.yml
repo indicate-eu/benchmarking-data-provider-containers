@@ -49,6 +49,9 @@ services:
     secrets:
       - source: target-database-password # TODO: change "source" and "target"
         target: database-password
+      - source: data-exchange-cert-key
+        target: cert-key.pem
+
     volumes:
       - ./provider-id:/run/provider-id
     ports:
@@ -74,6 +77,9 @@ services:
       LISTEN_PORT:        8080
       PROVIDER_ID_FILE:   /run/provider-id/id # TODO: should wait until the id is generated
       PROVIDER_NAME_FILE: /run/provider-id/name
+    secrets:
+      - source: data-exchange-cert-key
+        target: cert-key.pem
     volumes:
       - ./provider-id:/run/provider-id
     ports:
@@ -87,6 +93,8 @@ secrets:
     file: source-database-password
   target-database-password:
     file: target-database-password
+  data-exchange-cert-key:
+    file: key.pem
 
 volumes:
   data:
