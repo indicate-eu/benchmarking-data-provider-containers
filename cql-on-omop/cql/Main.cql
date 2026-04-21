@@ -1,6 +1,6 @@
 library "Main" version '0.0.0'
 
-using OMOP version 'v5.4.MIMIC'
+using OMOP version 'v5.4'
 
 include OMOPFunctions
 
