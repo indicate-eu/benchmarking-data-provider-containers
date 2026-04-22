@@ -1,12 +1,36 @@
 #!/bin/bash
 
-if [ -n "${SOURCE_DB_DRIVER}" ] ; then
-    SOURCE_DB_DRIVER_ARG="--connection-string ${SOURCE_DB_DRIVER}"
-fi
-if [ -n "${SOURCE_DB_CONNECTION_STRING}" ] ; then
+# Prepare commandline arguments related to "source" database
+SOURCE_DB_ARGS=()
+if [ -n "${SOURCE_DB_DRIVER}" ] || [ -n "${SOURCE_DB_CONNECTION_STRING}" ] ; then
+    if [ -z "${SOURCE_DB_CONNECTION_STRING}" ] ; then
+        echo "Cannot specify SOURCE_DB_DRIVER without SOURCE_DB_CONNECTION_STRING"
+        exit 1
+    fi
+    for name in HOST PORT DATABASE USER SCHEMA ; do
+        if [ -n "${SOURCE_DB_${name}}" ] ; then
+            echo "The environment variables SOURCE_DB_DRIVER and SOURCE_DB_CONNECTION_STRING cannot be specified together with SOURCE_DB_${name}"
+            exit 1
+        fi
+    done
+    if [ -n "${SOURCE_DB_DRIVER}" ] ; then
+        SOURCE_DB_ARGS+=("--driver=${SOURCE_DB_DRIVER}")
+    fi
+    SOURCE_DB_ARGS+=("--connection-string=${SOURCE_DB_CONNECTION_STRING}")
+elif [ -n "${SOURCE_DB_CONNECTION_STRING}" ] ; then
     SOURCE_DB_CONNECTION_STRING_ARG="--connection-string ${SOURCE_DB_CONNECTION_STRING}"
+else
+    for name in HOST PORT DATABASE USER SCHEMA ; do
+        if [ -v SOURCE_DB_${name} ] ; then
+            option_name="${name,,}" # downcase
+            variable_name="SOURCE_DB_${name}"
+            value="${!variable_name}"
+            SOURCE_DB_ARGS+=("--${option_name}=${value}")
+        fi
+    done
 fi
 
+# Prepare commandline arguments related to the "target" database
 if [ -n "${TARGET_DB_DRIVER}" ] ; then
     TARGET_DB_DRIVER_ARG="--connection-string ${TARGET_DB_DRIVER}"
 fi
@@ -59,13 +83,7 @@ CQL_ON_OMOP_DATABASE_PASSWORD=$(cat /run/secrets/source-database-password) \
     -jar cql-on-omop-${CQL_ON_OMOP_VERSION}.jar                            \
     batch                                                                  \
     --omop-version=v5.4                                                    \
-      ${SOURCE_DB_CONNECTION_STRING_ARG}                                   \
-      ${SOURCE_DB_DRIVER_ARG}                                              \
-      --host="${SOURCE_DB_HOST}"                                           \
-      --port="${SOURCE_DB_PORT}"                                           \
-      --user="${SOURCE_DB_USER}"                                           \
-      --database="${SOURCE_DB_DATABASE}"                                   \
-      --schema="${SOURCE_DB_SCHEMA}"                                       \
+      "${SOURCE_DB_ARGS[@]}"                                               \
       -I cql/                                                              \
       --context-value "${CQL_CONTEXT}"                                     \
       -D"IndicateQiElements.Review Period=${REVIEW_PERIOD}"                \
