@@ -98,10 +98,10 @@ secrets:
 
 volumes:
   data:
-    external: no
+    external: false
 
 networks:
   database:
-    external: no
+    external: false
   trigger:
-    external: no
+    external: false
