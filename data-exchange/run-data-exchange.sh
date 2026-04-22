@@ -1,5 +1,11 @@
 #!/bin/bash
 
+module=indicate_data_exchange_client
+version=$(python3 -c "import ${module}; print(${module}.__version__)")
+api_module=indicate_data_exchange_api_client
+api_version=$(python3 -c "import ${api_module}; print(${api_module}.__version__)")
+/bin/echo -e "\e[36mThis is ${module} ${version}; data exchange API version ${api_version}\e[0m"
+
 # Obtain or generate unique id for data provider.
 ID_DIRECTORY=/run/provider-id
 ID_FILE="${ID_DIRECTORY}/id"
