@@ -19,6 +19,7 @@ RUN curl -fsSLO https://github.com/aptible/supercronic/releases/download/v0.2.41
 # ADD supercronic-linux-amd64 .
 # RUN chmod +x supercronic-linux-amd64
 
+ADD --chmod=750 entry.sh .
 ADD --chmod=750 run-cql-on-omop.sh .
 
-CMD ["/app/supercronic-linux-amd64", "-passthrough-logs", "/app/crontab"]
+CMD ["/app/entry.sh"]
