@@ -1,5 +1,5 @@
 // This file has been generated automatically from
-// https://raw.githubusercontent.com/indicate-eu/data-dictionary-content/refs/heads/main/docs/data.json
+// https://raw.githubusercontent.com/indicate-eu/data-dictionary/refs/heads/main/docs/data.json
 // Concept set(s)
 // * Insulin Aspart (14 entries) [modified 2026-02-12]
 // * Insulin Aspart, Human (26 entries) [modified 2026-02-12]

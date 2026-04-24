@@ -207,7 +207,7 @@ define function "Overall Incidence in Period"(period Interval<DateTime>):
 define function "Is in Initial Population"(visit VisitOccurrence):
   (1) _
     let visitInterval: convert visit to Interval<DateTime>
-      return     duration in hours of visitInterval >= 24 hours
+      return     duration in hours of visitInterval >= 24
              and AgeInYearsAt(start of visitInterval) >= 18
 
 define "Visit Results":

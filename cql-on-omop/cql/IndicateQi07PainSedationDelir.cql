@@ -85,7 +85,7 @@ define function "Are Conforming Assessments"(measurements List<Tuple{previous Me
                 return all    isFirstShift
                            or (difference in hours
                                  between (convert m.previous to DateTime)
-                                 and     (convert m.current  to DateTime)) <= 10 hours)
+                                 and     (convert m.current  to DateTime)) <= 10)
 
 define function "Measurements during Shift with Neighbors"(
     measurements List<Measurement>,
