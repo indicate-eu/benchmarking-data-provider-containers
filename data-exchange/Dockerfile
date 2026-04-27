@@ -1,4 +1,4 @@
-FROM ghcr.io/indicate-eu/benchmarking-data-exchange-client:1.1.1
+FROM ghcr.io/indicate-eu/benchmarking-data-exchange-client:1.2.0
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes update     \
     && DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
