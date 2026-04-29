@@ -11,7 +11,8 @@ if [ -n "${SOURCE_DB_DRIVER}" ] || [ -n "${SOURCE_DB_CONNECTION_STRING}" ] ; the
         exit 1
     fi
     for name in HOST PORT DATABASE USER SCHEMA ; do
-        if [ -n "${SOURCE_DB_${name}}" ] ; then
+        variable_name="SOURCE_DB_${name}"
+        if [ -n "${!variable_name}" ] ; then
             echo -e "\e[1;31mThe environment variables SOURCE_DB_DRIVER and SOURCE_DB_CONNECTION_STRING cannot be specified together with SOURCE_DB_${name}\e[0m"
             exit 1
         fi
