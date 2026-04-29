@@ -633,6 +633,44 @@ code "warfarin sodium 6 MG Oral Tablet": '40163560' from E.OMOPSV
 code "warfarin sodium 7.5 MG Oral Tablet": '40163566' from E.OMOPSV
 code "Ximelagatran 24 MG Oral Tablet": '40896006' from E.OMOPSV
 
+// This is a temporary solution for
+// https://github.com/indicate-eu/benchmarking-data-provider-containers/issues/3
+// TODO(moringenj): This should be removed once we can handle the complete
+// resolved concept sets for this category.  The resolved concept sets contain
+// around 17.000 concepts which would lead to performance issues with the
+// current implementation.
+code "ingredient 19024063": '19024063' from E.OMOPSV
+code "ingredient 43013024": '43013024' from E.OMOPSV
+code "ingredient 1322207": '1322207' from E.OMOPSV
+code "ingredient 19069137": '19069137' from E.OMOPSV
+code "ingredient 1592988": '1592988' from E.OMOPSV
+code "ingredient 19084670": '19084670' from E.OMOPSV
+code "ingredient 40798763": '40798763' from E.OMOPSV
+code "ingredient 40228152": '40228152' from E.OMOPSV
+code "ingredient 1301065": '1301065' from E.OMOPSV
+code "ingredient 19026343": '19026343' from E.OMOPSV
+code "ingredient 19011712": '19011712' from E.OMOPSV
+code "ingredient 1325124": '1325124' from E.OMOPSV
+code "ingredient 45892847": '45892847' from E.OMOPSV
+code "ingredient 1301025": '1301025' from E.OMOPSV
+code "ingredient 19113013": '19113013' from E.OMOPSV
+code "ingredient 1315865": '1315865' from E.OMOPSV
+code "ingredient 1367571": '1367571' from E.OMOPSV
+code "ingredient 19092139": '19092139' from E.OMOPSV
+code "ingredient 40798953": '40798953' from E.OMOPSV
+code "ingredient 19001014": '19001014' from E.OMOPSV
+code "ingredient 19008276": '19008276' from E.OMOPSV
+code "ingredient 19033934": '19033934' from E.OMOPSV
+code "ingredient 19035344": '19035344' from E.OMOPSV
+code "ingredient 19129274": '19129274' from E.OMOPSV
+code "ingredient 40241331": '40241331' from E.OMOPSV
+code "ingredient 43009029": '43009029' from E.OMOPSV
+code "ingredient 1308473": '1308473' from E.OMOPSV
+code "ingredient 19018364": '19018364' from E.OMOPSV
+code "ingredient 1310149": '1310149' from E.OMOPSV
+code "ingredient 40799186": '40799186' from E.OMOPSV
+code "ingredient 19016072": '19016072' from E.OMOPSV
+
 concept "Anticoagulation Drugs": {
   "acenocoumarol 1 MG Oral Tablet",
   "acenocoumarol 4 MG Oral Tablet",
@@ -1226,5 +1264,36 @@ concept "Anticoagulation Drugs": {
   "warfarin sodium 5 MG Oral Tablet",
   "warfarin sodium 6 MG Oral Tablet",
   "warfarin sodium 7.5 MG Oral Tablet",
-  "Ximelagatran 24 MG Oral Tablet"
+  "Ximelagatran 24 MG Oral Tablet",
+  "ingredient 19024063",
+  "ingredient 43013024",
+  "ingredient 1322207",
+  "ingredient 19069137",
+  "ingredient 1592988",
+  "ingredient 19084670",
+  "ingredient 40798763",
+  "ingredient 40228152",
+  "ingredient 1301065",
+  "ingredient 19026343",
+  "ingredient 19011712",
+  "ingredient 1325124",
+  "ingredient 45892847",
+  "ingredient 1301025",
+  "ingredient 19113013",
+  "ingredient 1315865",
+  "ingredient 1367571",
+  "ingredient 19092139",
+  "ingredient 40798953",
+  "ingredient 19001014",
+  "ingredient 19008276",
+  "ingredient 19033934",
+  "ingredient 19035344",
+  "ingredient 19129274",
+  "ingredient 40241331",
+  "ingredient 43009029",
+  "ingredient 1308473",
+  "ingredient 19018364",
+  "ingredient 1310149",
+  "ingredient 40799186",
+  "ingredient 19016072"
 }
