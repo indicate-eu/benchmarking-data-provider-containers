@@ -1,15 +1,18 @@
 #!/bin/bash
 
+set -e
+
 # Prepare commandline arguments related to "source" database
+# TODO(moringenj): We could perform these checks in entry.sh so that one would not have to wait for the cron job to run
 SOURCE_DB_ARGS=()
 if [ -n "${SOURCE_DB_DRIVER}" ] || [ -n "${SOURCE_DB_CONNECTION_STRING}" ] ; then
     if [ -z "${SOURCE_DB_CONNECTION_STRING}" ] ; then
-        echo "Cannot specify SOURCE_DB_DRIVER without SOURCE_DB_CONNECTION_STRING"
+        echo -e "\e[1;31mCannot specify SOURCE_DB_DRIVER without SOURCE_DB_CONNECTION_STRING\e[0m"
         exit 1
     fi
     for name in HOST PORT DATABASE USER SCHEMA ; do
         if [ -n "${SOURCE_DB_${name}}" ] ; then
-            echo "The environment variables SOURCE_DB_DRIVER and SOURCE_DB_CONNECTION_STRING cannot be specified together with SOURCE_DB_${name}"
+            echo -e "\e[1;31mThe environment variables SOURCE_DB_DRIVER and SOURCE_DB_CONNECTION_STRING cannot be specified together with SOURCE_DB_${name}\e[0m"
             exit 1
         fi
     done
