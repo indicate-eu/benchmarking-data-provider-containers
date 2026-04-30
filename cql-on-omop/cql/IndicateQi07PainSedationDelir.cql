@@ -66,13 +66,16 @@ concept "Delirium Assessment Measurement": {
 context Patient
 
 define "Pain Assessment Measurements":
-  [Measurement: "Pain Assessment Measurement"]
+  [Measurement: "Pain Assessment Measurement"] m
+    return all m sort by measurementDatetime
 
 define "Sedation Assessment Measurements":
-  [Measurement: "Sedation Assessment Measurement"]
+  [Measurement: "Sedation Assessment Measurement"] m
+    return all m sort by measurementDatetime
 
 define "Delirium Assessment Measurements":
-  [Measurement: "Delirium Assessment Measurement"]
+  [Measurement: "Delirium Assessment Measurement"] m
+    return all m sort by measurementDatetime
 
 // Assessments
 
@@ -81,11 +84,11 @@ define "Delirium Assessment Measurements":
 define function "Are Conforming Assessments"(measurements List<Tuple{previous Measurement, current Measurement, next Measurement}>,
                                              isFirstShift Boolean):
       Exists(measurements)
-  and AllTrue(measurements m
-                return all    isFirstShift
-                           or (difference in hours
-                                 between (convert m.previous to DateTime)
-                                 and     (convert m.current  to DateTime)) <= 10)
+  and (isFirstShift
+       or AllTrue(measurements m
+                    return all (difference in hours
+                                  between (convert m.previous to DateTime)
+                                  and     (convert m.current  to DateTime)) <= 10))
 
 define function "Measurements during Shift with Neighbors"(
     measurements List<Measurement>,
