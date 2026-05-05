@@ -59,7 +59,7 @@ define function "Is in Initial Population"(visit VisitOccurrence):
 define "Visit Results":
   (T."Visits with 24-hour Periods") visitWithPeriods
     let visit:                       visitWithPeriods.visit,
-        inInitialPopulationForVisit: "Is in Initial Population"(visit as VisitOccurrence),
+        inInitialPopulationForVisit: "Is in Initial Population"(visit),
         conformingVisit:             "Is Conforming Visit"(visit),
         periodCount:                 Count(visitWithPeriods.periods)
       return all (visitWithPeriods.periods as List<Interval<DateTime>>) period

@@ -73,7 +73,9 @@ define function "24-hour Periods during Period"(periodInterval Interval<DateTime
                    where period included in periodInterval
                    return all period
              else
-               {}
+               // Without the casts, the CQL engine does not know that
+               // the two legs of the if have the same type.
+               {} as List<Interval<DateTime>>
 
 define function "24-hour Periods during Visits"(visits List<VisitOccurrence>):
   (visits) v
@@ -112,7 +114,6 @@ define function "Visits and 24-hour Periods during Review Period"(
                                     where     end of p > previousEndPoint
                                           and end of p <= endPoint
                                     return all p
-
                        return all if Exists(periods) then
                                     { {
                                        reviewPeriod: reviewPeriod,
@@ -123,7 +124,14 @@ define function "Visits and 24-hour Periods during Review Period"(
                                        periods:    periods
                                      } }
                                    else
-                                     ({} as List<Tuple{reviewPeriod Any, startAndEnd Any, visit Any, allPeriods Any, periods Any}>)
+                                     // Without the casts, the CQL engine
+                                     // does not know that the two legs of
+                                     // the if have the same type.
+                                     ({} as List<Tuple{reviewPeriod Any,
+                                                       startAndEnd Any,
+                                                       visit VisitOccurrence,
+                                                       allPeriods List<Interval<DateTime>>,
+                                                       periods List<Interval<DateTime>>}>)
   )
 
 define "Visits with 24-hour Periods":

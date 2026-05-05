@@ -195,7 +195,7 @@ define "Visit Results":
         inInitialPopulationForVisit: "Is in Initial Population"(visit),
         shifts:                      T."Shifts during Visit"(visit),
         goodShifts:                  "Conforming Shifts in Visit"(shifts)
-      return all (visitWithPeriods.periods as List<Interval<DateTime>>) period
+      return all (visitWithPeriods.periods) period
                    return all elm."Period Result"(
                      period,
                      inInitialPopulationForVisit,

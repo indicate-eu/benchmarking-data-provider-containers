@@ -52,11 +52,9 @@ define function "Is in Initial Population"(visit VisitOccurrence):
 define "Visit Results":
   (T."Visits with 24-hour Periods") visitWithPeriods
     let visit:                       visitWithPeriods.visit,
-        inInitialPopulationForVisit: "Is in Initial Population"(visit as VisitOccurrence),
+        inInitialPopulationForVisit: "Is in Initial Population"(visit),
         periods:                     visitWithPeriods.allPeriods
-      // TODO(moringenj): The weird as List<...> expressions are needed to work
-      //                  around a bug in the type inference of the CQL engine
-      return all (periods as List<Interval<DateTime>>) period
+      return all (periods) period
                    let hasMobilisation: "Has Mobilisation"(period),
                        noMobilisation:  "Has Order to not Mobilise"(period)
                      return all elm."Period Result"(

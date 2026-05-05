@@ -214,7 +214,7 @@ define "Visit Results":
   (T."Visits with 24-hour Periods") visitWithPeriods
     let visit:                       visitWithPeriods.visit,
         inInitialPopulationForVisit: "Is in Initial Population"(visit)
-      return all (visitWithPeriods.periods as List<Interval<DateTime>>) period
+      return all (visitWithPeriods.periods) period
                    return all elm."Period Result"(
                      period,
                      inInitialPopulationForVisit,

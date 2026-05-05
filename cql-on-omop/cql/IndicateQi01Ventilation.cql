@@ -313,7 +313,7 @@ define function "Is in Initial Population"(visit VisitOccurrence):
 
 define "Visit Results":
   (T."Visits with 24-hour Periods") visitWithPeriods
-    let visitInterval:               convert (visitWithPeriods.visit as OMOP.VisitOccurrence) to Interval<DateTime>,
+    let visitInterval:               convert visitWithPeriods.visit to Interval<DateTime>,
         inInitialPopulationForVisit: "Is in Initial Population"(visitWithPeriods.visit),
         measurementsInVisit:         ("PEEP Measurements") m
                                        where m in visitInterval
