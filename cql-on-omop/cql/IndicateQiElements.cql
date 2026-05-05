@@ -14,7 +14,11 @@ parameter "Review Period"
 // Terminology
 // The OMOPSV (OMOP Standard Vocabulary) codesystem is built-in and
 // uses the OMOP concept id as code.
-codesystem OMOPSV: 'https://fhir-terminology.ohdsi.org' // SV = Standardized Vocabulary
+// SV = Standardized Vocabulary
+// In the hierarchical variant, each concept designates the sets of
+// its ancestors (which includes the concept itself).
+codesystem OMOPSV: 'https://fhir-terminology.ohdsi.org'
+codesystem "OMOPSV Hierarchy": 'https://fhir-terminology.ohdsi.org?hierarchical'
 
 // Visit
 code "IcuAdmissionDate": '36659961' from OMOPSV     // Intensive care unit (ICU) admission date
