@@ -90,11 +90,24 @@ define "Ideal Body Weight Measured or Computed":
 include "IndicateQiElements" called elm
 elm."Intensive Care Visits"
 */
-define "Intensive Care Visits":
+define "Intensive Care Visit Occurrences":
   [VisitOccurrence: "Intensive Care"] v
-    where v.visitStartDatetime <= v.visitEndDatetime
-    return all v
-    sort by visitStartDatetime
+    where v.visitStartDatetime < v.visitEndDatetime
+    return all convert v to Interval<DateTime>
+    sort by low
+
+define "Intensive Care Visit Details":
+  [VisitDetail: "Intensive Care"] v
+    where v.visitDetailStartDatetime < v.visitDetailEndDatetime
+    return all convert v to Interval<DateTime>
+    sort by low
+
+define "Intensive Care Visits":
+  (1) _
+    let allVisitsNotOrdered: Flatten({ "Intensive Care Visit Occurrences",
+                                       "Intensive Care Visit Details" }),
+        allVisitsOrdered:    (allVisitsNotOrdered) v sort by low
+      return collapse(allVisitsOrdered)
 
 /*
 @title: Intensive Care Visits in Review Period
@@ -108,8 +121,7 @@ elm."Intensive Care Visits in Review Period"
 */
 define "Intensive Care Visits in Review Period":
   "Intensive Care Visits" v
-    where v.visitStartDatetime after start of "Review Period"
-      and v.visitEndDatetime before end of "Review Period"
+    where v during "Review Period"
     return all v
 
 /*

@@ -42,13 +42,12 @@ define function "24-hour Periods with conforming Medication"(periods List<Interv
 
 // Quality Indicator
 
-define function "Is in Initial Population"(visit VisitOccurrence):
-  AgeInYearsAt(start of (convert visit to Interval<DateTime>)) >= 18
+define function "Is in Initial Population"(visitInterval Interval<DateTime>):
+  AgeInYearsAt(start of visitInterval) >= 18
 
 define "Visit Results":
   (T."Visits with 24-hour Periods") visitWithPeriods
-    let visit:                       visitWithPeriods.visit,
-        inInitialPopulationForVisit: "Is in Initial Population"(visit),
+    let inInitialPopulationForVisit: "Is in Initial Population"(visitWithPeriods.visit),
         periods:                     visitWithPeriods.allPeriods,
         goodPeriods:                 "24-hour Periods with conforming Medication"(periods)
       return all (periods) period
@@ -56,7 +55,7 @@ define "Visit Results":
                      period,
                      inInitialPopulationForVisit,
                      Count((goodPeriods) s where s during period),
-                     Count((periods)     s where (s as Interval<DateTime>) during period)
+                     Count((periods)     s where s during period)
                    )
 
 define Result: elm."Overall Result"(Patient, "Visit Results")

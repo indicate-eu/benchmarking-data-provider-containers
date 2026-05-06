@@ -22,7 +22,7 @@ parameter "Shift Duration"         Quantity default 8 'h'
 
 context Patient
 
-define function "Shifts during Period"(period Interval<DateTime>, shiftDuration Quantity):
+define function "Shifts during Period with Duration"(period Interval<DateTime>, shiftDuration Quantity):
   (1) _
     let periodStartDay:  date from start of period,
         periodEnd:       end of period,
@@ -33,27 +33,30 @@ define function "Shifts during Period"(period Interval<DateTime>, shiftDuration 
                    where shift included in period
                    return all shift
              else
-               {}
+               {} as List<Interval<DateTime>>
 
-define function "Shifts during Visit"(visit VisitOccurrence):
+define function "Shifts during Period"(period Interval<DateTime>):
   (1) _
     let shiftDuration: Quantity{
                          value: (convert "Shift Duration" to 's').value,
                          unit:  'seconds'
                        }
-      return "Shifts during Period"(visit, shiftDuration)
+      return "Shifts during Period with Duration"(period, shiftDuration)
 
-define function "Shifts during Visits"(visits List<VisitOccurrence>):
+define function "Shifts during Periods"(visits List<Interval<DateTime>>):
   (1) _
     let shiftDuration: Quantity{
                          value: (convert "Shift Duration" to 's').value,
                          unit:  'seconds'
                        }
       return all (visits) visit
-                   return all "Shifts during Period"(visit, shiftDuration)
+                   return all "Shifts during Period with Duration"(
+                                visit,
+                                shiftDuration
+                              )
 
 define "Shifts in Visits":
-  "Shifts during Visits"(E."Intensive Care Visits in Review Period")
+  "Shifts during Periods"(E."Intensive Care Visits in Review Period")
 
 /// 24-hour Periods
 
@@ -77,7 +80,7 @@ define function "24-hour Periods during Period"(periodInterval Interval<DateTime
                // the two legs of the if have the same type.
                {} as List<Interval<DateTime>>
 
-define function "24-hour Periods during Visits"(visits List<VisitOccurrence>):
+define function "24-hour Periods during Visits"(visits List<Interval<DateTime>>):
   (visits) v
     let periods: "24-hour Periods during Period"(v)
       where Exists(periods)
@@ -90,17 +93,17 @@ define "24-hour Periods in Visits":
 
 define "Intensive Care Visits overlapping Review Period":
   E."Intensive Care Visits" v
-    where convert v to Interval<DateTime> overlaps E."Review Period"
+    where v overlaps E."Review Period"
     return all v
 
-define function "Visits and 24-hour Periods"(visits List<VisitOccurrence>):
+define function "Visits and 24-hour Periods"(visits List<Interval<DateTime>>):
   (visits) v
     let periods: "24-hour Periods during Period"(v)
       where Exists(periods)
       return all {visit: v, periods: periods}
 
 define function "Visits and 24-hour Periods during Review Period"(
-    visits       List<VisitOccurrence>,
+    visits       List<Interval<DateTime>>,
     reviewPeriod Interval<DateTime>
   ):
   Flatten(
@@ -128,10 +131,10 @@ define function "Visits and 24-hour Periods during Review Period"(
                                      // does not know that the two legs of
                                      // the if have the same type.
                                      ({} as List<Tuple{reviewPeriod Any,
-                                                       startAndEnd Any,
-                                                       visit VisitOccurrence,
-                                                       allPeriods List<Interval<DateTime>>,
-                                                       periods List<Interval<DateTime>>}>)
+                                                       startAndEnd  Any,
+                                                       visit        Interval<DateTime>,
+                                                       allPeriods   List<Interval<DateTime>>,
+                                                       periods      List<Interval<DateTime>>}>)
   )
 
 define "Visits with 24-hour Periods":

@@ -89,19 +89,17 @@ define function "Ventilated for at least 48 Hours"(procedureIntervals List<Inter
            where duration in hours of i >= 48
            return all i)
 
-define function "Is in Initial Population"(visit VisitOccurrence):
-  (1) _
-    let visitInterval: convert visit to Interval<DateTime>
-      return     Exists([DeviceExposure: "Intubation Tube"] d
-                          where (convert d to Interval<DateTime>)
-                                overlaps visitInterval)
-             and "Ventilated for at least 48 Hours"(
-                   "Ventilation Procedures" p
-                     let procedureInterval: convert p to Interval<DateTime>
-                       where procedureInterval overlaps visitInterval
-                       return all procedureInterval
-                 )
-             and AgeInYearsAt(start of visitInterval) >= 18
+define function "Is in Initial Population"(visitInterval Interval<DateTime>):
+      Exists([DeviceExposure: "Intubation Tube"] d
+               where (convert d to Interval<DateTime>)
+                     overlaps visitInterval)
+  and "Ventilated for at least 48 Hours"(
+        "Ventilation Procedures" p
+          let procedureInterval: convert p to Interval<DateTime>
+            where procedureInterval overlaps visitInterval
+            return all procedureInterval
+      )
+  and AgeInYearsAt(start of visitInterval) >= 18
 
 define "Visit Results":
   (T."Visits with 24-hour Periods") visitWithPeriods

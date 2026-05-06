@@ -43,16 +43,13 @@ define function "Has Order to not Mobilise"(period Interval<DateTime>):
 
 // Quality Indicator
 
-define function "Is in Initial Population"(visit VisitOccurrence):
-  (1) _
-    let visitInterval: convert visit to Interval<DateTime>
-      return     (duration in hours of visitInterval) >= 48
-             and AgeInYearsAt(start of visitInterval) >= 18
+define function "Is in Initial Population"(visitInterval Interval<DateTime>):
+      (duration in hours of visitInterval) >= 48
+  and AgeInYearsAt(start of visitInterval) >= 18
 
 define "Visit Results":
   (T."Visits with 24-hour Periods") visitWithPeriods
-    let visit:                       visitWithPeriods.visit,
-        inInitialPopulationForVisit: "Is in Initial Population"(visit),
+    let inInitialPopulationForVisit: "Is in Initial Population"(visitWithPeriods.visit),
         periods:                     visitWithPeriods.allPeriods
       return all (periods) period
                    let hasMobilisation: "Has Mobilisation"(period),
