@@ -18,6 +18,7 @@ include LocalTimeGermany called L
 include TimePeriods called T
 include IndicateQiElements called elm
 include InsulinDrugs
+include InsulinIngredients
 
 
 // unit [cal]
@@ -46,15 +47,19 @@ concept "Renal Replacement Therapy": {
   "Intermittent Hemodialysis"
 }
 
-code "Phosphate Serum": '3003458' from elm.OMOPSV
-code "Phosphate Blood": '3018913' from elm.OMOPSV
+code "Phosphate in Serum (Moles/volume)": '3003458' from elm.OMOPSV
+code "Phosphate in Blood (Moles/volume)": '3018913' from elm.OMOPSV
+code "Phosphate in Blood (Mass/volume)":  '3024232' from elm.OMOPSV
 
 concept "Phosphate Measurement": {
-  "Phosphate Serum",
-  "Phosphate Blood"
+  "Phosphate in Serum (Moles/volume)",
+  "Phosphate in Blood (Moles/volume)",
+  "Phosphate in Blood (Mass/volume)"
 }
 
 define "Insulin Drugs": InsulinDrugs."Insulin Drugs"
+
+define "Insulin Ingredient Concepts": InsulinIngredients."Insulin Ingredient Concepts"
 
 context Patient
 
@@ -72,10 +77,10 @@ define "Phosphate Measurements":
 define "Insulin Exposures":
   [DrugExposure: "Insulin Drugs"]
 
-define "Energy Requirement Measurements":
-  [Measurement: "Energy Requirement"] m
-    return all m
-    sort by measurementDatetime desc
+define "Energy Requirement Observations":
+  [Observation: "Energy Requirement"] o
+    return all o
+    sort by observationDatetime desc
 
 define "CO2 Production Rate Measurements":
   [Measurement: "CO2 Production Rate"]
@@ -85,6 +90,22 @@ define "Calorie Intake Measurements":
 
 define "Renal Replacement Therapy Procedures":
   [ProcedureOccurrence: "Renal Replacement Therapy"]
+
+// TODO(moringenj): will be replaced by utility library
+define function "Convert g/L to mmol/L"(quantity Quantity):
+  (1) _
+    let scaled: convert quantity to 'mg/L'
+      return Quantity{value: 0.0323 * scaled.value, unit: 'mmol/L'}
+
+define function "Ensure Phosphate in mmol/L"(phosphate Quantity):
+  case
+    when Matches(phosphate.unit, '.*g/.*L') then
+      "Convert g/L to mmol/L"(phosphate)
+    when Matches(phosphate.unit, '.*mol/.*L') then
+      phosphate
+    else
+      Message(null, true, '400', 'Error', 'Unit is "' + (if phosphate.unit is null then 'null' else phosphate.unit) + '" but must be either "mol/L" or convertible to "g/L"')
+  end
 
 define function "Last Phosphate Measurement in Period"(period Interval<DateTime>):
   (1) _
@@ -97,34 +118,51 @@ define function "Last Phosphate Measurement in Period"(period Interval<DateTime>
       return if lastMeasurement is null then
                1 'mmol/L'
              else
-               convert lastMeasurement to Quantity
+               "Ensure Phosphate in mmol/L"(convert lastMeasurement to Quantity)
 
-// Note(moringenj): In some databases, insulin dosages come out as [U]
+// NOTE(moringenj): In some databases, insulin dosages come out as [U]
 // instead of [IU].  As far as I can tell, those are supposed to have the
 // same semantics but the UCUM service that the CQL engine uses for unit
 // conversion can only handle [IU] but not [U].
 define function "Convert [U] to [IU]"(quantity Quantity):
-  if quantity.unit = '[U]' then
-    Quantity{value: quantity.value, unit: '[IU]'}
-  else
-    quantity
+  case
+    when quantity.unit = '[IU]' then
+      quantity
+    when quantity.unit = '[U]' then
+      Quantity{value: quantity.value, unit: '[IU]'}
+    else
+      (1) _
+        let converted: convert quantity to '[IU]'
+          return if converted is null then
+                   Message(null as Quantity, true, '400', 'Warning', 'Unit of Insulin quantities must be [IU] or [U] or convertible to [IU], but ' + ToString(quantity) + ' is not convertible')
+                 else
+                   converted
+  end
+
+define function "DrugExposure to Insulin Dose in [IU]"(drugExposure DrugExposure):
+  (1) _
+    let quantity: OMOPFunctions.IngredientExposure(
+                    drugExposure,
+                    "Insulin Ingredient Concepts"
+                  )
+      return "Convert [U] to [IU]"(quantity)
 
 define function "Max Insulin Rate in Period"(period Interval<DateTime>):
   (1) _
-    let totalInsulin: Sum("Insulin Exposures" m
-                            where (convert m to Interval<DateTime>) overlaps period
+    let totalInsulin: Sum("Insulin Exposures" e
+                            where (convert e to Interval<DateTime>) overlaps period
                             // No registered conversion at the moment
-                            return all "Convert [U] to [IU]"(OMOPFunctions.ToQuantity(m))),
+                            return all "DrugExposure to Insulin Dose in [IU]"(e)),
         periodHours:  Quantity{
                         value: duration in hours of period,
                         unit:  'h'
                       }
-        return totalInsulin / periodHours
+      return totalInsulin / periodHours
 
-define function "Last Energy Requirement Measurement in Period"(period Interval<DateTime>):
-  Last("Energy Requirement Measurements" m
-         where m.measurementDatetime in period
-         return all m)
+define function "Last Energy Requirement Observation in Period"(period Interval<DateTime>):
+  Last("Energy Requirement Observations" o
+         where o.observationDatetime in period
+         return all o)
 
 define function "Median CO2 Production Rate in Period"(period Interval<DateTime>):
   Median("CO2 Production Rate Measurements" m
@@ -176,7 +214,7 @@ define "Initial Calorie Target via BMI":
 define function "Initial Calorie Target"(previousDay Interval<DateTime>):
   (1) _
     // TODO(moringenj): what temporal interval should we consider for the energy requirement?
-    let energyRequirement: "Last Energy Requirement Measurement in Period"(previousDay)
+    let energyRequirement: "Last Energy Requirement Observation in Period"(previousDay)
       return if energyRequirement is not null then
                energyRequirement
              else if "Median CO2 Production Rate in Period"(previousDay) is not null then

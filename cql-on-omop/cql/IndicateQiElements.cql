@@ -21,8 +21,6 @@ codesystem OMOPSV: 'https://fhir-terminology.ohdsi.org'
 codesystem "OMOPSV Hierarchy": 'https://fhir-terminology.ohdsi.org?hierarchical'
 
 // Visit
-code "IcuAdmissionDate": '36659961' from OMOPSV     // Intensive care unit (ICU) admission date
-code "IcuDischargeDate": '36659649' from OMOPSV     // Intensive care unit (ICU) discharge date
 
 code "Intensive Care": '32037' from OMOPSV
 

@@ -19,45 +19,57 @@ include TimePeriods called T
 
 // Pain Assessment
 
-code "Behavioral Pain Scale (Measurement)":     '2100000007' from elm.OMOPSV
-code "Numeric Pain Rating Scale (Measurement)": '37151627' from elm.OMOPSV
-code "Visual Analog Pain Scale (Measurement)":  '4165600'  from elm.OMOPSV
+code "Behavioral Pain Scale (Measurement)":           '2100000007' from elm.OMOPSV
+code "Numeric Pain Rating Scale (Measurement)":       '37151627'   from elm.OMOPSV // Not in data dictionary - kept for compatibility
+code "Numeric Pain Rating Scale Score (Measurement)": '37151630'   from elm.OMOPSV
+code "Visual Analog Pain Scale (Measurement)":        '4165600'    from elm.OMOPSV // Not in data dictionary - kept for compatibility
+code "Visual Analog Pain Scale Score (Measurement)":  '40481449'   from elm.OMOPSV
 
 concept "Pain Assessment Measurement": {
     "Behavioral Pain Scale (Measurement)",
     "Numeric Pain Rating Scale (Measurement)",
-    "Visual Analog Pain Scale (Measurement)"
+    "Numeric Pain Rating Scale Score (Measurement)",
+    "Visual Analog Pain Scale (Measurement)",
+    "Visual Analog Pain Scale Score (Measurement)"
 }
 
 // Sedation Assessment
 
-code "Richmond Agitation-Sedation Scale (Measurement)": '36684829' from elm.OMOPSV
-code "Ramsay Sedation Scale (Measurement)":             '4105091' from elm.OMOPSV
+code "Richmond Agitation-Sedation Scale (Measurement)":       '36684829' from elm.OMOPSV // Not in data dictionary - kept for compatibility
+code "Richmond Agitation Sedation Scale (Measurement)":       '1447532'  from elm.OMOPSV // Not in data dictionary - kept for compatibility
+code "Richmond Agitation Sedation Scale score (Measurement)": '1450955'  from elm.OMOPSV
+code "Ramsay Sedation Scale (Measurement)":                   '4105091'  from elm.OMOPSV
 
 concept "Sedation Assessment Measurement": {
   "Richmond Agitation-Sedation Scale (Measurement)",
+  "Richmond Agitation Sedation Scale (Measurement)",
+  "Richmond Agitation Sedation Scale score (Measurement)",
   "Ramsay Sedation Scale (Measurement)"
 }
 
 // Delirium Assessment
 
 code "3-minute Diagnostic Interview for CAM-defined Delirium (3D-CAM)":   '2100000000' from elm.OMOPSV
-code "4AT - 4 A's Test (Measurement)":                                    '3662219' from elm.OMOPSV // TODO
+code "4AT - 4 A's Test":                                                  '3662219'    from elm.OMOPSV // Not in data dictionary - kept for compatibility
+code "4AT (4 A's Test) score":                                            '3662221'    from elm.OMOPSV
 code "Confusion Assessment Method for the Intensive Care Unit (CAM-ICU)": '2100000001' from elm.OMOPSV
 code "Delirium Detection Score (DDS)":                                    '2100000002' from elm.OMOPSV
 code "Delirium Observation Screening (DOS) scale":                        '2100000004' from elm.OMOPSV
 code "Delirium Rating Scale-revised-98 (DRS-R-98)":                       '2100000006' from elm.OMOPSV
-code "Intensive Care Delirium Screening Checklist (ICDSC)":               '2100000003' from elm.OMOPSV
+code "Intensive Care Delirium Screening Checklist (ICDSC) (INDICATE)":    '2100000003' from elm.OMOPSV // Not in data dictionary - kept for compatibility
+code "Intensive Care Delirium Screening Checklist (ICDSC)":               '1450965'    from elm.OMOPSV
 code "Nursing Delirium Screening Scale (Nu-DESC)":                        '2100000005' from elm.OMOPSV
-code "Glasgow Coma Score Total":                                          '3007194' from elm.OMOPSV
+code "Glasgow Coma Score Total":                                          '3007194'    from elm.OMOPSV
 
 concept "Delirium Assessment Measurement": {
   "3-minute Diagnostic Interview for CAM-defined Delirium (3D-CAM)",
-  "4AT - 4 A's Test (Measurement)",
+  "4AT - 4 A's Test",
+  "4AT (4 A's Test) score",
   "Confusion Assessment Method for the Intensive Care Unit (CAM-ICU)",
   "Delirium Detection Score (DDS)",
   "Delirium Observation Screening (DOS) scale",
   "Delirium Rating Scale-revised-98 (DRS-R-98)",
+  "Intensive Care Delirium Screening Checklist (ICDSC) (INDICATE)",
   "Intensive Care Delirium Screening Checklist (ICDSC)",
   "Nursing Delirium Screening Scale (Nu-DESC)",
   "Glasgow Coma Score Total"

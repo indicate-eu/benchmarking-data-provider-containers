@@ -22,11 +22,7 @@ include VentilationProcedures
 
 code "ARDS Condition": '4195694' from elm.OMOPSV // ICD10 based code: '45552897'
 
-code "Intubated (Tube Present)": '4097216' from elm.OMOPSV
-
-concept "Intubation Tube": {
-  "Intubated (Tube Present)"
-}
+code "Intubation Tube": '4097216' from elm."OMOPSV Hierarchy"
 
 code "Invasive Ventilation Procedure": '37158404' from elm.OMOPSV
 

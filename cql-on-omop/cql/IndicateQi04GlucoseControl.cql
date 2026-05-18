@@ -22,34 +22,33 @@ parameter "Acceptable Glucose Levels"
 parameter "Time between consecutive non-Acceptable Glucose Levels"
   default 2 hours
 
-code "Glucose in Serum (Mass/volume)":                          '3004501' from elm.OMOPSV
-code "Glucose in Blood (Mass/volume)":                          '3000483' from elm.OMOPSV
-code "Glucose in Venous Blood (Mass/volume)":                   '3033408' from elm.OMOPSV
-code "Glucose in Mixed Venous Blood (Mass/volume)":             '1092148' from elm.OMOPSV // TODO(jmoringe): this is no longer in the minimal dataset, why
-code "Glucose in Capillary Blood by Glucometer (Mass/volume)":  '3034962' from elm.OMOPSV // TODO(jmoringe): this is no longer in the minimal dataset, why
-// Added to minimal dataset:
-
 code "Glucose in Arterial Blood (Mass/volume)":                 '3031266' from elm.OMOPSV
-
-code "Glucose in Capillary Blood (Mass/volume)":                '3004077' from elm.OMOPSV
+code "Glucose in Arterial Blood (Moles/volume)":                '3044242' from elm.OMOPSV
+code "Glucose in Blood (Mass/volume)":                          '3000483' from elm.OMOPSV
 code "Glucose in Blood (Moles/volume)":                         '3020491' from elm.OMOPSV
+code "Glucose in Capillary Blood (Mass/volume)":                '3004077' from elm.OMOPSV
+code "Glucose in Capillary Blood by Glucometer (Mass/volume)":  '3034962' from elm.OMOPSV
 code "Glucose in Capillary Blood by Glucometer (Moles/volume)": '3001501' from elm.OMOPSV
+code "Glucose in Mixed Venous Blood (Mass/volume)":             '1092148' from elm.OMOPSV
 code "Glucose in Mixed Venous Blood (Moles/volume)":            '1761753' from elm.OMOPSV
+code "Glucose in Serum or Plasma (Mass/volume)":                '3004501' from elm.OMOPSV
 code "Glucose in Serum or Plasma (Moles/volume)":               '3013826' from elm.OMOPSV
+code "Glucose in Venous Blood (Mass/volume)":                   '3033408' from elm.OMOPSV
 code "Glucose in Venous Blood (Moles/volume)":                  '3038515' from elm.OMOPSV
 
 concept "Glucose Level": {
-  "Glucose in Serum (Mass/volume)",
-  "Glucose in Blood (Mass/volume)",
-  "Glucose in Venous Blood (Mass/volume)",
-  "Glucose in Mixed Venous Blood (Mass/volume)",
-  "Glucose in Capillary Blood by Glucometer (Mass/volume)",
   "Glucose in Arterial Blood (Mass/volume)",
-  "Glucose in Capillary Blood (Mass/volume)",
+  "Glucose in Arterial Blood (Moles/volume)",
+  "Glucose in Blood (Mass/volume)",
   "Glucose in Blood (Moles/volume)",
+  "Glucose in Capillary Blood (Mass/volume)",
+  "Glucose in Capillary Blood by Glucometer (Mass/volume)",
   "Glucose in Capillary Blood by Glucometer (Moles/volume)",
+  "Glucose in Mixed Venous Blood (Mass/volume)",
   "Glucose in Mixed Venous Blood (Moles/volume)",
+  "Glucose in Serum or Plasma (Mass/volume)",
   "Glucose in Serum or Plasma (Moles/volume)",
+  "Glucose in Venous Blood (Mass/volume)",
   "Glucose in Venous Blood (Moles/volume)"
 }
 
