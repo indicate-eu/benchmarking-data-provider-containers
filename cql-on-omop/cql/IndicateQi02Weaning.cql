@@ -37,7 +37,15 @@ concept "Trial of Spontaneous Breathing": {
   "Trial of Spontaneous Breathing Procedure"
 }
 
-code "Normal Extubation Procedure": '4148972' from elm.OMOPSV
+code "Extubation of trachea":  '4148972' from elm.OMOPSV
+code "Removal of endotracheal tube": '4150627' from elm.OMOPSV
+code "Removal of tracheostomy tube": '4012607' from elm.OMOPSV
+
+concept "Extubation Procedure": {
+  "Extubation of trachea",
+  "Removal of endotracheal tube",
+  "Removal of tracheostomy tube"
+}
 
 code "Inadvertent Extubation Event": '4231838' from elm.OMOPSV
 
@@ -57,7 +65,7 @@ define "Trial of Spontaneous Breathing Procedures":
     sort by procedureDatetime
 
 define "Extubation Procedures":
-  [ProcedureOccurrence: "Normal Extubation Procedure"] p
+  [ProcedureOccurrence: "Extubation Procedure"] p
     where (convert p to Interval<DateTime>) overlaps elm."Review Period"
     return all p
     sort by procedureDatetime

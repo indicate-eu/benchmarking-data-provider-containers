@@ -30,7 +30,12 @@ concept "Ventilation Procedure": {
   "Invasive Ventilation Procedure"
 }
 
-code "PaO2/FiO2 Measurement": '3029943' from elm.OMOPSV
+code "Horowitz index in Arterial blood":                                         '3029943' from elm.OMOPSV
+code "Horowitz index adjusted to patients actual temperature in Arterial blood": '3029268' from elm.OMOPSV
+concept "PaO2/FiO2 (Horowitz index) Measurement": {
+  "Horowitz index in Arterial blood",
+  "Horowitz index adjusted to patients actual temperature in Arterial blood"
+}
 
 code "PaO2 Default Measurement":              '3027801' from elm.OMOPSV
 code "PaO2 Temperature Adjusted Measurement": '3022803' from elm.OMOPSV
@@ -40,7 +45,17 @@ concept "PaO2 Measurement": {
   "PaO2 Temperature Adjusted Measurement"
 }
 
-code "FiO2 Measurement": '4353936' from elm.OMOPSV
+code "Inspired oxygen concentration":                                         '4353936' from elm.OMOPSV
+code "Oxygen/Inspired gas Respiratory system --on ventilator":                '3026238' from elm.OMOPSV
+code "Oxygen/Inspired gas Respiratory system by O2 Analyzer --on ventilator": '3025408' from elm.OMOPSV
+code "Oxygen/Total gas setting [Volume Fraction] Ventilator":                 '3024882' from elm.OMOPSV
+
+concept "FiO2 Measurement": {
+  "Inspired oxygen concentration",
+  "Oxygen/Inspired gas Respiratory system --on ventilator",
+  "Oxygen/Inspired gas Respiratory system by O2 Analyzer --on ventilator",
+  "Oxygen/Total gas setting [Volume Fraction] Ventilator"
+}
 
 code "PEEP Total, Measured Measurement": '42527140' from elm.OMOPSV
 code "PEEP Setting Measurement":         '4216746'  from elm.OMOPSV
@@ -59,16 +74,58 @@ code "Inspiratory Pressure Setting": '4215838' from elm.OMOPSV
  // Unit mmHg, CAVE different units, has to be converted to unit cmH2O
 code "Peak Inspiratory Pressure Measurement": '4101694' from elm.OMOPSV
 
-code "Tidal Volume Inspiratory Measurement":  '44782826' from elm.OMOPSV
-code "Tidal Volume Spontaneuous Measurement": '4108448'  from elm.OMOPSV
-code "Tidal Volume Setting Measurement":      '3012410'  from elm.OMOPSV
-code "Tidal Volume General Measurement":      '4029625'  from elm.OMOPSV
+code "Tidal Volume Inspiratory Measurement":                                                                                '44782826' from elm.OMOPSV
+code "Tidal Volume Spontaneuous Measurement":                                                                               '4108448'  from elm.OMOPSV
+code "Tidal Volume Setting Measurement":                                                                                    '3012410'  from elm.OMOPSV
+code "Tidal Volume General Measurement":                                                                                    '4029625'  from elm.OMOPSV
+code "Expiratory tidal volume":                                                                                             '44782827' from elm.OMOPSV
+code "Mandatory tidal volume":                                                                                              '4353946'  from elm.OMOPSV
+code "Tidal volume Ventilator --on ventilator":                                                                             '21490854' from elm.OMOPSV
+code "Tidal volume expired Respiratory system airway":                                                                      '21490752' from elm.OMOPSV
+code "Tidal volume expired Respiratory system airway --on ventilator":                                                      '21490789' from elm.OMOPSV
+code "Tidal volume expired spontaneous corrected for compressible gas volume Respiratory system airway --on ventilator":    '3011767'  from elm.OMOPSV
+code "Tidal volume expired spontaneous uncorrected for compressible gas volume setting Ventilator":                         '3020572'  from elm.OMOPSV
+code "Tidal volume expired spontaneous+mechanical Respiratory system airway --on ventilator":                               '3015016'  from elm.OMOPSV
+code "Tidal volume expired spontaneous+mechanical corrected for compressible gas volume --on ventilator":                   '3009097'  from elm.OMOPSV
+code "Tidal volume inspired spontaneous+mechanical --on ventilator":                                                        '3033780'  from elm.OMOPSV
+code "Tidal volume inspired spontaneous+mechanical Measured --on ventilator":                                               '3016166'  from elm.OMOPSV
+code "Tidal volume inspired spontaneous+mechanical corrected for compressible gas volume --on ventilator":                  '3021470'  from elm.OMOPSV
+code "Tidal volume sigh spontaneous+mechanical --on ventilator":                                                            '3008805'  from elm.OMOPSV
+code "Tidal volume.inspired":                                                                                               '36303816' from elm.OMOPSV
+code "Tidal volume.spontaneous --on ventilator":                                                                            '3017594'  from elm.OMOPSV
+code "Tidal volume.spontaneous+mechanical --on ventilator":                                                                 '3004732'  from elm.OMOPSV
+code "Tidal volume.spontaneous+mechanical corrected for compressible gas volume --on ventilator":                           '3007828'  from elm.OMOPSV
+code "Tidal volume.spontaneous+mechanical uncorrected for compressible gas volume --on ventilator":                         '3017707'  from elm.OMOPSV
+code "Tidal volume.spontaneous+mechanical/Body weight [Volume/mass] --on ventilator":                                       '3017878'  from elm.OMOPSV
+code "Tidal volume.spontaneous+mechanical/Body weight [Volume/mass] corrected for compressible gas volume --on ventilator": '3016864'  from elm.OMOPSV
+code "Tidal volume.spontaneous/Body weight [Volume/mass] --on ventilator":                                                  '3017054'  from elm.OMOPSV
 
 concept "Tidal Volume Measurement": {
   "Tidal Volume Inspiratory Measurement",
   "Tidal Volume Spontaneuous Measurement",
   "Tidal Volume Setting Measurement",
-  "Tidal Volume General Measurement"
+  "Tidal Volume General Measurement",
+  "Expiratory tidal volume",
+  "Mandatory tidal volume",
+  "Tidal volume Ventilator --on ventilator",
+  "Tidal volume expired Respiratory system airway",
+  "Tidal volume expired Respiratory system airway --on ventilator",
+  "Tidal volume expired spontaneous corrected for compressible gas volume Respiratory system airway --on ventilator",
+  "Tidal volume expired spontaneous uncorrected for compressible gas volume setting Ventilator",
+  "Tidal volume expired spontaneous+mechanical Respiratory system airway --on ventilator",
+  "Tidal volume expired spontaneous+mechanical corrected for compressible gas volume --on ventilator",
+  "Tidal volume inspired spontaneous+mechanical --on ventilator",
+  "Tidal volume inspired spontaneous+mechanical Measured --on ventilator",
+  "Tidal volume inspired spontaneous+mechanical corrected for compressible gas volume --on ventilator",
+  "Tidal volume sigh spontaneous+mechanical --on ventilator",
+  "Tidal volume.inspired",
+  "Tidal volume.spontaneous --on ventilator",
+  "Tidal volume.spontaneous+mechanical --on ventilator",
+  "Tidal volume.spontaneous+mechanical corrected for compressible gas volume --on ventilator",
+  "Tidal volume.spontaneous+mechanical uncorrected for compressible gas volume --on ventilator",
+  "Tidal volume.spontaneous+mechanical/Body weight [Volume/mass] --on ventilator",
+  "Tidal volume.spontaneous+mechanical/Body weight [Volume/mass] corrected for compressible gas volume --on ventilator",
+  "Tidal volume.spontaneous/Body weight [Volume/mass] --on ventilator"
 }
 
 // PEEP Tables
@@ -111,8 +168,8 @@ define "FiO2 Measurements":
     return all m
     sort by measurementDatetime desc
 
-define "PaO2/FiO2 Measurements":
-  [Measurement: "PaO2/FiO2 Measurement"] m
+define "PaO2/FiO2 (Horowitz index) Measurements":
+  [Measurement: "PaO2/FiO2 (Horowitz index) Measurement"] m
     return all m
     sort by measurementDatetime desc
 
@@ -167,7 +224,7 @@ define function "FiO2 LOCF"(targetTime DateTime):
           return all m)
 
 define function "PaO2/FiO2 LOCF"(targetTime DateTime):
-  First("PaO2/FiO2 Measurements" m
+  First("PaO2/FiO2 (Horowitz index) Measurements" m
           where (convert m to DateTime) same hour or before targetTime
           return all m)
 

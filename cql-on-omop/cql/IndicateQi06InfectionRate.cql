@@ -15,9 +15,25 @@ include TimePeriods called T
 
 // Terminology
 
-// Central Venous Catheter: Device, Insertion, Removal, Infection
+// Central Venous Catheter: Device, Insertion, Removal
 
-code "Central Venous Catheter": '4179206' from elm.OMOPSV
+code "Central Venous Catheter":                    '4179206'  from elm.OMOPSV
+code "Centrally inserted central venous catheter": '607720'   from elm.OMOPSV
+code "Cuffed central venous catheter":             '42709989' from elm.OMOPSV
+code "Epicutaneo-caval catheter":                  '37167946' from elm.OMOPSV
+code "Nontunneled central venous catheter":        '42709987' from elm.OMOPSV
+code "Peripherally inserted central catheter":     '4161814'  from elm.OMOPSV
+code "Tunneled central venous catheter":           '40482049' from elm.OMOPSV
+
+concept "Central Venous Catheter (Device)": {
+  "Central Venous Catheter",
+  "Centrally inserted central venous catheter",
+  "Cuffed central venous catheter",
+  "Epicutaneo-caval catheter",
+  "Nontunneled central venous catheter",
+  "Peripherally inserted central catheter",
+  "Tunneled central venous catheter"
+}
 
 code "Insertion of Central Venous Catheter, general": '4052413' from elm.OMOPSV
 code "Insertion of Central Venous Catheter via Internal Jugular Vein":
@@ -36,14 +52,22 @@ concept "Insertion of Central Venous Catheter": {
 
 code "Removal of Central Venous Catheter": '4022792' from elm.OMOPSV
 
-code "CRBSI, general":                     '42537216' from elm.OMOPSV
-code "Infection of Intravenous Catheter":  '4149606'  from elm.OMOPSV
-code "Infection of Hemodialyses Catheter": '764921'   from elm.OMOPSV
+// CVT Infection
+
+code "CRBSI, general":                                                     '42537216' from elm.OMOPSV
+code "Infection of Intravenous Catheter":                                  '4149606'  from elm.OMOPSV
+code "Infection of Hemodialyses Catheter":                                 '764921'   from elm.OMOPSV
+code "Infection associated with totally implantable venous access device": '43021261' from elm.OMOPSV
+code "Infection of central venous catheter exit site":                     '4326841'  from elm.OMOPSV
+code "Infection of hemodialysis temporary catheter":                       '764924'   from elm.OMOPSV
 
 concept "Catheter-related Bloodstream Infection": {
   "CRBSI, general",
   "Infection of Intravenous Catheter",
-  "Infection of Hemodialyses Catheter"
+  "Infection of Hemodialyses Catheter",
+  "Infection associated with totally implantable venous access device",
+  "Infection of central venous catheter exit site",
+  "Infection of hemodialysis temporary catheter"
 }
 
 // Ventilation: Procedure, Infection (Pneumonia)
@@ -55,7 +79,7 @@ code "Ventilator associated Pneumonia": '259992' from elm.OMOPSV
 context Patient
 
 define "CVC Device Exposures":
-  [DeviceExposure: "Central Venous Catheter"] d
+  [DeviceExposure: "Central Venous Catheter (Device)"] d
     return all d
     sort by deviceExposureStartDatetime
 

@@ -22,16 +22,18 @@ include InsulinIngredients
 
 
 // unit [cal]
-code "Energy Requirement": '4022415' from elm.OMOPSV
+code "Energy Requirement":                                '4022415' from elm.OMOPSV
+code "Estimated required quantity of energy in 24 hours": '604877' from elm.OMOPSV
+
+concept "Energy Requirement (Observation)": {
+  "Energy Requirement",
+  "Estimated required quantity of energy in 24 hours"
+}
 
 code "Contraindication to Enteral Feeding": '4141768' from elm.OMOPSV // observation
 
 // unit [cal]
 code "Calorie Intake Total 24 Hour": '3026267' from elm.OMOPSV
-
-// TODO(moringenj): Do we not need this for anything?
-/*Calorie intake total:
-- 3007882*/
 
 code "CO2 Production Rate": '21490580' from elm.OMOPSV
 
@@ -78,7 +80,7 @@ define "Insulin Exposures":
   [DrugExposure: "Insulin Drugs"]
 
 define "Energy Requirement Observations":
-  [Observation: "Energy Requirement"] o
+  [Observation: "Energy Requirement (Observation)"] o
     return all o
     sort by observationDatetime desc
 
