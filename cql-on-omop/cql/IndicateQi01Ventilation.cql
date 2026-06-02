@@ -287,12 +287,11 @@ define function "Ensure PaO2/FiO2"(peepTime DateTime):
                "PaO2/fiO2"
              else
                (1) __
-                 let paO2: "PaO2 LOCF"(peepTime),
+                 let paO2:     "PaO2 LOCF"(peepTime),
+                     paO2Time: (convert paO2 to DateTime),
                      // TODO(moringenj): is this correct for fiO2?
-                     fiO2: "FiO2 LOCF"(peepTime)
-                   return if (duration in hours between
-                              (convert paO2 to DateTime) and peepTime)
-                             < 6 'h' then
+                     fiO2:     "FiO2 LOCF"(peepTime)
+                   return if (duration in hours between paO2Time and peepTime) < 6 then
                             paO2 / fiO2
                           else
                             300 'mm[Hg]'
