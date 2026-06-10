@@ -19,6 +19,7 @@ include TimePeriods called T
 include IndicateQiElements called elm
 include InsulinDrugs
 include InsulinIngredients
+include InsulinStrength
 
 
 // unit [cal]
@@ -60,8 +61,6 @@ concept "Phosphate Measurement": {
 }
 
 define "Insulin Drugs": InsulinDrugs."Insulin Drugs"
-
-define "Insulin Ingredient Concepts": InsulinIngredients."Insulin Ingredient Concepts"
 
 context Patient
 
@@ -122,39 +121,14 @@ define function "Last Phosphate Measurement in Period"(period Interval<DateTime>
              else
                "Ensure Phosphate in mmol/L"(convert lastMeasurement to Quantity)
 
-// NOTE(moringenj): In some databases, insulin dosages come out as [U]
-// instead of [IU].  As far as I can tell, those are supposed to have the
-// same semantics but the UCUM service that the CQL engine uses for unit
-// conversion can only handle [IU] but not [U].
-define function "Convert [U] to [IU]"(quantity Quantity):
-  case
-    when quantity.unit = '[IU]' then
-      quantity
-    when quantity.unit = '[U]' then
-      Quantity{value: quantity.value, unit: '[IU]'}
-    else
-      (1) _
-        let converted: convert quantity to '[IU]'
-          return if converted is null then
-                   Message(null as Quantity, true, '400', 'Warning', 'Unit of Insulin quantities must be [IU] or [U] or convertible to [IU], but ' + ToString(quantity) + ' is not convertible')
-                 else
-                   converted
-  end
-
-define function "DrugExposure to Insulin Dose in [IU]"(drugExposure DrugExposure):
-  (1) _
-    let quantity: OMOPFunctions.IngredientExposure(
-                    drugExposure,
-                    "Insulin Ingredient Concepts"
-                  )
-      return "Convert [U] to [IU]"(quantity)
-
 define function "Max Insulin Rate in Period"(period Interval<DateTime>):
   (1) _
     let totalInsulin: Sum("Insulin Exposures" e
                             where (convert e to Interval<DateTime>) overlaps period
-                            // No registered conversion at the moment
-                            return all "DrugExposure to Insulin Dose in [IU]"(e)),
+                            return all InsulinStrength."Insulin Exposure"(
+                              e,
+                              InsulinIngredients."Insulin Ingredient Concepts"
+                            )),
         periodHours:  Quantity{
                         value: duration in hours of period,
                         unit:  'h'
@@ -281,18 +255,7 @@ define function "24-hour Periods with Results"(periods List<Interval<DateTime>>)
                     r.dayOfVisit
                   ),
           actual: "Calorie Intake in Period"(p),
-          result: 0.9 * target <= actual and actual <= 1.1 * target,
-          debug:  Flatten({r.debug,   {{
-                                        previousPeriod: r.previousPeriod,
-                                        previousTarget: r.previousTarget,
-                                        period:         p,
-                                        dayOfVisit:     r.dayOfVisit,
-                                        phosphate:      "Last Phosphate Measurement in Period"(p),
-                                        insulin:        "Max Insulin Rate in Period"(r.previousPeriod),
-                                        targetIntake:   target,
-                                        actualIntake:   actual,
-                                        result:         result
-                                      }}})
+          result: 0.9 * target <= actual and actual <= 1.1 * target
         return {
                  previousPeriod: p,
                  previousTarget: target,
@@ -300,8 +263,7 @@ define function "24-hour Periods with Results"(periods List<Interval<DateTime>>)
                  results:        if result then
                                    Flatten({r.results, {}})
                                  else
-                                   r.results,
-                 debug:          debug
+                                   r.results
                }
 
 define function "24-hour Periods with appropriate Calorie Intake"(periods List<Interval<DateTime>>):
