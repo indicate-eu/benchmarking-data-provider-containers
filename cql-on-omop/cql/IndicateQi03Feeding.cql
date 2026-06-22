@@ -31,7 +31,8 @@ concept "Energy Requirement (Observation)": {
   "Estimated required quantity of energy in 24 hours"
 }
 
-code "Contraindication to Enteral Feeding": '4141768' from elm.OMOPSV // observation
+// TODO(moringenj): not yet used
+code "Contraindication to Enteral Feeding": '2100000009' from elm.OMOPSV // observation
 
 // unit [cal]
 code "Calorie Intake Total 24 Hour": '3026267' from elm.OMOPSV
@@ -165,9 +166,9 @@ define function "Initial Calorie Target via CO2 Production Rate"(previousPeriod 
     value: "Median CO2 Production Rate in Period"(previousPeriod).value
            * 8.19
            * if "Body Mass Index" < 30 'kg/m' then
-              1
+               1
              else
-              0.6,
+               0.6,
     unit: 'kcal/d'
   }
 

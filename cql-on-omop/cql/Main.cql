@@ -4,8 +4,6 @@ using OMOP version 'v5.4'
 
 include OMOPFunctions
 
-include "IndicateQiElements" called "E"
-
 include "IndicateQi01Ventilation"              called "Qi01"
 include "IndicateQi02Weaning"                  called "Qi02"
 include "IndicateQi03Feeding"                  called "Qi03"

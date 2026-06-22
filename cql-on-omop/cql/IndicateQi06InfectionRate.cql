@@ -15,42 +15,9 @@ include TimePeriods called T
 
 // Terminology
 
-// Central Venous Catheter: Device, Insertion, Removal
+// Central Venous Catheter Device
 
-code "Central Venous Catheter":                    '4179206'  from elm.OMOPSV
-code "Centrally inserted central venous catheter": '607720'   from elm.OMOPSV
-code "Cuffed central venous catheter":             '42709989' from elm.OMOPSV
-code "Epicutaneo-caval catheter":                  '37167946' from elm.OMOPSV
-code "Nontunneled central venous catheter":        '42709987' from elm.OMOPSV
-code "Peripherally inserted central catheter":     '4161814'  from elm.OMOPSV
-code "Tunneled central venous catheter":           '40482049' from elm.OMOPSV
-
-concept "Central Venous Catheter (Device)": {
-  "Central Venous Catheter",
-  "Centrally inserted central venous catheter",
-  "Cuffed central venous catheter",
-  "Epicutaneo-caval catheter",
-  "Nontunneled central venous catheter",
-  "Peripherally inserted central catheter",
-  "Tunneled central venous catheter"
-}
-
-code "Insertion of Central Venous Catheter, general": '4052413' from elm.OMOPSV
-code "Insertion of Central Venous Catheter via Internal Jugular Vein":
-  '4051188' from elm.OMOPSV
-code "Insertion of Central Venous Catheter via Subclavian Vein":
-  '4052415' from elm.OMOPSV
-code "Insertion of Central Venous Catheter via Femoral Vein":
-  '4052416' from elm.OMOPSV
-
-concept "Insertion of Central Venous Catheter": {
-  "Insertion of Central Venous Catheter, general",
-  "Insertion of Central Venous Catheter via Internal Jugular Vein",
-  "Insertion of Central Venous Catheter via Subclavian Vein",
-  "Insertion of Central Venous Catheter via Femoral Vein"
-}
-
-code "Removal of Central Venous Catheter": '4022792' from elm.OMOPSV
+code "Central Venous Catheter Device": '4179206' from elm."OMOPSV Hierarchy"
 
 // CVT Infection
 
@@ -79,19 +46,9 @@ code "Ventilator associated Pneumonia": '259992' from elm.OMOPSV
 context Patient
 
 define "CVC Device Exposures":
-  [DeviceExposure: "Central Venous Catheter (Device)"] d
+  [DeviceExposure: "Central Venous Catheter Device"] d
     return all d
     sort by deviceExposureStartDatetime
-
-define "CVC Insertion Procedures":
-  [ProcedureOccurrence: "Insertion of Central Venous Catheter"] p
-    return all p
-    sort by procedureDatetime
-
-define "CVC Removal Procedures":
-  [ProcedureOccurrence: "Insertion of Central Venous Catheter"] p
-    return all p
-    sort by procedureDatetime
 
 define "Catheter-related Bloodstream Infection Conditions":
   [ConditionOccurrence: "Catheter-related Bloodstream Infection"] c
@@ -122,37 +79,13 @@ define function incidence(period       Interval<DateTime>,
       (eventCount / relevantDays) * 1000
   end
 
-define function "CVC Periods in Period via Device Exposure"(period Interval<DateTime>):
+define function "CVC Periods in Period"(period Interval<DateTime>):
   collapse(
     ("CVC Device Exposures") exposure
       let exposureInterval: (convert exposure to Interval<DateTime>)
         where exposureInterval overlaps period
         return all exposureInterval intersect period
   )
-
-// TODO(moringenj): There are no removal procedures in the MIMIC data
-define function "CVC Periods in Period via Insertion and Removal"(period Interval<DateTime>):
-  collapse(
-    ("CVC Insertion Procedures") insertion
-      where insertion.procedureDatetime before (end of period)
-      return all (1) _
-                   let startTime: convert insertion to DateTime,
-                       removal:   First(("CVC Removal Procedures") removal
-                                          where (start of convert removal to Interval<DateTime>)
-                                                after (start of convert insertion to Interval<DateTime>)
-                                          return all removal),
-                       cvcPeriod: if removal is null then
-                                    Interval[startTime, end of period]
-                                  else
-                                    Interval[startTime, convert removal to DateTime]
-                     return all cvcPeriod intersect period
-  )
-
-define function "CVC Periods in Period"(period Interval<DateTime>):
-  collapse(Flatten({
-    "CVC Periods in Period via Device Exposure"(period),
-    "CVC Periods in Period via Insertion and Removal"(period)
-  }))
 
 define function "CVC Hours in Period"(period Interval<DateTime>):
   ("CVC Periods in Period"(period)) p aggregate r starting 0:

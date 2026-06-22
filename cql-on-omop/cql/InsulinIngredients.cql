@@ -1,3 +1,9 @@
+// This library contains a list of concepts which designate insulin
+// /ingredients/. These ingredients are used to filter the DrugStrength entries
+// for the insulin /drugs/ defined in the InsulinDrugs library. Such a
+// filtering is necessary because insulin drugs often contain multiple
+// ingredients and some of those are not insulin variants.
+
 library "InsulinIngredients"
 
 include OMOPFunctions
