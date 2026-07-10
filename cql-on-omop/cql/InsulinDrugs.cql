@@ -1,5 +1,6 @@
 // This file has been generated automatically from
-// commit edaaf809a126b08f1c96ffd983434cb73973fa4f or https://github.com/indicate-eu/data-dictionary
+// commit edaaf809a126b08f1c96ffd983434cb73973fa4f of
+// https://github.com/indicate-eu/data-dictionary
 // Concept set(s)
 // * Insulin Aspart, Human (1 direct entries) [modified 2026-04-09]
 // * Insulin Degludec (1 direct entries) [modified 2026-04-09]

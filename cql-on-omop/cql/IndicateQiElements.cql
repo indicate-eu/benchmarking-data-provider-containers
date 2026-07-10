@@ -1,11 +1,14 @@
-// This file contains general definitions that are shared between the
-// different quality indicators.
+// This file contains general definitions of domain concepts
+// (i.e. clinical) that are shared between the different quality
+// indicators.  For shared technical definitions, see IndicateQiUtilities.cql.
 
 library "IndicateQiElements" version '1.0.0'
 
 using OMOP version 'v5.4'
 
 include OMOPHelpers
+
+include IndicateQiUtilities called U
 
 // TODO: @sgibb,: drop default value when leaving testing environment
 parameter "Review Period"
@@ -24,6 +27,8 @@ codesystem "OMOPSV Hierarchy": 'https://fhir-terminology.ohdsi.org?hierarchical'
 
 code "Intensive Care": '32037' from OMOPSV
 
+code "Intubation Tube": '4097216' from "OMOPSV Hierarchy"
+
 code "Body Height": '3036277' from OMOPSV
 
 code "Body Weight": '4099154' from OMOPSV
@@ -35,7 +40,8 @@ code "Gender Male":   '8507' from OMOPSV
 
 define function "Ideal Body Weight for Height"(Height Quantity, Gender Code):
   (1) _
-    let heightPart: 0.91 * (convert Height to 'cm' - 152.4 'cm').value
+    let heightInCM: U.EnsureQuantityWithUnit('Body height', Height, 'cm'),
+        heightPart: 0.91 * (heightInCM - 152.4 'cm').value
       return Quantity{
                value: case
                         when Gender ~ "Gender Female" then
@@ -53,31 +59,67 @@ context Patient
 define "Age at Start of Review Period":
   AgeInYearsAt(date from start of "Review Period")
 
-define "Most Recent Body Height Measurement":
-  First([Measurement: "Body Height"] m
-          return all m
-          sort by measurementDatetime desc)
+define "Body Height Measurements":
+  [Measurement: "Body Height"] m
+    return all m
+    sort by measurementDatetime desc
 
-define "Most Recent Body Weight Measurement":
-  First([Measurement: "Body Weight"] m
-          return all m
-          sort by measurementDatetime desc)
+define function "Most Recent Body Height Measurement Before"(targetTime DateTime):
+  First(("Body Height Measurements") m
+          where (targetTime is null) or (convert m to DateTime) before targetTime
+          return all m)
 
-define "Most Recent Ideal Body Weight Measurement":
-  First([Measurement: "Ideal Body Weight"] m
-          return all m
-          sort by measurementDatetime desc)
+define "Body Weight Measurements":
+  [Measurement: "Body Weight"] m
+    return all m
+    sort by measurementDatetime desc
 
-define "Ideal Body Weight Measured or Computed":
-  case
-    when "Most Recent Ideal Body Weight Measurement" is not null then
-      convert "Most Recent Ideal Body Weight Measurement" to Quantity
-    when "Most Recent Body Height Measurement" is not null then
-      "Ideal Body Weight for Height"("Most Recent Body Height Measurement",
-                                     Patient.genderConcept)
-    else
-      null
-  end
+define function "Most Recent Body Weight Measurement Before"(targetTime DateTime):
+  First(("Body Weight Measurements") m
+          where (targetTime is null) or (convert m to DateTime) before targetTime
+          return all m)
+
+define "Ideal Body Weight Measurements":
+  [Measurement: "Ideal Body Weight"] m
+    return all m
+    sort by measurementDatetime desc
+
+define function "Most Recent Ideal Body Weight Measurement Before"(targetTime DateTime):
+  First(("Ideal Body Weight Measurements") m
+          where (targetTime is null) or (convert m to DateTime) before targetTime
+          return all m)
+
+define function "Ideal Body Weight Measured or Computed Before"(targetTime DateTime):
+  (1) _
+    let idealBodyWeight: "Most Recent Ideal Body Weight Measurement Before"(targetTime),
+        bodyHeight:      "Most Recent Body Height Measurement Before"(targetTime)
+      return case
+               when idealBodyWeight is not null then
+                 U.EnsureQuantity('Ideal body weight', idealBodyWeight)
+               when bodyHeight is not null then
+                 "Ideal Body Weight for Height"(
+                   U.EnsureQuantity('Body height', bodyHeight),
+                   Patient.genderConcept
+                 )
+               else
+                 null
+             end
+
+// This function returns the body mass index as a quantity that is scaled
+// and/or converted to 'kg/m^2', not just of any mass/length^2 dimensions.
+define function "Body Mass Index Before"(targetTime DateTime):
+  (1) _
+    let bodyWeight: "Most Recent Body Weight Measurement Before"(targetTime),
+        bodyHeight: "Most Recent Body Height Measurement Before"(targetTime)
+      return if bodyWeight is not null and bodyHeight is not null then
+               (1) __
+                 let bodyWeightInKg: U.EnsureQuantityWithUnit('Body weight', bodyWeight, 'kg'),
+                     bodyHeightInM:  U.EnsureQuantityWithUnit('Body height', bodyHeight, 'm')
+                   // We use multiplication because the CQL Power operator
+                   // cannot be applied to quantities.
+                   return bodyWeightInKg / (bodyHeightInM * bodyHeightInM)
+             else
+               null
 
 /*
 @title: Intensive Care Visits

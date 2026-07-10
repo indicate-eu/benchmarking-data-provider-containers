@@ -13,17 +13,9 @@ using OMOP version 'v5.4'
 include OMOPHelpers
 
 include Intervals called I
-include LocalTimeGermany called L
 include TimePeriods called T
 
 include IndicateQiElements called elm
-
-// TODO(moringenj): shared with IndicateQi01Ventilation
-code "Intubated (Tube Present)": '4097216' from elm.OMOPSV
-
-concept "Intubation Tube": {
-  "Intubated (Tube Present)"
-}
 
 code "Invasive Ventilation Procedure": '37158404' from elm.OMOPSV
 
@@ -50,6 +42,10 @@ concept "Extubation Procedure": {
 code "Inadvertent Extubation Event": '4231838' from elm.OMOPSV
 
 context Patient
+
+define "Intubation Tube Exposures":
+  [DeviceExposure: elm."Intubation Tube"] e
+    where convert e to Interval<DateTime> overlaps elm."Review Period"
 
 define "Ventilation Procedures":
   [ProcedureOccurrence: "Ventilation Procedure"] p
@@ -79,7 +75,23 @@ define "Inadvertent Extubation Events":
 define "Periods without Ventilation":
   I.SubtractFromInterval(elm."Review Period", "Ventilation Periods")
 
-// Spontaneous Breathing Trial
+// Mechanical Ventilation and Spontaneous Breathing Trials
+
+define function "Mechanical Ventilation Intervals for Visit"(visitInterval Interval<DateTime>):
+  // A period of mechanical ventilation is characterized by the
+  // presence of an intubation tube and simultaneous ventilation.
+  collapse(
+    I.IntersectIntervals(
+      "Ventilation Procedures" p
+        let procedureInterval: convert p to Interval<DateTime>
+          where procedureInterval overlaps visitInterval
+          return all procedureInterval,
+      "Intubation Tube Exposures" e
+        let exposureInterval: convert e to Interval<DateTime>
+          where exposureInterval overlaps visitInterval
+          return all exposureInterval
+    )
+  )
 
 define function "Is Spontaneous Breathing Trial in Period"(period Interval<DateTime>):
      Exists("Trial of Spontaneous Breathing Procedures" p
@@ -88,35 +100,58 @@ define function "Is Spontaneous Breathing Trial in Period"(period Interval<DateT
               where convert p to Interval<DateTime> overlaps period)
   or Exists("Inadvertent Extubation Events" e
               where convert e to DateTime during period)
-  or Exists("Periods without Ventilation" p where p overlaps period)
+  or Exists("Periods without Ventilation" p
+              where     p overlaps period
+                    and duration in minutes of (convert p to Interval<DateTime>) >= 5)
 
 // Quality Indicator
 
-define function "Ventilated for at least 48 Hours"(procedureIntervals List<Interval<DateTime>>):
-  Exists((collapse(procedureIntervals)) i
-           where duration in hours of i >= 48
-           return all i)
-
 define function "Is in Initial Population"(visitInterval Interval<DateTime>):
-      Exists([DeviceExposure: "Intubation Tube"] d
-               where (convert d to Interval<DateTime>)
-                     overlaps visitInterval)
-  and "Ventilated for at least 48 Hours"(
-        "Ventilation Procedures" p
-          let procedureInterval: convert p to Interval<DateTime>
-            where procedureInterval overlaps visitInterval
-            return all procedureInterval
-      )
-  and AgeInYearsAt(start of visitInterval) >= 18
+  AgeInYearsAt(start of visitInterval) >= 18
+
+define function "Mechanically Ventilated for at least 48 Hours within"(
+    mechanicalVentilationIntervals List<Interval<DateTime>>,
+    periodInterval                 Interval<DateTime>
+  ):
+  // We compute a non-null value for the 24-hour period if a
+  // mechanical ventilation episode (ventilation + intubation tube) that
+  // overlaps the 24-hour period has been ongoing for at least 48 hours
+  // at the start of the period.  A mechanical ventilation episode that
+  // has been going on for less time at the start of the 24-hour period
+  // does not require any intervention so neither counting the 24-hour
+  // period as a failure nor as a success makes sense.
+  //
+  // Since all expected interventions (trial of spontaneous breathing,
+  // extubation, lack of ventilation) require an interruption of the
+  // mechanical ventilation, we check whether a mechanical ventilation
+  // episode has been ongoing for at least 48 hours by checking whether
+  // mechanical ventilation has been performed for at least 47 hours of
+  // the 48 hours in question.
+  (1) _
+    let relevantPeriod: Interval[end of periodInterval - 48 hours,
+                                 end of periodInterval],
+        hoursInPeriod:  (mechanicalVentilationIntervals) i aggregate r starting 0:
+                          r + (duration in hours of (i intersect relevantPeriod))
+      return hoursInPeriod >= 47
 
 define "Visit Results":
   (T."Visits with 24-hour Periods") visitWithPeriods
-    let inInitialPopulationForVisit: "Is in Initial Population"(visitWithPeriods.visit)
-      return all (visitWithPeriods.periods) period
+    let visitInterval:                  visitWithPeriods.visit,
+        inInitialPopulationForVisit:    "Is in Initial Population"(visitInterval),
+        mechanicalVentilationIntervals: "Mechanical Ventilation Intervals for Visit"(
+                                          visitInterval
+                                        )
+      return all (visitWithPeriods.fullyContainedPeriods) period
                    return all elm."Period Result"(
                      period,
-                     inInitialPopulationForVisit,
-                     if "Is Spontaneous Breathing Trial in Period"(period) then 1 else 0,
+                         inInitialPopulationForVisit
+                     and "Mechanically Ventilated for at least 48 Hours within"(
+                           mechanicalVentilationIntervals, period
+                         ),
+                     if "Is Spontaneous Breathing Trial in Period"(period) then
+                       1
+                     else
+                       0,
                      1
                    )
 

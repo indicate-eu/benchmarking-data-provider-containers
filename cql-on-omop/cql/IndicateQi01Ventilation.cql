@@ -16,13 +16,16 @@ library "IndicateQi01Ventilation" version '1.0.0'
 using OMOP version 'v5.4'
 
 include OMOPHelpers
+
 include TimePeriods called T
+
+include IndicateQiUtilities called U
 include IndicateQiElements called elm
+
 include VentilationProcedures
+include TidalVolumeMeasurements
 
 code "ARDS Condition": '4195694' from elm.OMOPSV // ICD10 based code: '45552897'
-
-code "Intubation Tube": '4097216' from elm."OMOPSV Hierarchy"
 
 code "Invasive Ventilation Procedure": '37158404' from elm.OMOPSV
 
@@ -69,64 +72,14 @@ concept "PEEP Measurement": {
 
 code "Plateau Pressure Measurement": '44782825' from elm.OMOPSV
 
- // Unit cmH2O
+// Unit: usually cmH2O but may be some other pressure unit.  Converted to
+// cm[H2O] in "Peak Inspiratory Pressure Measurements".
 code "Inspiratory Pressure Setting": '4215838' from elm.OMOPSV
- // Unit mmHg, CAVE different units, has to be converted to unit cmH2O
+
+// Unit: usually mmHg (different for CAVE).  Has to be converted to
+// unit cmH2O. Converted to cm[H2O] in "Peak Inspiratory Pressure
+// Measurements".
 code "Peak Inspiratory Pressure Measurement": '4101694' from elm.OMOPSV
-
-code "Tidal Volume Inspiratory Measurement":                                                                                '44782826' from elm.OMOPSV
-code "Tidal Volume Spontaneuous Measurement":                                                                               '4108448'  from elm.OMOPSV
-code "Tidal Volume Setting Measurement":                                                                                    '3012410'  from elm.OMOPSV
-code "Tidal Volume General Measurement":                                                                                    '4029625'  from elm.OMOPSV
-code "Expiratory tidal volume":                                                                                             '44782827' from elm.OMOPSV
-code "Mandatory tidal volume":                                                                                              '4353946'  from elm.OMOPSV
-code "Tidal volume Ventilator --on ventilator":                                                                             '21490854' from elm.OMOPSV
-code "Tidal volume expired Respiratory system airway":                                                                      '21490752' from elm.OMOPSV
-code "Tidal volume expired Respiratory system airway --on ventilator":                                                      '21490789' from elm.OMOPSV
-code "Tidal volume expired spontaneous corrected for compressible gas volume Respiratory system airway --on ventilator":    '3011767'  from elm.OMOPSV
-code "Tidal volume expired spontaneous uncorrected for compressible gas volume setting Ventilator":                         '3020572'  from elm.OMOPSV
-code "Tidal volume expired spontaneous+mechanical Respiratory system airway --on ventilator":                               '3015016'  from elm.OMOPSV
-code "Tidal volume expired spontaneous+mechanical corrected for compressible gas volume --on ventilator":                   '3009097'  from elm.OMOPSV
-code "Tidal volume inspired spontaneous+mechanical --on ventilator":                                                        '3033780'  from elm.OMOPSV
-code "Tidal volume inspired spontaneous+mechanical Measured --on ventilator":                                               '3016166'  from elm.OMOPSV
-code "Tidal volume inspired spontaneous+mechanical corrected for compressible gas volume --on ventilator":                  '3021470'  from elm.OMOPSV
-code "Tidal volume sigh spontaneous+mechanical --on ventilator":                                                            '3008805'  from elm.OMOPSV
-code "Tidal volume.inspired":                                                                                               '36303816' from elm.OMOPSV
-code "Tidal volume.spontaneous --on ventilator":                                                                            '3017594'  from elm.OMOPSV
-code "Tidal volume.spontaneous+mechanical --on ventilator":                                                                 '3004732'  from elm.OMOPSV
-code "Tidal volume.spontaneous+mechanical corrected for compressible gas volume --on ventilator":                           '3007828'  from elm.OMOPSV
-code "Tidal volume.spontaneous+mechanical uncorrected for compressible gas volume --on ventilator":                         '3017707'  from elm.OMOPSV
-code "Tidal volume.spontaneous+mechanical/Body weight [Volume/mass] --on ventilator":                                       '3017878'  from elm.OMOPSV
-code "Tidal volume.spontaneous+mechanical/Body weight [Volume/mass] corrected for compressible gas volume --on ventilator": '3016864'  from elm.OMOPSV
-code "Tidal volume.spontaneous/Body weight [Volume/mass] --on ventilator":                                                  '3017054'  from elm.OMOPSV
-
-concept "Tidal Volume Measurement": {
-  "Tidal Volume Inspiratory Measurement",
-  "Tidal Volume Spontaneuous Measurement",
-  "Tidal Volume Setting Measurement",
-  "Tidal Volume General Measurement",
-  "Expiratory tidal volume",
-  "Mandatory tidal volume",
-  "Tidal volume Ventilator --on ventilator",
-  "Tidal volume expired Respiratory system airway",
-  "Tidal volume expired Respiratory system airway --on ventilator",
-  "Tidal volume expired spontaneous corrected for compressible gas volume Respiratory system airway --on ventilator",
-  "Tidal volume expired spontaneous uncorrected for compressible gas volume setting Ventilator",
-  "Tidal volume expired spontaneous+mechanical Respiratory system airway --on ventilator",
-  "Tidal volume expired spontaneous+mechanical corrected for compressible gas volume --on ventilator",
-  "Tidal volume inspired spontaneous+mechanical --on ventilator",
-  "Tidal volume inspired spontaneous+mechanical Measured --on ventilator",
-  "Tidal volume inspired spontaneous+mechanical corrected for compressible gas volume --on ventilator",
-  "Tidal volume sigh spontaneous+mechanical --on ventilator",
-  "Tidal volume.inspired",
-  "Tidal volume.spontaneous --on ventilator",
-  "Tidal volume.spontaneous+mechanical --on ventilator",
-  "Tidal volume.spontaneous+mechanical corrected for compressible gas volume --on ventilator",
-  "Tidal volume.spontaneous+mechanical uncorrected for compressible gas volume --on ventilator",
-  "Tidal volume.spontaneous+mechanical/Body weight [Volume/mass] --on ventilator",
-  "Tidal volume.spontaneous+mechanical/Body weight [Volume/mass] corrected for compressible gas volume --on ventilator",
-  "Tidal volume.spontaneous/Body weight [Volume/mass] --on ventilator"
-}
 
 // PEEP Tables
 
@@ -156,8 +109,8 @@ define function "High PEEP for FiO2"(FiO2 Quantity):
 
 context Patient
 
-// Sorted in reverse chronological order for "Last Observation Carried Forward"
-// logic below.
+// Sorted in reverse chronological order for "Last Observation Carried
+// Forward" (LOCF) logic below.
 define "PaO2 Measurements":
   [Measurement: "PaO2 Measurement"] m
     return all m
@@ -173,6 +126,9 @@ define "PaO2/FiO2 (Horowitz index) Measurements":
     return all m
     sort by measurementDatetime desc
 
+// This is not sorted like the other measurements because the PEEP
+// measurements dictate the timing and the other measurements are carried
+// forward to align with the PEEP measurements.
 define "PEEP Measurements":
   [Measurement: "PEEP Measurement"] m
     return all m
@@ -183,18 +139,23 @@ define "Plateau Pressure Measurements":
     return all m
     sort by measurementDatetime desc
 
+// Merge data from the measurement and observation domains by
+// converting to Quantity.  Sort in descending order for LOCF logic.
+// Convert to cm[H2O].
 define "Peak Inspiratory Pressure Measurements":
   (Flatten({
      ([Measurement: "Peak Inspiratory Pressure Measurement"] m
         return all {
           datetime: convert m to DateTime,
+          // TODO(moringenj): use an error-checking conversion
           quantity: convert (convert m to Quantity) to 'cm[H2O]'
         }
      ),
      ([Observation: "Inspiratory Pressure Setting"] o
         return all {
           datetime: convert o to DateTime,
-          quantity: convert o to Quantity
+          // TODO(moringenj): use an error-checking conversion
+          quantity: convert (convert o to Quantity) to 'cm[H2O]'
         }
      )
    })) q
@@ -205,37 +166,72 @@ define "Ventilation Procedures":
   [ProcedureOccurrence: VentilationProcedures."PCV or VCV Ventilation Procedure"]
 
 define "Intubation Tube Exposures":
-  [DeviceExposure: "Intubation Tube"]
+  [DeviceExposure: elm."Intubation Tube"]
 
 define "ARDS Conditions":
   [ConditionOccurrence: "ARDS Condition"]
 
+// In CQL
+//
+//   @2026-06-17T10:11:12 same or before @2026-06-17T10:11:12 => true
+//   @2026-06-17T10:11:13 same or before @2026-06-17T10:11:12 => false
+//
+// but
+//
+//   @2026-06-17T10:11 same or before @2026-06-17T10:11:12 => null
+//
+// In this use case, we want the third example to evaluate to true.  For
+// greater precision mismatches, we want false.
+define function "Same or Before with Minute Precision"(earlier DateTime,
+                                                       later   DateTime):
+  (1) _
+    let fullPrecisionResult:   earlier same or before later,
+        minutePrecisionResult: earlier same minute or before later
+      return case
+               when fullPrecisionResult is not null then
+                 fullPrecisionResult
+               when minutePrecisionResult is not null then
+                 minutePrecisionResult
+               else
+                 false
+             end
+
 // Last Observation Carried Forward
 define function "PaO2 LOCF"(targetTime DateTime):
   First("PaO2 Measurements" m
-          // TODO(moringenj): what is the correct logic and acceptable
-          //                  precision for comparing times in this context?
-          where (convert m to DateTime) same hour or before targetTime
+          where "Same or Before with Minute Precision"(
+                  convert m to DateTime,
+                  targetTime
+                )
           return all m)
 
 define function "FiO2 LOCF"(targetTime DateTime):
   First("FiO2 Measurements" m
-          where (convert m to DateTime) same hour or before targetTime
+          where "Same or Before with Minute Precision"(
+                  convert m to DateTime,
+                  targetTime
+                )
           return all m)
 
 define function "PaO2/FiO2 LOCF"(targetTime DateTime):
   First("PaO2/FiO2 (Horowitz index) Measurements" m
-          where (convert m to DateTime) same hour or before targetTime
+          where "Same or Before with Minute Precision"(
+                  convert m to DateTime,
+                  targetTime
+                )
           return all m)
 
 define function "Plateau Pressure Measurement LOCF"(targetTime DateTime):
   First("Plateau Pressure Measurements" m
-          where (convert m to DateTime) same hour or before targetTime
+          where "Same or Before with Minute Precision"(
+                  convert m to DateTime,
+                  targetTime
+                )
           return all m)
 
 define function "Peak Inspiratory Pressure LOCF"(targetTime DateTime):
   First("Peak Inspiratory Pressure Measurements" m
-          where m.datetime same hour or before targetTime
+          where "Same or Before with Minute Precision"(m.datetime, targetTime)
           return all m.quantity)
 
 define function "Ventilation Mode"(targetTime DateTime):
@@ -253,23 +249,14 @@ define function "Ventilation Mode"(targetTime DateTime):
              end
 
 define "Usable Tidal Volume Measurements":
-  [Measurement: "Tidal Volume Measurement"] m
-    where     if m.unitConcept is null then
-                // TODO(moringenj): include the measurement in the message once we have ToString for Measurement
-                Message(false, true, '400', 'Warning', 'Tidal volume measurement does not have a unit')
-              else
-                true
-          and if m.valueAsNumber is null then
-                Message(false, true, '400', 'Warning', 'Tidal volume measurement does not have a numeric value')
-              else
-                true
-          and if (convert (convert m to Quantity) to 'mL').value is null then
-                Message(false, true, '400', 'Warning',
-                        'Tidal volume measurement has unit "'
-                        + (convert m to Quantity).unit
-                        + '" but must convertible to "mL"')
-              else
-                true
+  // Select Tidal Volume measurements according to the "Tidal volume (Vt)"
+  // (322) concept set. All concept in that concept use the unit mL for the
+  // measurements.  We Do not retrieve measurements according to the "Tidal
+  // volume per body weight (Vt/kg)" concept set since such measurements are
+  // uncommon and would require scaling with the (actual) body weight.
+  [Measurement: TidalVolumeMeasurements."Tidal Volume Measurements"] m
+    // TODO(moringenj): include the measurement in the message once we have ToString for Measurement
+    where U.EnsureQuantityWithUnit('Tidal volume measurement', m, 'mL') is not null
     return all m
     sort by measurementDatetime desc
 
@@ -278,8 +265,7 @@ define function "Tidal Volume LOCF"(targetTime DateTime):
           where m same hour or before targetTime
           return all m)
 
-// PaO2 unit mm[Hg]
-// FiO2 unit %
+// PaO2 unit mm[Hg], FiO2 unit %.  This function produces mm[Hg].
 define function "Ensure PaO2/FiO2"(peepTime DateTime):
   (1) _
     let "PaO2/fiO2": "PaO2/FiO2 LOCF"(peepTime)
@@ -291,6 +277,11 @@ define function "Ensure PaO2/FiO2"(peepTime DateTime):
                      paO2Time: (convert paO2 to DateTime),
                      // TODO(moringenj): is this correct for fiO2?
                      fiO2:     "FiO2 LOCF"(peepTime)
+                   // If the paO2 measurement is within 6 hours of the
+                   // PEEP measurement, use the paO2 and fiO2
+                   // measurements.  Otherwise assume mild ARDS by
+                   // returning 300 'mm[Hg]' which is classified as mild
+                   // below.
                    return if (duration in hours between paO2Time and peepTime) < 6 then
                             paO2 / fiO2
                           else
@@ -310,19 +301,29 @@ define function "Recommended PEEP for PaO2"(peepTime DateTime):
 
 define function "Is Conforming Tidal Volume"(tidalVolume Measurement):
   (1) _
-    let tidalVolumeQuantity: convert tidalVolume to Quantity,
-        tidalVolumeValue:    (convert tidalVolumeQuantity to 'mL').value,
-        idwValue:            elm."Ideal Body Weight Measured or Computed".value
-      return tidalVolumeValue in Interval[4 * idwValue, 8 * idwValue]
+    let tidalVolumeQuantity:  convert tidalVolume to Quantity,
+        // TODO(moringenj): use an error-checking conversion
+        tidalVolumeValue:     (convert tidalVolumeQuantity to 'mL').value,
+        tidalVolumeTime:      convert tidalVolume to DateTime,
+        // The function returns the ideal body weight converted/scaled to kg/m
+        // not just any mass/length dimensions so taking the value out of the
+        // quantity is well-defined.
+        idealBodyWeight:      elm."Ideal Body Weight Measured or Computed Before"(
+                                tidalVolumeTime
+                              ),
+        idealBodyWeightValue: idealBodyWeight.value
+      return tidalVolumeValue in Interval[
+                                   4 * idealBodyWeightValue,
+                                   8 * idealBodyWeightValue
+                                 ]
 
-define function "Effective Plateau Pressure"(peepMeasurement Measurement):
+define function "Effective Plateau Pressure"(peepTime DateTime):
   (1) _
-    let peepMeasurementTime:        convert peepMeasurement to DateTime,
-        ventilationMode:            "Ventilation Mode"(peepMeasurementTime),
-        plateauPressureMeasurement: "Plateau Pressure Measurement LOCF"(peepMeasurementTime)
+    let ventilationMode:            "Ventilation Mode"(peepTime),
+        plateauPressureMeasurement: "Plateau Pressure Measurement LOCF"(peepTime)
       return if     plateauPressureMeasurement is null
                 and ventilationMode = 'Pressure Driven' then
-               "Peak Inspiratory Pressure LOCF"(peepMeasurementTime)
+               "Peak Inspiratory Pressure LOCF"(peepTime)
              else
                plateauPressureMeasurement
 
@@ -331,7 +332,7 @@ define function "Is Conforming PEEP"(peepMeasurement Measurement):
     let peepQuantity:       convert peepMeasurement to Quantity,
         peepTime:           convert peepMeasurement to DateTime,
         tidalVolume:        "Tidal Volume LOCF"(peepTime),
-        plateauPressure:    "Effective Plateau Pressure"(peepMeasurement),
+        plateauPressure:    "Effective Plateau Pressure"(peepTime),
         pressureDifference: plateauPressure - peepQuantity,
         recommendedPEEP:    "Recommended PEEP for PaO2"(peepTime)
       return     peepQuantity >= recommendedPEEP
@@ -368,7 +369,7 @@ define "Visit Results":
         measurementsInVisit:         ("PEEP Measurements") m
                                        where m in visitInterval
                                        return all m
-      return all (visitWithPeriods.periods) period
+      return all (visitWithPeriods.fullyContainedPeriods) period
                    let measurementsInPeriod: (measurementsInVisit) m
                                                where m in period
                                                return all m,

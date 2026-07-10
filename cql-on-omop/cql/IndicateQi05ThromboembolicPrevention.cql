@@ -22,23 +22,10 @@ define "Anticoagulation Drug Exposures":
     return all e
     sort by drugExposureStartDatetime asc
 
-define function "Anticoagulation Drug Exposures during Period"(period Interval<DateTime>):
-  ("Anticoagulation Drug Exposures") e
-    where (convert e to Interval<DateTime>) overlaps period
-    return all e
-
-// 24-hour periods
-
 define function "24-hour Period with Conforming Medication"(period Interval<DateTime>):
-  Exists("Anticoagulation Drug Exposures during Period"(period))
-
-define function "24-hour Periods with conforming Medication"(periods List<Interval<DateTime>>):
-  Flatten({
-    { First(periods) }, // First period always counts as conforming
-    (Tail(periods)) p
-      where "24-hour Period with Conforming Medication"(p)
-      return all p
-  })
+  Exists("Anticoagulation Drug Exposures" e
+           where (convert e to Interval<DateTime>) overlaps period
+           return all e)
 
 // Quality Indicator
 
@@ -47,15 +34,17 @@ define function "Is in Initial Population"(visitInterval Interval<DateTime>):
 
 define "Visit Results":
   (T."Visits with 24-hour Periods") visitWithPeriods
-    let inInitialPopulationForVisit: "Is in Initial Population"(visitWithPeriods.visit),
-        periods:                     visitWithPeriods.allPeriods,
-        goodPeriods:                 "24-hour Periods with conforming Medication"(periods)
-      return all (periods) period
+    let inInitialPopulationForVisit: "Is in Initial Population"(visitWithPeriods.visit)
+      // To implement the denominator exclusion, the following
+      // considers only complete 24-hour periods and skips the first
+      // complete 24-hour period.  For each of the considered periods,
+      // one of the results 0/1 and 1/1 is generated.
+      return all (Skip(visitWithPeriods.fullyContainedPeriods, 1)) period
                    return all elm."Period Result"(
                      period,
                      inInitialPopulationForVisit,
-                     Count((goodPeriods) s where s during period),
-                     Count((periods)     s where s during period)
+                     if "24-hour Period with Conforming Medication"(period) then 1 else 0,
+                     1
                    )
 
 define Result: elm."Overall Result"(Patient, "Visit Results")

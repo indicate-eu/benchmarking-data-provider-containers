@@ -19,9 +19,9 @@ include TimePeriods called T
 
 // Pain Assessment
 
-code "Behavioral Pain Scale (Measurement)":           '2100000007' from elm.OMOPSV
-code "Numeric Pain Rating Scale (Measurement)":       '37151627'   from elm.OMOPSV
-code "Visual Analog Pain Scale (Measurement)":        '4165600'    from elm.OMOPSV
+code "Behavioral Pain Scale (Measurement)":     '2100000007' from elm.OMOPSV
+code "Numeric Pain Rating Scale (Measurement)": '37151627'   from elm.OMOPSV
+code "Visual Analog Pain Scale (Measurement)":  '4165600'    from elm.OMOPSV
 
 concept "Pain Assessment Measurement": {
   "Behavioral Pain Scale (Measurement)",
@@ -31,8 +31,8 @@ concept "Pain Assessment Measurement": {
 
 // Sedation Assessment
 
-code "Richmond Agitation Sedation Scale (Measurement)":       '1447532'  from elm.OMOPSV
-code "Ramsay Sedation Scale (Measurement)":                   '4105091'  from elm.OMOPSV
+code "Richmond Agitation Sedation Scale (Measurement)": '1447532'  from elm.OMOPSV
+code "Ramsay Sedation Scale (Measurement)":             '4105091'  from elm.OMOPSV
 
 concept "Sedation Assessment Measurement": {
   "Richmond Agitation Sedation Scale (Measurement)",
@@ -49,7 +49,6 @@ code "Delirium Observation Screening (DOS) scale":                        '21000
 code "Delirium Rating Scale-revised-98 (DRS-R-98)":                       '2100000006' from elm.OMOPSV
 code "Intensive Care Delirium Screening Checklist (ICDSC)":               '1447893'    from elm.OMOPSV
 code "Nursing Delirium Screening Scale (Nu-DESC)":                        '2100000005' from elm.OMOPSV
-code "Glasgow Coma Score Total":                                          '3007194'    from elm.OMOPSV
 
 concept "Delirium Assessment Measurement": {
   "3-minute Diagnostic Interview for CAM-defined Delirium (3D-CAM)",
@@ -59,8 +58,7 @@ concept "Delirium Assessment Measurement": {
   "Delirium Observation Screening (DOS) scale",
   "Delirium Rating Scale-revised-98 (DRS-R-98)",
   "Intensive Care Delirium Screening Checklist (ICDSC)",
-  "Nursing Delirium Screening Scale (Nu-DESC)",
-  "Glasgow Coma Score Total"
+  "Nursing Delirium Screening Scale (Nu-DESC)"
 }
 
 context Patient
@@ -79,10 +77,12 @@ define "Delirium Assessment Measurements":
 
 // Assessments
 
-// TODO(moringenj): we don't need the next measurement but making a dedicated
-//                  function does not seem worth the effort
-define function "Are Conforming Assessments"(measurements List<Tuple{previous Measurement, current Measurement, next Measurement}>,
-                                             isFirstShift Boolean):
+// NOTE(moringenj): We don't need the next measurement, only the previous one,
+//                  but making a dedicated does not seem worth the effort.
+define function "Are Conforming Assessments"(
+    measurements List<Tuple{previous Measurement, current Measurement, next Measurement}>,
+    isFirstShift Boolean
+  ):
       Exists(measurements)
   and (isFirstShift
        or AllTrue(measurements m
@@ -98,28 +98,49 @@ define function "Measurements during Shift with Neighbors"(
     where (convert m.current to DateTime) during shift
     return all m
 
-define function "Is Conforming Shift"(shift        Interval<DateTime>,
-                                      isFirstShift Boolean):
-      "Are Conforming Assessments"("Measurements during Shift with Neighbors"("Pain Assessment Measurements", shift),
-                                   isFirstShift)
-  and "Are Conforming Assessments"("Measurements during Shift with Neighbors"("Sedation Assessment Measurements", shift),
-                                   isFirstShift)
-  and "Are Conforming Assessments"("Measurements during Shift with Neighbors"("Delirium Assessment Measurements", shift),
-                                   isFirstShift)
+define function "Number of Satisfied Criteria in Shift"(
+    shift        Interval<DateTime>,
+    isFirstShift Boolean
+  ):
+    if "Are Conforming Assessments"("Measurements during Shift with Neighbors"(
+                                     "Pain Assessment Measurements", shift
+                                   ),
+                                   isFirstShift) then
+      1
+    else
+      0
+  + if "Are Conforming Assessments"("Measurements during Shift with Neighbors"(
+                                     "Sedation Assessment Measurements", shift
+                                   ),
+                                   isFirstShift) then
+      1
+    else
+      0
+  + if "Are Conforming Assessments"("Measurements during Shift with Neighbors"(
+                                     "Delirium Assessment Measurements", shift
+                                   ),
+                                   isFirstShift) then
+      1
+    else
+      0
 
 // Shifts
 
-define function "Conforming Shifts in Visit"(shifts List<Interval<DateTime>>):
+define function "Counts for Shifts in Visit"(shifts List<Interval<DateTime>>):
   // Handle the first shift of each ICU visit specially since the
-  // first measurement of that first shift does not have a preceding
-  // measurement.
+  // first measurement of that first shift does not (and cannot) have a
+  // preceding measurement.
   Flatten({
             ({ First(shifts) }) s
-              where "Is Conforming Shift"(s, true)
-              return all s,
+              return all {
+                shiftPeriod:    s,
+                satisfiedCount: "Number of Satisfied Criteria in Shift"(s, true)
+              },
             (Tail(shifts)) s
-              where "Is Conforming Shift"(s, false)
-              return all s
+              return all {
+                shiftPeriod:    s,
+                satisfiedCount: "Number of Satisfied Criteria in Shift"(s, false)
+              }
          })
 
 // Quality Indicator
@@ -131,14 +152,30 @@ define "Visit Results":
   (T."Visits with 24-hour Periods") visitWithPeriods
     let visitInterval:               visitWithPeriods.visit,
         inInitialPopulationForVisit: "Is in Initial Population"(visitInterval),
+        // This returns only shifts that are fully contained in the
+        // visit interval.  This behavior matches the requirement that
+        // incomplete shifts which merely overlap the visit interval
+        // should be ignored.
         shifts:                      T."Shifts during Period"(visitInterval),
-        goodShifts:                  "Conforming Shifts in Visit"(shifts)
-      return all (visitWithPeriods.periods) period
+        // This returns for each shift in the visit the number of satisfied
+        // criteria (between 0 and 3) in that shift.
+        shiftsWithCounts:            "Counts for Shifts in Visit"(shifts)
+      return all (visitWithPeriods.overlappingPeriods) period
+                   // If the number of shifts during period is 0, the
+                   // quotient will be 0/0 which evaluates to null so
+                   // that the period result is recognized as denominator
+                   // exclusion.  Otherwise, the quotient evaluates to a
+                   // conformance value that is one of the ratios
+                   // 0/3, 1/3, ..., 3/3, 0/6, 1/6, ..., 6/6, 0/9, ..., 9/9.
                    return all elm."Period Result"(
                      period,
                      inInitialPopulationForVisit,
-                     Count((goodShifts) s where s during period),
-                     Count((shifts)     s where s during period)
+                     (shiftsWithCounts) s aggregate r starting 0:
+                       r + if s.shiftPeriod during period then
+                         s.satisfiedCount
+                       else
+                         0,
+                     3 * Count((shifts) s where s during period)
                    )
 
 define Result: elm."Overall Result"(Patient, "Visit Results")

@@ -1,9 +1,9 @@
-// This library contains functions for computing from DrugExposure entrie the
+// This library contains functions for computing from DrugExposure entries the
 // effective amount of administered insulin in [IU].
 //
 // The computation is complicated by the fact that insulin drugs often contain
 // multiple ingredients only some of which are insulin variants. Furthermore,
-// the DrugStrength entries for the insulin ingredient use different units and
+// the DrugStrength entries for the insulin ingredients use different units and
 // need to be converted to [IU].
 
 library "InsulinStrength" version '0.0.0'
@@ -13,19 +13,21 @@ using OMOP version 'v5.4'
 include OMOPHelpers
 include OMOPFunctions
 
+include IndicateQiUtilities called U
+
 // This function converts a mass-based insulin quantity into the
 // corresponding quantity expressed in international units using the
 // published conversion factor.
 // Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC6501531/
 define function "Insulin in mg to IU"(quantity Quantity):
-  Quantity{value: 28.7 * (convert quantity to 'mg').value, unit: '[IU]'}
+  Quantity{value: 28.8 * (convert quantity to 'mg').value, unit: '[IU]'}
 
 // This function converts an insulin quantity that can be expressed in
 // a number of different units into the corresponding quantity
 // expressed in international units and an indication of whether the
 // quantity describes an amount per volume or just an amount.
 //
-// The conversion are
+// The conversions are
 // * x [hp_X]  -> 0 [IU], not per volume
 // * x mg      -> y [IU], not per volume
 // * x mg/ml   -> y [IU],     per volume
@@ -41,14 +43,16 @@ define function "Insulin in mg to IU"(quantity Quantity):
 // because the UCUM service does not recognize that unit.
 define function "Insulin Amount in IU"(quantity Quantity):
   case
-    // When the amount is specific as homeopathic dilution factor, we
+    // When the amount is specific as a homeopathic dilution factor, we
     // assume that there is no biological effect.
     //
     // Note: [hp_X] is dimensionless so can't use
     //
     //   convert quantity to '[hp_X]'
     //
-    // to detect it. The best we can do is look for the literal unit name.
+    // to detect it since that conversion would succeed for quantities
+    // expressed in [IU], which is also dimensionless, as well. The best we
+    // can do is look for the literal unit name.
     when quantity.unit = '[hp_X]' then
       {
         quantity:  0 '[IU]',
@@ -87,11 +91,13 @@ define function "Insulin Strength in IU"(drugStrength DrugStrength):
         quantityInIU: "Insulin Amount in IU"(quantity)
       return
       if quantityInIU is null then
-        Message(null as Tuple{quantity Quantity, perVolume Boolean}, true, '400', 'Warning',
-                'Unexpected unit in DrugStrength for ingredient '
-                + drugStrength.ingredientConcept.conceptName
-                + ' of drug ' + drugStrength.drugConcept.conceptName
-                + ': ' + if quantity is null then 'null' else quantity.unit)
+        U.SignalProblem('Unexpected unit in DrugStrength for ingredient '
+                        + drugStrength.ingredientConcept.conceptName
+                        + ' of drug '
+                        + drugStrength.drugConcept.conceptName
+                        + ': '
+                        + if quantity is null then 'null' else quantity.unit)
+          as Tuple{quantity Quantity, perVolume Boolean}
       else
         quantityInIU
 
@@ -115,12 +121,15 @@ define function "Insulin Exposure"(drugExposure OMOP.DrugExposure,
                // {false,true} which indicates a mixture of per-volume
                // strengths and abstract strengths.
                when Count(perVolume) > 1 then
-                 Message(null as Quantity, true, '400', 'Error',
-                         'Some strengths are given per-volume and some are not')
+                 U.SignalProblem('Some strengths are given per-volume and some'
+                                 + ' are not')
+                   as Quantity
                when strengthQuantity is not null
                     and drugExposure.quantity is not null then
                  drugExposure.quantity * strengthQuantity
                else
-                 Message(null as Quantity, true, '400', 'Error',
-                         'Missing quantity in DrugExposure or failure to compute insulin amount from DrugStrengths')
+                 U.SignalProblem('Missing quantity in DrugExposure or failure'
+                                 + ' to compute insulin amount from'
+                                 + ' DrugStrengths')
+                   as Quantity
              end

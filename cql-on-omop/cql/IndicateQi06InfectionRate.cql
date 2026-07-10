@@ -10,8 +10,11 @@ library "IndicateQi06InfectionRate" version '1.0.0'
 using OMOP version 'v5.4'
 
 include OMOPHelpers
-include IndicateQiElements called elm
+
 include TimePeriods called T
+
+include IndicateQiElements called elm
+include IndicateQiUtilities called U
 
 // Terminology
 
@@ -72,7 +75,11 @@ define function incidence(period       Interval<DateTime>,
                           relevantDays Decimal):
   case
     when eventCount > 0 and not (relevantDays > 0) then
-      Message(0, true, '400', 'Error', 'In period [' + ToString(start of period) + ', ' + ToString(end of period) + '], event count is ' + ToString(eventCount) + ' but relevant days is ' + ToString(relevantDays))
+      U.SignalProblemWithValue('In period [' + ToString(start of period) + ', '
+                               + ToString(end of period) + '], event count is '
+                               + ToString(eventCount) + ' but relevant days is '
+                               + ToString(relevantDays),
+                               0)
     else
       // This will be null if relevantDays is 0 but in that case,
       // eventCount is also 0.
@@ -142,6 +149,7 @@ define function "Number of VAP in Period"(period Interval<DateTime>):
   )
 
 define function "VAP Incidence in Period"(period Interval<DateTime>):
+  // TODO(moringenj): explain "days" since really [0, 1]
   incidence(period,
             "Number of VAP in Period"(period),
             "Ventilation Days in Period"(period))
@@ -168,12 +176,12 @@ define function "Is in Initial Population"(visitInterval Interval<DateTime>):
 define "Visit Results":
   (T."Visits with 24-hour Periods") visitWithPeriods
     let inInitialPopulationForVisit: "Is in Initial Population"(visitWithPeriods.visit)
-      return all (visitWithPeriods.periods) period
+      return all (visitWithPeriods.fullyContainedPeriods) period
                    return all elm."Period Result"(
                      period,
                      inInitialPopulationForVisit,
                      0,
-                     1
+                     1 // TODO(moringenj): infection → 1000 , else → 0
                    )
 
 define Result: elm."Overall Result"(Patient, "Visit Results")

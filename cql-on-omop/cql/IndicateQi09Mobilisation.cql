@@ -3,7 +3,9 @@
 //
 // Description:
 //
-//   TODO(moringenj): missing in formal definition
+//   Critically ill adult ICU patients should be mobilised at least once
+//   per eligible ICU day, unless there is a documented order not to
+//   mobilize.
 
 library "IndicateQi09Mobilisation" version '1.0.0'
 
@@ -13,14 +15,14 @@ include OMOPHelpers
 include TimePeriods called T
 include IndicateQiElements called elm
 
-code Mobilisation: '4327195' from elm.OMOPSV
+include MobilizationProcedures
 
 code "Order to not Mobilise": '2100000008' from elm.OMOPSV
 
 context Patient
 
 define "Mobilisation Procedures":
-  [ProcedureOccurrence: "Mobilisation"] p
+  [ProcedureOccurrence: MobilizationProcedures."Mobilization Procedures"] p
     return all p
     sort by procedureDatetime asc
 
@@ -49,18 +51,17 @@ define function "Is in Initial Population"(visitInterval Interval<DateTime>):
 
 define "Visit Results":
   (T."Visits with 24-hour Periods") visitWithPeriods
-    let inInitialPopulationForVisit: "Is in Initial Population"(visitWithPeriods.visit),
-        periods:                     visitWithPeriods.allPeriods
-      return all (periods) period
-                   let hasMobilisation: "Has Mobilisation"(period),
-                       noMobilisation:  "Has Order to not Mobilise"(period)
+    let inInitialPopulationForVisit: "Is in Initial Population"(visitWithPeriods.visit)
+      return all (visitWithPeriods.fullyContainedPeriods) period
+                   let hasMobilisation:    "Has Mobilisation"(period),
+                       orderToNotMobilize: "Has Order to not Mobilise"(period)
                      return all elm."Period Result"(
                        period,
                        inInitialPopulationForVisit,
                        case
-                         when noMobilisation  then null
-                         when hasMobilisation then 1
-                         else                      0
+                         when orderToNotMobilize then null
+                         when hasMobilisation    then 1
+                         else                         0
                        end,
                        1
                      )

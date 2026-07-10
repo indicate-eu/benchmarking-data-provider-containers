@@ -14,13 +14,17 @@ using OMOP version 'v5.4'
 
 include OMOPHelpers
 include IndicateQiElements called elm
+include IndicateQiUtilities called U
 include TimePeriods called T
 
 parameter "Acceptable Glucose Levels"
   default Interval[3.3 'mmol/L', 10.0 'mmol/L']
 
-parameter "Time between consecutive non-Acceptable Glucose Levels"
-  default 2 hours
+parameter "Maximum Time between consecutive Non-acceptable Glucose Levels"
+  default 2 'h'
+
+parameter "Maximum Time between consecutive Glucose Levels"
+  default 10 'h'
 
 code "Glucose in Arterial Blood (Mass/volume)":                 '3031266' from elm.OMOPSV
 code "Glucose in Arterial Blood (Moles/volume)":                '3044242' from elm.OMOPSV
@@ -52,39 +56,50 @@ concept "Glucose Level": {
   "Glucose in Venous Blood (Moles/volume)"
 }
 
+define "Verified Maximum Time between consecutive Non-acceptable Glucose Levels":
+  (1) _
+    let converted: convert "Maximum Time between consecutive Non-acceptable Glucose Levels" to 'h'
+      return if converted is null then
+               Message(null, true, '400', 'Error',
+                       '"Maximum Time between consecutive Non-acceptable Glucose Levels"'
+                       + 'must be convertible to hours')
+             else
+               converted
+
+define "Verified Maximum Time between consecutive Glucose Levels":
+  (1) _
+    let converted: convert "Maximum Time between consecutive Glucose Levels" to 'h'
+      return if converted is null then
+               Message(null, true, '400', 'Error',
+                       '"Maximum Time between consecutive Glucose Levels"'
+                       + 'must be convertible to hours')
+             else
+               converted
+
 context Patient
 
 // Glucose Measurements
 
-define "Valid Glucose Measurements":
+define "Glucose Measurements":
   [Measurement: "Glucose Level"] m // TODO(moringenj): restrict to review period?
-    // Some measurements in the database lack at least one of these properties.
-    where not m.valueAsNumber is null and not m.unitConcept is null
     return all m
     sort by measurementDatetime
 
+define "Glucose Measurements With Neighbors":
+  elm."Measurements with Neighbors"("Glucose Measurements")
+
 // Glucose levels
 
-define function "Convert g/L to mol/L"(quantity Quantity):
-  (1) _
-    let scaled: convert quantity to 'mg/dL'
-      return Quantity{value: 1/18 * scaled.value, unit: 'mmol/L'}
-
-define function "Ensure Glucose Level in mol/L"(glucoseLevel Quantity):
-  case
-    when Matches(glucoseLevel.unit, '.*g/.*L') then
-      "Convert g/L to mol/L"(glucoseLevel)
-    when Matches(glucoseLevel.unit, '.*mol/.*L') then
-      glucoseLevel
-    else
-      Message(null, true, '400', 'Error', 'Unit is "' + glucoseLevel.unit + '" but must be either "mol/L" or convertible to "g/L"')
-  end
+define function "Ensure Glucose Level in mol/L"(measurement Measurement):
+  U."EnsureQuantityIn mol/L"(
+    'Blood Glucose Level', measurement, 'mg/dL', 'mmol/L', 1/18
+  )
 
 define function "Is High Glucose Level"(glucoseLevel Quantity):
-  "Ensure Glucose Level in mol/L"(glucoseLevel) > end of "Acceptable Glucose Levels"
+  glucoseLevel > end of "Acceptable Glucose Levels"
 
 define function "Is Low Glucose Level"(glucoseLevel Quantity):
-  "Ensure Glucose Level in mol/L"(glucoseLevel) < start of "Acceptable Glucose Levels"
+  glucoseLevel < start of "Acceptable Glucose Levels"
 
 define function "Is Acceptable Glucose Level"(glucoseLevel Quantity):
       (not "Is High Glucose Level"(glucoseLevel))
@@ -105,34 +120,45 @@ define function "Acceptable Follow-up Glucose Level"(firstValue  Quantity,
 define function "Time between Measurements At Most"(earlierMeasurement Measurement,
                                                     laterMeasurement   Measurement,
                                                     maximumTime        Quantity):
-  // TODO(moringenj): assert maximumTime is in hours
-  (difference in hours between (convert earlierMeasurement to DateTime)
-                       and     (convert laterMeasurement   to DateTime))
-  <= maximumTime.value
+  (1) _
+    let maximumTimeInHours: (convert maximumTime to 'h').value
+      return (difference in hours between (convert earlierMeasurement to DateTime)
+                                  and     (convert laterMeasurement   to DateTime))
+             <= maximumTimeInHours
 
 define function "Successful Glucose Control"(previousMeasurement Measurement,
                                              measurement         Measurement,
                                              nextMeasurement     Measurement):
       (   (previousMeasurement is null)
-       or "Time between Measurements At Most"(previousMeasurement,
-                                              measurement,
-                                              10 hours))
-  and ("Is Acceptable Glucose Level"(convert measurement to Quantity)
-       or (if nextMeasurement is null then
-             false
-           else
-                 "Time between Measurements At Most"(
-                   measurement,
-                   nextMeasurement,
-                   "Time between consecutive non-Acceptable Glucose Levels"
-                 )
-             and "Acceptable Follow-up Glucose Level"(
-                   convert measurement     to Quantity,
-                   convert nextMeasurement to Quantity
-                 )))
+       or "Time between Measurements At Most"(
+            previousMeasurement,
+            measurement,
+            "Verified Maximum Time between consecutive Glucose Levels"
+          ))
+  and (1) _
+        let measurementInMolL:     "Ensure Glucose Level in mol/L"(measurement),
+            nextMeasurementInMolL: if nextMeasurement is not null then
+                                     "Ensure Glucose Level in mol/L"(nextMeasurement)
+                                   else
+                                     null
+          return
+                    "Is Acceptable Glucose Level"(measurementInMolL)
+                 or (if nextMeasurement is null then
+                       false
+                     else
+                           "Time between Measurements At Most"(
+                             measurement,
+                             nextMeasurement,
+                             "Verified Maximum Time between consecutive Non-acceptable Glucose Levels"
+                           )
+                       and "Acceptable Follow-up Glucose Level"(
+                             measurementInMolL, nextMeasurementInMolL
+                           ))
 
-define function "Acceptable Glucose Measurements"(measurements List<Tuple{previous Measurement, current Measurement, next Measurement}>,
-                                                  isFirstShift Boolean):
+define function "Acceptable Glucose Measurements"(
+    measurements List<Tuple{previous Measurement, current Measurement, next Measurement}>,
+    isFirstShift Boolean
+  ):
   // Do the first triple separately so that we can indicate that the
   // predecessor of the first measurement does not matter if the context is the
   // first shift of an ICU visit.
@@ -150,8 +176,10 @@ define function "Acceptable Glucose Measurements"(measurements List<Tuple{previo
       return all "Successful Glucose Control"(m.previous, m.current, m.next)
   })
 
-define function "Conforming Glucose Measurements"(measurements List<Tuple{previous Measurement, current Measurement, next Measurement}>,
-                                                  isFirstShift Boolean):
+define function "Conforming Glucose Measurements"(
+    measurements List<Tuple{previous Measurement, current Measurement, next Measurement}>,
+    isFirstShift Boolean
+  ):
   if Exists(measurements) then
     AllTrue("Acceptable Glucose Measurements"(measurements, isFirstShift))
   else
@@ -160,11 +188,9 @@ define function "Conforming Glucose Measurements"(measurements List<Tuple{previo
 // Shifts
 
 define function "Measurements during Shift Plus Neighbors"(shift Interval<DateTime>):
-  (1) _
-    let measurementsWithNeighbors: elm."Measurements with Neighbors"("Valid Glucose Measurements")
-      return (measurementsWithNeighbors) m
-               where (convert m.current to DateTime) during shift
-               return all m
+  "Glucose Measurements With Neighbors" m
+    where (convert m.current to DateTime) during shift
+    return all m
 
 define function "Is Conforming Shift"(shift        Interval<DateTime>,
                                       isFirstShift Boolean):
@@ -192,9 +218,17 @@ define "Visit Results":
   (T."Visits with 24-hour Periods") visitWithPeriods
     let visitInterval:               visitWithPeriods.visit,
         inInitialPopulationForVisit: "Is in Initial Population"(visitInterval),
+        // This returns only shifts that are fully contained in the
+        // visit interval.  This behavior matches the requirement that
+        // incomplete shifts which merely overlap the visit interval
+        // should be ignored
         shifts:                      T."Shifts during Period"(visitInterval),
         goodShifts:                  "Conforming Shifts in Visit"(shifts)
-      return all (visitWithPeriods.periods) period
+      return all (visitWithPeriods.overlappingPeriods) period
+                   // If the number of shifts during period is 0, the
+                   // quotient will be 0/0 which evaluates to null so
+                   // that the period result is recognized as
+                   // denominator exclusion.
                    return all elm."Period Result"(
                      period,
                      inInitialPopulationForVisit,
