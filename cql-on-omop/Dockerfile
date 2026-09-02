@@ -1,4 +1,4 @@
-FROM ghcr.io/umg-minai/cql-on-omop:1.1.9-SNAPSHOT
+FROM ghcr.io/umg-minai/cql-on-omop:1.1.11-SNAPSHOT
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes update     \
     && DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
