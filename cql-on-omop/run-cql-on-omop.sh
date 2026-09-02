@@ -92,6 +92,7 @@ CQL_ON_OMOP_DATABASE_PASSWORD=$(cat /run/secrets/source-database-password) \
       --context-value "${CQL_CONTEXT}"                                     \
       -D"IndicateQiElements.Review Period=${REVIEW_PERIOD}"                \
       --result-name='Results'                                              \
+      --no-print-messages --no-print-errors --print-progress               \
       Main                                                                 \
       dbwrite                                                              \
         ${TARGET_DB_CONNECTION_STRING_ARG}                                 \
