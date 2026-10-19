@@ -32,11 +32,13 @@ concept "Trial of Spontaneous Breathing": {
 code "Extubation of trachea":  '4148972' from elm.OMOPSV
 code "Removal of endotracheal tube": '4150627' from elm.OMOPSV
 code "Removal of tracheostomy tube": '4012607' from elm.OMOPSV
+code "Ventilating tube removal by another physician": '4195943' from elm.OMOPSV
 
 concept "Extubation Procedure": {
   "Extubation of trachea",
   "Removal of endotracheal tube",
-  "Removal of tracheostomy tube"
+  "Removal of tracheostomy tube",
+  "Ventilating tube removal by another physician"
 }
 
 code "Inadvertent Extubation Event": '4231838' from elm.OMOPSV

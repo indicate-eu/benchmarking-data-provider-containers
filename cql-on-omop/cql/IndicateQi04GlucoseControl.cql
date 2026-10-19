@@ -39,6 +39,14 @@ code "Glucose in Serum or Plasma (Mass/volume)":                '3004501' from e
 code "Glucose in Serum or Plasma (Moles/volume)":               '3013826' from elm.OMOPSV
 code "Glucose in Venous Blood (Mass/volume)":                   '3033408' from elm.OMOPSV
 code "Glucose in Venous Blood (Moles/volume)":                  '3038515' from elm.OMOPSV
+code "Glucose in Arterial Blood by Glucometer (Mass/volume)":   '1091312'  from elm.OMOPSV
+code "Glucose in Venous Blood by Glucometer (Mass/volume)":     '1092005'  from elm.OMOPSV
+code "Glucose in Blood by Automated Test Strip (Mass/volume)":  '3011424'  from elm.OMOPSV
+code "Glucose in Blood by Automated Test Strip (Moles/volume)": '43055143' from elm.OMOPSV
+code "Glucose in Blood by Test Strip Manual (Mass/volume)":     '3014053'  from elm.OMOPSV
+code "Glucose in Capillary Blood (Moles/volume)":               '3040151'  from elm.OMOPSV
+code "Glucose in Serum, Plasma or Blood (Mass/volume)":         '44816672' from elm.OMOPSV
+code "Glucose in Serum, Plasma or Blood (Moles/volume)":        '46236948' from elm.OMOPSV
 
 concept "Glucose Level": {
   "Glucose in Arterial Blood (Mass/volume)",
@@ -53,7 +61,15 @@ concept "Glucose Level": {
   "Glucose in Serum or Plasma (Mass/volume)",
   "Glucose in Serum or Plasma (Moles/volume)",
   "Glucose in Venous Blood (Mass/volume)",
-  "Glucose in Venous Blood (Moles/volume)"
+  "Glucose in Venous Blood (Moles/volume)",
+  "Glucose in Arterial Blood by Glucometer (Mass/volume)",
+  "Glucose in Venous Blood by Glucometer (Mass/volume)",
+  "Glucose in Blood by Automated Test Strip (Mass/volume)",
+  "Glucose in Blood by Automated Test Strip (Moles/volume)",
+  "Glucose in Blood by Test Strip Manual (Mass/volume)",
+  "Glucose in Capillary Blood (Moles/volume)",
+  "Glucose in Serum, Plasma or Blood (Mass/volume)",
+  "Glucose in Serum, Plasma or Blood (Moles/volume)"
 }
 
 define "Verified Maximum Time between consecutive Non-acceptable Glucose Levels":

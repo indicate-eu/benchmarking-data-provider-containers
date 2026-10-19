@@ -27,12 +27,6 @@ include TidalVolumeMeasurements
 
 code "ARDS Condition": '4195694' from elm.OMOPSV // ICD10 based code: '45552897'
 
-code "Invasive Ventilation Procedure": '37158404' from elm.OMOPSV
-
-concept "Ventilation Procedure": {
-  "Invasive Ventilation Procedure"
-}
-
 code "Horowitz index in Arterial blood":                                         '3029943' from elm.OMOPSV
 code "Horowitz index adjusted to patients actual temperature in Arterial blood": '3029268' from elm.OMOPSV
 concept "PaO2/FiO2 (Horowitz index) Measurement": {

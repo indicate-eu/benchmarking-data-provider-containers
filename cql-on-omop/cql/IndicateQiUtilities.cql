@@ -157,7 +157,10 @@ define function "EnsureQuantityIn mol/L"(label             String,
       // quantity can be null if OnError is 'warning' or 'continue'
       return if quantity is not null then
                "EnsureQuantityIn mol/L"(
-                 label,
+                 label + ' [Measurement with concept '
+                 + measurement.measurementConcept.conceptName
+                 + ' ('
+                 + ToString(measurement.measurementConcept.conceptId) + ')]',
                  quantity,
                  massPerVolumeUnit,
                  molePerVolumeUnit,
@@ -176,7 +179,10 @@ define function "EnsureQuantityIn mol/L"(label             String,
       // quantity can be null if OnError is 'warning' or 'continue'
       return if quantity is not null then
                "EnsureQuantityIn mol/L"(
-                 label,
+                 label + ' [Observation with concept '
+                 + observation.observationConcept.conceptName
+                 + ' ('
+                 + ToString(observation.observationConcept.conceptId) + ')]',
                  EnsureQuantity(label, observation),
                  massPerVolumeUnit,
                  molePerVolumeUnit,

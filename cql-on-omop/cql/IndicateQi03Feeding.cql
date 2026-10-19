@@ -36,24 +36,40 @@ code "Calorie Intake Total 24 Hour": '3026267' from elm.OMOPSV // measurement
 
 code "CO2 Production Rate": '21490580' from elm.OMOPSV // measurement
 
-code "Continuous Venovenous Hemofiltration":    '4051330' from elm.OMOPSV
-code "Continuous Venovenous Hemodialysis":      '4051329' from elm.OMOPSV
-code "Continuous Venovenous Hemodiafiltration": '4049846' from elm.OMOPSV
-code "Intermittent Hemodialysis":               '4051326' from elm.OMOPSV
+code "Continuous Renal Replacement Therapy": '37018292' from elm."OMOPSV Hierarchy"
 
-concept "Renal Replacement Therapy": {
-  "Continuous Venovenous Hemofiltration",
-  "Continuous Venovenous Hemodialysis",
-  "Continuous Venovenous Hemodiafiltration",
-  "Intermittent Hemodialysis"
+code "Hemodialysis":                                              '4120120'  from elm.OMOPSV
+code "Hemofiltration":                                            '4050864'  from elm.OMOPSV
+code "Hemodiafiltration":                                         '4049845'  from elm.OMOPSV
+code "Intermittent Hemodialysis":                                 '4051326'  from elm.OMOPSV
+code "Intermittent Hemodialysis with Continuous Ultrafiltration": '4050862'  from elm.OMOPSV
+code "Intermittent Hemodialysis with Sequential Ultrafiltration": '4051327'  from elm.OMOPSV
+code "Intermittent Hemofiltration":                               '4050865'  from elm.OMOPSV
+code "Intermittent Hemodiafiltration":                            '4052538'  from elm.OMOPSV
+code "Sustained Low-efficiency Dialysis":                         '44783963' from elm.OMOPSV
+code "Prolonged Intermittent Renal Replacement Therapy":          '619390'   from elm.OMOPSV
+
+concept "Other Renal Replacement Therapy": {
+  "Hemodialysis",
+  "Hemofiltration",
+  "Hemodiafiltration",
+  "Intermittent Hemodialysis",
+  "Intermittent Hemodialysis with Continuous Ultrafiltration",
+  "Intermittent Hemodialysis with Sequential Ultrafiltration",
+  "Intermittent Hemofiltration",
+  "Intermittent Hemodiafiltration",
+  "Sustained Low-efficiency Dialysis",
+  "Prolonged Intermittent Renal Replacement Therapy"
 }
 
 code "Phosphate in Serum or Plasma (Moles/volume)": '3003458' from elm.OMOPSV
+code "Phosphate in Serum or Plasma (Mass/volume)":  '3011904' from elm.OMOPSV
 code "Phosphate in Blood (Moles/volume)":           '3018913' from elm.OMOPSV
 code "Phosphate in Blood (Mass/volume)":            '3024232' from elm.OMOPSV
 
 concept "Phosphate Measurement": {
   "Phosphate in Serum or Plasma (Moles/volume)",
+  "Phosphate in Serum or Plasma (Mass/volume)",
   "Phosphate in Blood (Moles/volume)",
   "Phosphate in Blood (Mass/volume)"
 }
@@ -68,7 +84,8 @@ define "Phosphate Measurements":
     sort by measurementDatetime desc
 
 define "Insulin Exposures":
-  [DrugExposure: InsulinDrugs."Insulin Drugs"]
+        [DrugExposure: InsulinDrugs."Insulin Drugs"]
+  union [DrugExposure: InsulinIngredients."Insulin Ingredients"]
 
 define "Energy Requirement Observations":
   [Observation: "Estimated required quantity of energy in 24 hours"] o
@@ -79,13 +96,29 @@ define "Contraindication to Enteral Feeding Observations":
   [Observation: "Contraindication to Enteral Feeding"]
 
 define "CO2 Production Rate Measurements":
-  [Measurement: "CO2 Production Rate"]
+  [Measurement: "CO2 Production Rate"] m
+    // AumcDB generates measurement rows with the "CO2 Production Rate"
+    // concept from two different outputs of the (I assume) "IntelliBridge
+    // Device Driver ED225" machine. The following is from the manual
+    // "IntelliBridge Device Driver ED225 (Release B) for Maquet SERVO-n",
+    // page 14:
+    //
+    //   VCO_2 ti | CO_2 tidal production (VTCO_2) | ml
+    //   VCO_2    | CO_2 minute production (VCO_2) | ml/min
+    //
+    // Since only the "minute production" variable is usable for this
+    // quality indicator, we filter based on the unit. Filtering like that
+    // avoid encoding special knowledge regarding AumcDB or the device.
+    where (convert m to 'mL/min') is not null
 
 define "Calorie Intake Measurements":
   [Measurement: "Calorie Intake Total 24 Hour"]
 
 define "Renal Replacement Therapy Procedures":
-  [ProcedureOccurrence: "Renal Replacement Therapy"]
+  Flatten({
+    [ProcedureOccurrence: "Continuous Renal Replacement Therapy"],
+    [ProcedureOccurrence: "Other Renal Replacement Therapy"]
+  })
 
 define function "Last Phosphate Measurement in Period"(period Interval<DateTime>):
   (1) _
@@ -140,28 +173,71 @@ define function "Total Insulin Rate in Period"(period Interval<DateTime>):
                       }
       return totalInsulin / periodHours
 
-define function "Maybe Rewrite Calorie Unit"(quantity Quantity):
+define function "Maybe Rewrite Calorie Unit"(quantity        Quantity,
+                                             observationTime DateTime):
   // Assume that energy requirement/intake will be reported with
-  // unit cal instead of cal/d in some cases.
-  (1) _
-    let inCal: convert quantity to 'cal'
-      return if inCal is not null then
-               Quantity{ value: inCal.value, unit: 'cal/d' }
-             else
-               quantity
+  // one of several possible units:
+  // * (convertible to) cal/d is what we need and can remain unchanged
+  // * (convertible to) cal very likely still refers to the daily requirement.
+  //   We simply rewrite the unit without changing the value.
+  // * (convertible to) cal/kg/(24.h) has to be multiplied by a suitable body
+  //   weight measurement.  If we cannot find such a body weight measurement,
+  //   we report an error.
+  // * (convertible to) cal/kg is like the previous case except that we
+  //   additionally rewrite the intermediate result from cal to cal/d.
+  case
+    when quantity is null then
+      null
+    when convert quantity to 'cal/d' is not null then
+      quantity
+    when convert quantity to 'cal' is not null then
+      Quantity{ value: (convert quantity to 'cal').value, unit: 'cal/d' }
+    when convert quantity to 'kcal/kg/(24.h)' is not null then
+      (1) _
+        let bodyWeight: elm."Most Recent Body Weight Measurement Before"(observationTime)
+          return if bodyWeight is not null then
+                   quantity * bodyWeight // cal/d or equivalent
+                 else
+                   U.SignalProblemWithValue(
+                     'Energy requirement ' + ToString(quantity.value) +
+                     + ' ' + quantity.unit + ' is expressed proportional to'
+                     + ' body weight but there is no suitable body weight '
+                     + 'measurement',
+                     null
+                   )
+    when convert quantity to 'cal/kg' is not null then
+      (1) _
+        let bodyWeight: elm."Most Recent Body Weight Measurement Before"(observationTime)
+          return if bodyWeight is not null then
+                   Quantity{
+                     value: (convert (quantity * bodyWeight) to 'cal').value,
+                     unit:  'cal/d'
+                   }
+                 else
+                   U.SignalProblemWithValue(
+                     'Energy requirement ' + ToString(quantity.value) +
+                     + ' ' + quantity.unit + ' is expressed proportional to'
+                     + ' body weight but there is no suitable body weight '
+                     + 'measurement',
+                     null
+                   )
+    else
+      U.SignalProblemWithValue('Could not convert the energy requirement unit '
+                               + '\'' + quantity.unit + '\' to cal/d', null)
+  end
 
 // Return the daily energy requirement as a Quantity with unit kcal/d
 // if there is a energy requirement observation in the given period.
 // Otherwise return null.
 define function "Last Energy Requirement Observation in Period"(period Interval<DateTime>):
   (1) _
-    let observation: Last("Energy Requirement Observations" o
-                            where o.observationDatetime in period
-                            return all o),
-        // The following returns null if observation is null.
-        // TODO(moringenj): Use error-checking conversion
-        quantity:    convert observation to Quantity
-      return "Maybe Rewrite Calorie Unit"(quantity)
+    let observation:     Last("Energy Requirement Observations" o
+                                where o.observationDatetime in period
+                                return all o),
+        // The following are all null if observation is null.
+        quantity:        convert observation to Quantity,
+        observationTime: convert observation to DateTime
+      return "Maybe Rewrite Calorie Unit"(observation, observationTime)
 
 define function "Median CO2 Production Rate in Period"(period Interval<DateTime>):
   Median("CO2 Production Rate Measurements" m
@@ -171,23 +247,23 @@ define function "Median CO2 Production Rate in Period"(period Interval<DateTime>
 define function "Calorie Intake in Period"(period Interval<DateTime>):
   // There should be exactly one such measurement in each 24-hour period.
   (1) _
-    let measurements: "Calorie Intake Measurements" m
-                        where m in period
-                        return all m,
-        measurement:  case Count(measurements)
-                        when 0 then
-                          null
-                        when 1 then
-                          First(measurements)
-                        else
-                          Message(First(measurements), true, '400', 'Warning',
-                                  'Multiple calorie intake measurements in'
-                                  + ' 24-hour period; using first measurement')
-                      end,
-        // The following returns null if observation is null.
-        // TODO(moringenj): Use error-checking conversion
-        quantity:     convert measurement to Quantity
-      return "Maybe Rewrite Calorie Unit"(quantity)
+    let measurements:    "Calorie Intake Measurements" m
+                           where m in period
+                           return all m,
+        measurement:     case Count(measurements)
+                           when 0 then
+                             null
+                           when 1 then
+                             First(measurements)
+                           else
+                             Message(First(measurements), true, '400', 'Warning',
+                                     'Multiple calorie intake measurements in'
+                                     + ' 24-hour period; using first measurement')
+                         end,
+        // The following are all null if measurement is null.
+        quantity:        convert measurement to Quantity,
+        measurementTime: convert measurement to DateTime
+      return "Maybe Rewrite Calorie Unit"(quantity, measurementTime)
 
 define function "Renal Replacement Therapy Procedure in Period"(period Interval<DateTime>):
   Exists("Renal Replacement Therapy Procedures" p
@@ -262,12 +338,12 @@ define function "Initial Calorie Target"(previousDay Interval<DateTime>):
                (1) __
                  let viaBMI: "Initial Calorie Target via BMI"(end of previousDay)
                    return if viaBMI is null then
-                            Message(null, true, '400', 'Error',
+                            U.SignalProblemWithValue(
                                     'Could not determine initial calorie target'
                                     + ' via documented energy requirement,'
                                     + ' observed CO2 production rate or body'
                                     + ' mass index (neither documented nor'
-                                    + ' computed)')
+                                    + ' computed)', null)
                           else
                             viaBMI
 
@@ -275,54 +351,52 @@ define function "Calorie Target for 24-hour Period"(previousTarget Quantity,
                                                     previousPeriod Interval<DateTime>,
                                                     period         Interval<DateTime>,
                                                     dayOfVisit     Integer):
-  (1) _
-    let initialCalorieTarget: "Initial Calorie Target"(previousPeriod),
-        maybePreviousInsulin: "Total Insulin Rate in Period"(previousPeriod),
-        previousInsulin:      if maybePreviousInsulin is null then
-                                0 '[IU]/h'
-                              else
-                                maybePreviousInsulin,
-        rawTarget:            case
-                                when dayOfVisit = 0 then
-                                  null // No target for first 24-hour period
+  if dayOfVisit = 0 then
+    null // No target for first 24-hour period
+  else
+    (1) _
+      let initialCalorieTarget: "Initial Calorie Target"(previousPeriod),
+          maybePreviousInsulin: "Total Insulin Rate in Period"(previousPeriod),
+          previousInsulin:      if maybePreviousInsulin is null then
+                                  0 '[IU]/h'
+                                else
+                                  maybePreviousInsulin,
+          rawTarget:            case
 
-                                when dayOfVisit = 1 then
-                                  0.75 * initialCalorieTarget
+                                  when dayOfVisit = 1 then
+                                    0.75 * initialCalorieTarget
 
-                                when     not "Renal Replacement Therapy Procedure in Period"(previousPeriod)
-                                     and "Last Phosphate Measurement in Period"(period) < 0.65 'mmol/l'
-                                     and previousInsulin <= 4 '[IU]/h'
-                                     and previousTarget >= 0.5 * initialCalorieTarget then
-                                  0.25 * initialCalorieTarget
+                                  when     not "Renal Replacement Therapy Procedure in Period"(previousPeriod)
+                                       and "Last Phosphate Measurement in Period"(period) < 0.65 'mmol/l'
+                                       and previousInsulin <= 4 '[IU]/h'
+                                       and previousTarget >= 0.5 * initialCalorieTarget then
+                                    0.25 * initialCalorieTarget
 
-                                when previousInsulin < 2 '[IU]/h' then
-                                  previousTarget + 0.25 * initialCalorieTarget
+                                  when previousInsulin < 2 '[IU]/h' then
+                                    previousTarget + 0.25 * initialCalorieTarget
 
-                                when previousInsulin in Interval[2 '[IU]/h', 4 '[IU]/h'] then
-                                  previousTarget - 0.25 * initialCalorieTarget
+                                  when previousInsulin in Interval[2 '[IU]/h', 4 '[IU]/h'] then
+                                    previousTarget - 0.25 * initialCalorieTarget
 
-                                when previousInsulin > 4 '[IU]/h' then
-                                  previousTarget - 0.5 * initialCalorieTarget
+                                  when previousInsulin > 4 '[IU]/h' then
+                                    previousTarget - 0.5 * initialCalorieTarget
 
-                                else // NOTE(moringenj): should be unreachable
-                                  Message(null, true, '400', 'Error',
-                                          'No matching case; insulin '
-                                          + ToString(previousInsulin) +
-                                          ' previous target '
-                                          + ToString(previousTarget))
-                              end
-      // Clamp calorie target to [0, Initial Calorie Target]; the
-      // value could be outside of this range due to the unchecked
-      // additions and subtractions above.  Exception: the target for
-      // day 0 is null.
-      return case
-               when rawTarget is not null then
+                                  else // NOTE(moringenj): should be unreachable
+                                    U.SignalProblemWithValue(
+                                            'No matching case; insulin '
+                                            + ToString(previousInsulin) +
+                                            ' previous target '
+                                            + ToString(previousTarget),
+                                            null)
+                                end
+        // Clamp calorie target to [0, Initial Calorie Target]; the
+        // value could be outside of this range due to the unchecked
+        // additions and subtractions above.  Exception: the target for
+        // day 0 is null.
+        return if rawTarget is not null then
                  Max({0 'kcal/d', Min({rawTarget, initialCalorieTarget})})
-               when dayOfVisit = 0 then
-                 null
                else
-                 Message(null, true, '400', 'Error', 'Calorie target is null')
-             end
+                 U.SignalProblemWithValue('Calorie target is null', null)
 
 define function "24-hour Periods with Results"(periods List<Interval<DateTime>>):
   (periods) p aggregate r starting ({
@@ -344,8 +418,10 @@ define function "24-hour Periods with Results"(periods List<Interval<DateTime>>)
                     r.dayOfVisit
                   ),
           actual: "Calorie Intake in Period"(p),
-          result:    target is null
-                  or 0.9 * target <= actual and actual <= 1.1 * target
+          result: if target is null then
+                    false
+                  else
+                    0.9 * target <= actual and actual <= 1.1 * target
         return {
                  previousPeriod: p,
                  previousTarget: target,

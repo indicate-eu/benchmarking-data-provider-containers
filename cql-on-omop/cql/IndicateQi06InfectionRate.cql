@@ -30,6 +30,11 @@ code "Infection of Hemodialyses Catheter":                                 '7649
 code "Infection associated with totally implantable venous access device": '43021261' from elm.OMOPSV
 code "Infection of central venous catheter exit site":                     '4326841'  from elm.OMOPSV
 code "Infection of hemodialysis temporary catheter":                       '764924'   from elm.OMOPSV
+code "CLABSI - central line associated bloodstream infection":             '42537043' from elm.OMOPSV
+code "Candidemia associated with intravascular line":                      '4201197'  from elm.OMOPSV
+code "Infection of bloodstream associated with hemodialysis catheter":     '42537495' from elm.OMOPSV
+code "Infection of bloodstream associated with temporary hemodialysis catheter": '42537540' from elm.OMOPSV
+code "Infection of bloodstream associated with tunneled hemodialysis catheter":  '42537497' from elm.OMOPSV
 
 concept "Catheter-related Bloodstream Infection": {
   "CRBSI, general",
@@ -37,7 +42,12 @@ concept "Catheter-related Bloodstream Infection": {
   "Infection of Hemodialyses Catheter",
   "Infection associated with totally implantable venous access device",
   "Infection of central venous catheter exit site",
-  "Infection of hemodialysis temporary catheter"
+  "Infection of hemodialysis temporary catheter",
+  "CLABSI - central line associated bloodstream infection",
+  "Candidemia associated with intravascular line",
+  "Infection of bloodstream associated with hemodialysis catheter",
+  "Infection of bloodstream associated with temporary hemodialysis catheter",
+  "Infection of bloodstream associated with tunneled hemodialysis catheter"
 }
 
 // Ventilation: Procedure, Infection (Pneumonia)
@@ -75,11 +85,18 @@ define function incidence(period       Interval<DateTime>,
                           relevantDays Decimal):
   case
     when eventCount > 0 and not (relevantDays > 0) then
+      // This call must use the Decimal literal 0.0 (instead of just
+      // 0). Otherwise, mismatching types between the branches
+      // (Integer for the when branch and Decimal for the else branch)
+      // will make the whole case expression evaluate to null.  Not
+      // catching the issue at compile-time and/or failing somewhat
+      // silently at runtime seems to indicate a defficiency in the CQL
+      // engine.
       U.SignalProblemWithValue('In period [' + ToString(start of period) + ', '
                                + ToString(end of period) + '], event count is '
                                + ToString(eventCount) + ' but relevant days is '
                                + ToString(relevantDays),
-                               0)
+                               0.0)
     else
       // This will be null if relevantDays is 0 but in that case,
       // eventCount is also 0.
@@ -114,15 +131,19 @@ define function "Number of CRBSI in Period"(period Interval<DateTime>):
 define function "CRBSI Incidence in Period"(period Interval<DateTime>):
   incidence(period, "Number of CRBSI in Period"(period), "CVC Days in Period"(period))
 
-// TODO(moringenj): This could be wrong for multiple visits: A
-// ventilation procedure start starts during the first visit and has no
-// end time would be reported for the second visit as well. We should
-// probably try to find the visit in which the procedure starts and take
-// the end time from there.
-define function "Ventilation Periods in Period"(period Interval<DateTime>):
+define function "Ventilation Periods in Period"(period      Interval<DateTime>,
+                                                visitPeriod Interval<DateTime>):
+  // Consider ventilation procedures that start during the current
+  // visit and overlap the period being considered.  For ventilation
+  // procedures without an end time, assume the procedure lasts at least
+  // until the end of the considered period.  The restriction to the
+  // current visit is necessary since otherwise a ventilation procedure
+  // without recorded end time started in a previous visit would be
+  // selected for each period in all later visits.
   collapse(
     ("Ventilation Procedures") p
-      where p.procedureDatetime before (end of period)
+      where     p.procedureDatetime during visitPeriod
+            and p.procedureDatetime before (end of period)
       return all (1) _
                    let ventilationInterval: if p.procedureEndDatetime is null then
                                               Interval[convert p to DateTime, end of period]
@@ -131,12 +152,15 @@ define function "Ventilation Periods in Period"(period Interval<DateTime>):
                      return all ventilationInterval intersect period
   )
 
-define function "Ventilation Hours in Period"(period Interval<DateTime>):
-  ("Ventilation Periods in Period"(period)) p aggregate r starting 0:
-    r + duration in hours of (p as Interval<DateTime>)
+define function "Ventilation Hours in Period"(period      Interval<DateTime>,
+                                              visitPeriod Interval<DateTime>):
+  ("Ventilation Periods in Period"(period, visitPeriod)) p
+    aggregate r starting 0:
+      r + duration in hours of (p as Interval<DateTime>)
 
-define function "Ventilation Days in Period"(period Interval<DateTime>):
-  "Ventilation Hours in Period"(period) / 24
+define function "Ventilation Days in Period"(period      Interval<DateTime>,
+                                             visitPeriod Interval<DateTime>):
+  "Ventilation Hours in Period"(period, visitPeriod) / 24
 
 define function "Number of VAP in Period"(period Interval<DateTime>):
   Count(
@@ -148,16 +172,18 @@ define function "Number of VAP in Period"(period Interval<DateTime>):
                    c
   )
 
-define function "VAP Incidence in Period"(period Interval<DateTime>):
+define function "VAP Incidence in Period"(period      Interval<DateTime>,
+                                          visitPeriod Interval<DateTime>):
   // TODO(moringenj): explain "days" since really [0, 1]
   incidence(period,
             "Number of VAP in Period"(period),
-            "Ventilation Days in Period"(period))
+            "Ventilation Days in Period"(period, visitPeriod))
 
-define function "Overall Incidence in Period"(period Interval<DateTime>):
+define function "Overall Incidence in Period"(period      Interval<DateTime>,
+                                              visitPeriod Interval<DateTime>):
   (1) _
     let crbsi: "CRBSI Incidence in Period"(period),
-        vap:   "VAP Incidence in Period"(period)
+        vap:   "VAP Incidence in Period"(period, visitPeriod)
       return case
                when crbsi is null then
                  vap

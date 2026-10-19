@@ -28,7 +28,13 @@ concept "Consultation with Patient Observation": {
 
 code "Discussion about Care Plan with Family": '4247376' from elm.OMOPSV
 
-code "Decision Authority Documented": '45877806' from elm.OMOPSV
+code "Patient Has Designated a Decision-Maker": '45877806' from elm.OMOPSV
+code "Active Healthcare Surrogate":             '762209'   from elm.OMOPSV
+
+concept "Decision Authority Documented": {
+  "Patient Has Designated a Decision-Maker",
+  "Active Healthcare Surrogate"
+}
 
 context Patient
 
