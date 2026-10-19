@@ -306,8 +306,16 @@ define function "Initial Calorie Target via BMI"(targetTime DateTime):
                     and bodyMassIndex <= 50 'kg/m2' then
                  14 'kcal/d/kg' * U.EnsureQuantityWithUnit('Body weight', bodyWeight, 'kg')
                when bodyHeight is not null then
-                 24 'kcal/d/kg'
-                 * elm."Ideal Body Weight for Height"(bodyHeight, Patient.genderConcept)
+                 (1) __
+                   let bodyHeightQuantity: U.EnsureQuantity('Body height', bodyHeight)
+                     return if bodyHeightQuantity is null then
+                              null
+                            else
+                              24 'kcal/d/kg'
+                              * elm."Ideal Body Weight for Height"(
+                                  bodyHeightQuantity,
+                                  Patient.genderConcept
+                                )
                else
                  null
              end
