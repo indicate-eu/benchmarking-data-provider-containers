@@ -10,10 +10,10 @@ if [ -n "${SOURCE_DB_DRIVER}" ] || [ -n "${SOURCE_DB_CONNECTION_STRING}" ] ; the
         echo -e "\e[1;31mCannot specify SOURCE_DB_DRIVER without SOURCE_DB_CONNECTION_STRING\e[0m"
         exit 1
     fi
-    for name in HOST PORT DATABASE USER SCHEMA ; do
+    for name in HOST PORT DATABASE USER ; do
         variable_name="SOURCE_DB_${name}"
         if [ -n "${!variable_name}" ] ; then
-            echo -e "\e[1;31mThe environment variables SOURCE_DB_DRIVER and SOURCE_DB_CONNECTION_STRING cannot be specified together with SOURCE_DB_${name}\e[0m"
+            echo -e "\e[1;31mThe environment variables SOURCE_DB_DRIVER (value '${SOURCE_DB_DRIVER}') and SOURCE_DB_CONNECTION_STRING (value '${SOURCE_DB_CONNECTION_STRING}') cannot be specified together with SOURCE_DB_${name} (value '${!variable_name}')\e[0m"
             exit 1
         fi
     done
@@ -21,6 +21,9 @@ if [ -n "${SOURCE_DB_DRIVER}" ] || [ -n "${SOURCE_DB_CONNECTION_STRING}" ] ; the
         SOURCE_DB_ARGS+=("--driver=${SOURCE_DB_DRIVER}")
     fi
     SOURCE_DB_ARGS+=("--connection-string=${SOURCE_DB_CONNECTION_STRING}")
+    if [ -n "${SOURCE_DB_SCHEMA}" ] ; then
+        SOURCE_DB_ARGS+=("--schema=${SOURCE_DB_SCHEMA}")
+    fi
 else
     for name in HOST PORT DATABASE USER SCHEMA ; do
         if [ -v SOURCE_DB_${name} ] ; then
