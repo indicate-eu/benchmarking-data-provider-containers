@@ -32,13 +32,7 @@ else
     done
 fi
 
-# Prepare commandline arguments related to the "target" database
-if [ -n "${TARGET_DB_DRIVER}" ] ; then
-    TARGET_DB_DRIVER_ARG="--connection-string ${TARGET_DB_DRIVER}"
-fi
-if [ -n "${TARGET_DB_CONNECTION_STRING}" ] ; then
-    TARGET_DB_CONNECTION_STRING_ARG="--connection-string ${TARGET_DB_CONNECTION_STRING}"
-fi
+# Operations on target database
 
 function sql_in_target_db() {
     EXPRESSION="$1"
@@ -60,6 +54,8 @@ MARKER_CONCEPT_ID=2_000_100_091
 PREVIOUS_RUN=$(sql_in_target_db \
 "SELECT max(observation_datetime) FROM ${TARGET_DB_SCHEMA}.observation
  WHERE observation_concept_id = ${MARKER_CONCEPT_ID};")
+
+# cql-on-omop execution
 
 if [ -n "$(echo ${PREVIOUS_RUN} | sed -e 's/ //')" ] ; then
     PREVIOUS_RUN_TIMESTAMP="@$(echo ${PREVIOUS_RUN} | sed -e 's/ /T/')"
