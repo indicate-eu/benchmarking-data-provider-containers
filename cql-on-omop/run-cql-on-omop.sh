@@ -21,8 +21,6 @@ if [ -n "${SOURCE_DB_DRIVER}" ] || [ -n "${SOURCE_DB_CONNECTION_STRING}" ] ; the
         SOURCE_DB_ARGS+=("--driver=${SOURCE_DB_DRIVER}")
     fi
     SOURCE_DB_ARGS+=("--connection-string=${SOURCE_DB_CONNECTION_STRING}")
-elif [ -n "${SOURCE_DB_CONNECTION_STRING}" ] ; then
-    SOURCE_DB_CONNECTION_STRING_ARG="--connection-string ${SOURCE_DB_CONNECTION_STRING}"
 else
     for name in HOST PORT DATABASE USER SCHEMA ; do
         if [ -v SOURCE_DB_${name} ] ; then
