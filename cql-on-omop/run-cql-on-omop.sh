@@ -2,6 +2,41 @@
 
 set -e
 
+# Process commandline options
+
+CLASSPATH_ARGS=()
+SYSTEM_PROPERTY_ARGS=()
+
+OPTION_DATA=$(getopt --options '' --longoptions 'extra-classpath:,extra-system-property:' --name "$0" -- "$@")
+if [ $? -ne 0 ] ; then
+    exit 1
+fi
+eval set -- "${OPTION_DATA}"
+unset OPTION_DATA
+while true ; do
+    case "$1" in
+        '--extra-classpath')
+            CLASSPATH_ARGS+=("-cp")
+            CLASSPATH_ARGS+=("$2")
+            shift 2
+            continue
+            ;;
+        "--extra-system-property")
+            SYSTEM_PROPERTY_ARGS+=("-D$2")
+            shift 2
+            continue
+            ;;
+        '--')
+            shift
+            break
+            ;;
+        *)
+            echo "Should not happen" >&2
+            exit 1
+            ;;
+    esac
+done
+
 # Prepare commandline arguments related to "source" database
 # TODO(moringenj): We could perform these checks in entry.sh so that one would not have to wait for the cron job to run
 SOURCE_DB_ARGS=()
@@ -149,6 +184,8 @@ echo -e "\e[1mComputing quality indicators\e[0m"
 # TODO(moringenj): should not use --password for target db
 CQL_ON_OMOP_DATABASE_PASSWORD=$(cat /run/secrets/source-database-password) \
   java -Xmx24000000000                                                     \
+    "${CLASSPATH_ARGS[@]}"                                                 \
+    "${SYSTEM_PROPERTY_ARGS[@]}"                                           \
     -jar cql-on-omop-${CQL_ON_OMOP_VERSION}.jar                            \
     batch                                                                  \
     --omop-version=v5.4                                                    \
