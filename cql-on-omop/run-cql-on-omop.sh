@@ -1,20 +1,39 @@
 #!/bin/bash
 
-set -e
-
 # Process commandline options
 
-OPTION_DATA=$(getopt --options '' --longoptions 'extra-classpath:,extra-system-property:,cql-retrieve-max-retry-count:,cql-retrieve-retry-delay:,cql-context-object-max-retry-count:' --name "$0" -- "$@")
+function usage() {
+    echo "Usage: $0"
+    echo ""
+    echo "JVM-related Options"
+    echo "  --extra-classpath <classpath-entry>     (can be supplied multiple times)"
+    echo "  --extra-system-property <name>=<value>  (can be supplied multiple times)"
+    echo ""
+    echo "CQL-related Options"
+    echo "  --cql-retrieve-max-retry-count <number>        [envvar CQL_RETRIEVE_MAX_RETRY_COUNT]"
+    echo "  --cql-retrieve-retry-delay <duration-in-ms>    [envvar CQL_RETRIEVE_RETRY_DELAY]"
+    echo "  --cql-context-object-max-retry-count <number>  [envvar CQL_CONTEXT_OBJECT_MAX_RETRY_COUNT]"
+}
+
+OPTION_DATA=$(getopt --options 'h' --longoptions 'help,extra-classpath:,extra-system-property:,cql-retrieve-max-retry-count:,cql-retrieve-retry-delay:,cql-context-object-max-retry-count:' --name "$0" -- "$@")
 if [ $? -ne 0 ] ; then
+    echo ""
+    usage
     exit 1
 fi
 eval set -- "${OPTION_DATA}"
 unset OPTION_DATA
 
+set -e
+
 JVM_ARGS=()
 CQL_ON_OMOP_ARGS=()
 while true ; do
     case "$1" in
+        '-h'|'--help')
+            usage
+            exit 0
+            ;;
         '--extra-classpath')
             JVM_ARGS+=("-cp")
             JVM_ARGS+=("$2")
