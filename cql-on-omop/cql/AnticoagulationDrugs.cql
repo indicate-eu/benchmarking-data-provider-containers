@@ -1,5 +1,5 @@
 // This file has been generated automatically from
-// commit edaaf809a126b08f1c96ffd983434cb73973fa4f of
+// commit ed47895b904941be91a0e959eb4a58af9bb763cc of
 // https://github.com/indicate-eu/data-dictionary
 // Concept set(s)
 // * Acenocoumarol (1 direct entries) [modified 2026-04-09]
@@ -19,7 +19,7 @@
 // * Enoxaparin (1 direct entries) [modified 2026-04-09]
 // * Fluindione (1 direct entries) [modified 2026-04-09]
 // * Fondaparinux (1 direct entries) [modified 2026-04-09]
-// * Heparin (1 direct entries) [modified 2026-04-09]
+// * Heparin (2 direct entries) [modified 2026-10-20]
 // * Lepirudin (1 direct entries) [modified 2026-04-09]
 // * Melagatran (1 direct entries) [modified 2026-04-09]
 // * Nadroparin (1 direct entries) [modified 2026-04-09]
@@ -58,6 +58,7 @@ code "enoxaparin": '1301025' from E."OMOPSV Hierarchy"
 code "fluindione": '19113013' from E."OMOPSV Hierarchy"
 code "fondaparinux": '1315865' from E."OMOPSV Hierarchy"
 code "heparin": '1367571' from E."OMOPSV Hierarchy"
+code "Heparin Sodium": '35884360' from E."OMOPSV Hierarchy"
 code "lepirudin": '19092139' from E."OMOPSV Hierarchy"
 code "Melagatran": '40798953' from E."OMOPSV Hierarchy"
 code "nadroparin": '19001014' from E."OMOPSV Hierarchy"
@@ -91,6 +92,7 @@ concept "Anticoagulation Drugs": {
   "fluindione",
   "fondaparinux",
   "heparin",
+  "Heparin Sodium",
   "lepirudin",
   "Melagatran",
   "nadroparin",

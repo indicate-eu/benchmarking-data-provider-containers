@@ -14,7 +14,7 @@ include OMOPHelpers
 
 include Intervals called I
 include TimePeriods called T
-
+include IndicateQiUtilities called U
 include IndicateQiElements called elm
 
 code "Invasive Ventilation Procedure": '37158404' from elm.OMOPSV
@@ -47,26 +47,32 @@ context Patient
 
 define "Intubation Tube Exposures":
   [DeviceExposure: elm."Intubation Tube"] e
-    where convert e to Interval<DateTime> overlaps elm."Review Period"
+    let i: U.EnsureDateTimeInterval(e)
+      where i is not null and i overlaps elm."Review Period"
+      return all e
 
 define "Ventilation Procedures":
   [ProcedureOccurrence: "Ventilation Procedure"] p
-    where convert p to Interval<DateTime> overlaps elm."Review Period"
+    let i: U.EnsureDateTimeInterval(p)
+      where i is not null and i overlaps elm."Review Period"
+      return all p
 
 define "Ventilation Periods":
   "Ventilation Procedures" p return all convert p to Interval<DateTime>
 
 define "Trial of Spontaneous Breathing Procedures":
   [ProcedureOccurrence: "Trial of Spontaneous Breathing"] p
-    where convert p to Interval<DateTime> overlaps elm."Review Period"
-    return all p
-    sort by procedureDatetime
+    let i: U.EnsureDateTimeInterval(p)
+      where i is not null and i overlaps elm."Review Period"
+      return all p
+      sort by procedureDatetime
 
 define "Extubation Procedures":
   [ProcedureOccurrence: "Extubation Procedure"] p
-    where (convert p to Interval<DateTime>) overlaps elm."Review Period"
-    return all p
-    sort by procedureDatetime
+    let i: U.EnsureDateTimeInterval(p)
+      where i is not null and i overlaps elm."Review Period"
+      return all p
+      sort by procedureDatetime
 
 define "Inadvertent Extubation Events":
   [Observation: "Inadvertent Extubation Event"] o

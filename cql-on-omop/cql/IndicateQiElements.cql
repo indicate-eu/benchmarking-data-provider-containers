@@ -132,15 +132,19 @@ elm."Intensive Care Visits"
 */
 define "Intensive Care Visit Occurrences":
   [VisitOccurrence: "Intensive Care"] v
-    where v.visitStartDatetime < v.visitEndDatetime
-    return all convert v to Interval<DateTime>
-    sort by low
+    let i: U.EnsureDateTimeInterval(v)
+      where i is not null
+            and i.low < i.high // silently drop visits with low = high
+      return all i
+      sort by low
 
 define "Intensive Care Visit Details":
   [VisitDetail: "Intensive Care"] v
-    where v.visitDetailStartDatetime < v.visitDetailEndDatetime
-    return all convert v to Interval<DateTime>
-    sort by low
+    let i: U.EnsureDateTimeInterval(v)
+      where i is not null
+            and i.low < i.high // silently drop visit details with low = high
+      return all i
+      sort by low
 
 define "Intensive Care Visits":
   (1) _

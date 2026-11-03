@@ -190,3 +190,177 @@ define function "EnsureQuantityIn mol/L"(label             String,
                )
              else
                null
+
+// Checked Conversions to Interval<DateTime>
+//
+// The functions defined here cannot use CQL's convert mechanism since
+// convert always attempts to construct the Interval which can throw an
+// uncatchable exception.
+
+define function CheckDateTimeInterval(label String,
+                                      start DateTime,
+                                      end   DateTime):
+  case
+    when start is null then
+      SignalProblemWithValue(label + ' does not have a start time', false)
+    when end is null then
+      SignalProblemWithValue(label + ' does not have an end time', false)
+    when not (start same or before end) then
+      SignalProblemWithValue('For ' + label + ', start time ' + ToString(start)
+                             + ' is not before end time ' + ToString(end),
+                             false)
+    else
+      true
+  end
+
+define function CheckDateTimeInterval(label String, occurrence VisitOccurrence):
+  CheckDateTimeInterval(label,
+                        occurrence.visitStartDatetime,
+                        occurrence.visitEndDatetime)
+
+define function "CheckDateTimeInterval"(occurrence VisitOccurrence):
+  CheckDateTimeInterval(
+    'visit occurrence with id ' + ToString(occurrence.visitOccurrenceId),
+    occurrence)
+
+define function CheckDateTimeInterval(label String, detail VisitDetail):
+  CheckDateTimeInterval(label,
+                        detail.visitDetailStartDatetime,
+                        detail.visitDetailEndDatetime)
+
+define function CheckDateTimeInterval(detail VisitDetail):
+  CheckDateTimeInterval(
+    'visit detail with id ' + ToString(detail.visitDetailId),
+    detail)
+
+define function CheckDateTimeInterval(label      String,
+                                      occurrence ConditionOccurrence):
+  CheckDateTimeInterval(label,
+                        occurrence.conditionStartDatetime,
+                        if occurrence.conditionEndDatetime is not null then
+                          occurrence.conditionEndDatetime
+                        else
+                          occurrence.conditionStartDatetime)
+
+define function CheckDateTimeInterval(occurrence ConditionOccurrence):
+  CheckDateTimeInterval(
+    'condition occurrence with id ' + ToString(occurrence.conditionOccurrenceId),
+    occurrence)
+
+define function CheckDateTimeInterval(label      String,
+                                      occurrence ProcedureOccurrence):
+  CheckDateTimeInterval(label,
+                        occurrence.procedureDatetime,
+                        if occurrence.procedureEndDatetime is not null then
+                          occurrence.procedureEndDatetime
+                        else
+                          occurrence.procedureDatetime)
+
+define function CheckDateTimeInterval(occurrence ProcedureOccurrence):
+  CheckDateTimeInterval(
+    'procedure occurrence with id ' + ToString(occurrence.procedureOccurrenceId),
+    occurrence)
+
+define function CheckDateTimeInterval(label String, exposure DrugExposure):
+  CheckDateTimeInterval(label,
+                        exposure.drugExposureStartDatetime,
+                        exposure.drugExposureEndDatetime)
+
+define function CheckDateTimeInterval(exposure DrugExposure):
+  CheckDateTimeInterval(
+    'drug exposure with id ' + ToString(exposure.drugExposureId),
+    exposure)
+
+define function CheckDateTimeInterval(label String, exposure DeviceExposure):
+  CheckDateTimeInterval(label,
+                        exposure.deviceExposureStartDatetime,
+                        exposure.deviceExposureEndDatetime)
+
+define function CheckDateTimeInterval(exposure DeviceExposure):
+  CheckDateTimeInterval(
+    'device exposure with id ' + ToString(exposure.deviceExposureId),
+    exposure)
+
+define function EnsureDateTimeInterval(label String,
+                                       start DateTime,
+                                       end   DateTime):
+  case
+    when start is null then
+      SignalProblem(label + ' does not have a start time')
+    when end is null then
+      SignalProblem(label + ' does not have an end time')
+    when not (start same or before end) then
+      SignalProblem('For ' + label + ', start time ' + ToString(start)
+                    + ' is not before end time ' + ToString(end))
+    else
+      Interval[start, end]
+  end
+
+define function EnsureDateTimeInterval(label      String,
+                                        occurrence VisitOccurrence):
+  EnsureDateTimeInterval(label,
+                         occurrence.visitStartDatetime,
+                         occurrence.visitEndDatetime)
+
+define function EnsureDateTimeInterval(occurrence VisitOccurrence):
+  EnsureDateTimeInterval(
+    'visit occurrence with id ' + ToString(occurrence.visitOccurrenceId),
+    occurrence)
+
+define function EnsureDateTimeInterval(label String, detail VisitDetail):
+  EnsureDateTimeInterval(label,
+                         detail.visitDetailStartDatetime,
+                         detail.visitDetailEndDatetime)
+
+define function EnsureDateTimeInterval(detail VisitDetail):
+  EnsureDateTimeInterval(
+    'visit detail with id ' + ToString(detail.visitDetailId),
+    detail)
+
+define function EnsureDateTimeInterval(label      String,
+                                       occurrence ConditionOccurrence):
+  EnsureDateTimeInterval(label,
+                         occurrence.conditionStartDatetime,
+                         if occurrence.conditionEndDatetime is not null then
+                           occurrence.conditionEndDatetime
+                         else
+                           occurrence.conditionStartDatetime)
+
+define function EnsureDateTimeInterval(occurrence ConditionOccurrence):
+  EnsureDateTimeInterval(
+    'condition occurrence with id ' + ToString(occurrence.conditionOccurrenceId),
+    occurrence)
+
+define function EnsureDateTimeInterval(label      String,
+                                       occurrence ProcedureOccurrence):
+  EnsureDateTimeInterval(label,
+                         occurrence.procedureDatetime,
+                         if occurrence.procedureEndDatetime is not null then
+                           occurrence.procedureEndDatetime
+                         else
+                           occurrence.procedureDatetime)
+
+define function EnsureDateTimeInterval(occurrence ProcedureOccurrence):
+  EnsureDateTimeInterval(
+    'procedure occurrence with id ' + ToString(occurrence.procedureOccurrenceId),
+    occurrence)
+
+define function EnsureDateTimeInterval(label String, exposure DrugExposure):
+  EnsureDateTimeInterval(label,
+                         exposure.drugExposureStartDatetime,
+                         exposure.drugExposureEndDatetime)
+
+define function EnsureDateTimeInterval(exposure DrugExposure):
+  EnsureDateTimeInterval(
+    'drug exposure with id ' + ToString(exposure.drugExposureId),
+    exposure)
+
+define function EnsureDateTimeInterval(label String, exposure DeviceExposure):
+  EnsureDateTimeInterval(label,
+                         exposure.deviceExposureStartDatetime,
+                         exposure.deviceExposureEndDatetime)
+
+define function EnsureDateTimeInterval(exposure DeviceExposure):
+  EnsureDateTimeInterval(
+    'device exposure with id ' + ToString(exposure.deviceExposureId),
+    exposure)

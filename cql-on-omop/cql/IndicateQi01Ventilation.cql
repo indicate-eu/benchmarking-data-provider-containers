@@ -157,13 +157,19 @@ define "Peak Inspiratory Pressure Measurements":
     sort by datetime desc
 
 define "Ventilation Procedures":
-  [ProcedureOccurrence: VentilationProcedures."PCV or VCV Ventilation Procedure"]
+  [ProcedureOccurrence: VentilationProcedures."PCV or VCV Ventilation Procedure"] p
+    where U.CheckDateTimeInterval(p)
+    return all p
 
 define "Intubation Tube Exposures":
-  [DeviceExposure: elm."Intubation Tube"]
+  [DeviceExposure: elm."Intubation Tube"] e
+    where U.CheckDateTimeInterval(e)
+    return all e
 
 define "ARDS Conditions":
-  [ConditionOccurrence: "ARDS Condition"]
+  [ConditionOccurrence: "ARDS Condition"] c
+    where U.CheckDateTimeInterval(c)
+    return all c
 
 // In CQL
 //

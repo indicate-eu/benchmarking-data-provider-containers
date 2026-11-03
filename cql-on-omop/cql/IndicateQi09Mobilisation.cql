@@ -12,7 +12,9 @@ library "IndicateQi09Mobilisation" version '1.0.0'
 using OMOP version 'v5.4'
 
 include OMOPHelpers
+
 include TimePeriods called T
+include IndicateQiUtilities called U
 include IndicateQiElements called elm
 
 include MobilizationProcedures
@@ -23,6 +25,7 @@ context Patient
 
 define "Mobilisation Procedures":
   [ProcedureOccurrence: MobilizationProcedures."Mobilization Procedures"] p
+    where U.CheckDateTimeInterval(p)
     return all p
     sort by procedureDatetime asc
 

@@ -82,8 +82,8 @@ define "Shifts in Visits":
 define function "24-hour Periods overlapping Period"(periodInterval Interval<DateTime>):
   (1) _
     let dayDuration:      Quantity{
-                            value: (convert 1 'd' to 's').value,
-                            unit:  'seconds'
+                            value: (convert 1 'd' to 'ms').value,
+                            unit:  'milliseconds'
                           },
         periodStart:      start of periodInterval,
         periodEnd:        end of periodInterval,

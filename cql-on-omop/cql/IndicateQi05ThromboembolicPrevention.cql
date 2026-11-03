@@ -11,14 +11,18 @@ library "IndicateQi05ThromboembolicPrevention" version '1.0.0'
 using OMOP version 'v5.4'
 
 include OMOPHelpers
+
 include TimePeriods called T
+include IndicateQiUtilities called U
 include IndicateQiElements called elm
+
 include AnticoagulationDrugs
 
 context Patient
 
 define "Anticoagulation Drug Exposures":
   [DrugExposure: "AnticoagulationDrugs"."Anticoagulation Drugs"] e
+    where U.CheckDateTimeInterval(e)
     return all e
     sort by drugExposureStartDatetime asc
 

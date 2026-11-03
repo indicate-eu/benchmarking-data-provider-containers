@@ -1,5 +1,5 @@
 // This file has been generated automatically from
-// commit edaaf809a126b08f1c96ffd983434cb73973fa4f of
+// commit ed47895b904941be91a0e959eb4a58af9bb763cc of
 // https://github.com/indicate-eu/data-dictionary
 // Concept set(s)
 // * Mobilization (10 direct entries) [modified 2026-06-11]
