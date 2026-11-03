@@ -4,28 +4,44 @@ set -e
 
 # Process commandline options
 
-CLASSPATH_ARGS=()
-SYSTEM_PROPERTY_ARGS=()
-
-OPTION_DATA=$(getopt --options '' --longoptions 'extra-classpath:,extra-system-property:' --name "$0" -- "$@")
+OPTION_DATA=$(getopt --options '' --longoptions 'extra-classpath:,extra-system-property:,cql-retrieve-max-retry-count:,cql-retrieve-retry-delay:,cql-context-object-max-retry-count:' --name "$0" -- "$@")
 if [ $? -ne 0 ] ; then
     exit 1
 fi
 eval set -- "${OPTION_DATA}"
 unset OPTION_DATA
+
+JVM_ARGS=()
+CQL_ON_OMOP_ARGS=()
 while true ; do
     case "$1" in
         '--extra-classpath')
-            CLASSPATH_ARGS+=("-cp")
-            CLASSPATH_ARGS+=("$2")
+            JVM_ARGS+=("-cp")
+            JVM_ARGS+=("$2")
             shift 2
             continue
             ;;
-        "--extra-system-property")
-            SYSTEM_PROPERTY_ARGS+=("-D$2")
+        '--extra-system-property')
+            JVM_ARGS+=("-D$2")
             shift 2
             continue
             ;;
+        '--cql-retrieve-max-retry-count')
+            CQL_RETRIEVE_MAX_RETRY_COUNT="$2"
+            shift 2
+            continue
+            ;;
+        '--cql-retrieve-retry-delay')
+            CQL_RETRIEVE_RETRY_DELAY="$2"
+            shift 2
+            continue
+            ;;
+        '--cql-context-object-max-retry-count')
+            CQL_CONTEXT_OBJECT_MAX_RETRY_COUNT="$2"
+            shift 2
+            continue
+            ;;
+
         '--')
             shift
             break
@@ -36,6 +52,18 @@ while true ; do
             ;;
     esac
 done
+
+# Process environment variables
+
+if [ -n "${CQL_RETRIEVE_MAX_RETRY_COUNT}" ] ; then
+    CQL_ON_OMOP_ARGS+=("--retrieve-max-retry-count=${CQL_RETRIEVE_MAX_RETRY_COUNT}")
+fi
+if [ -n "${CQL_RETRIEVE_RETRY_DELAY}" ] ; then
+    CQL_ON_OMOP_ARGS+=("--retrieve-retry-delay=${CQL_RETRIEVE_RETRY_DELAY}")
+fi
+if [ -n "${CQL_CONTEXT_OBJECT_MAX_RETRY_COUNT}" ] ; then
+    CQL_ON_OMOP_ARGS+=("--context-object-max-retry-count=${CQL_CONTEXT_OBJECT_MAX_RETRY_COUNT}")
+fi
 
 # Prepare commandline arguments related to "source" database
 # TODO(moringenj): We could perform these checks in entry.sh so that one would not have to wait for the cron job to run
@@ -182,13 +210,13 @@ insert_marker ${START_MARKER_CONCEPT_ID} ${THIS_RUN_START}
 
 echo -e "\e[1mComputing quality indicators\e[0m"
 # TODO(moringenj): should not use --password for target db
-CQL_ON_OMOP_DATABASE_PASSWORD=$(cat /run/secrets/source-database-password) \
+CQL_ON_OMOP_DATABASE_PASSWORD=$(cat /run/secrets/source-database-password)
   java -Xmx24000000000                                                     \
-    "${CLASSPATH_ARGS[@]}"                                                 \
-    "${SYSTEM_PROPERTY_ARGS[@]}"                                           \
+    "${JVM_ARGS[@]}"                                                       \
     -jar cql-on-omop-${CQL_ON_OMOP_VERSION}.jar                            \
     batch                                                                  \
-    --omop-version=v5.4                                                    \
+      --omop-version=v5.4                                                  \
+      "${CQL_ON_OMOP_ARGS[@]}"                                             \
       "${SOURCE_DB_ARGS[@]}"                                               \
       -I cql/                                                              \
       --context-value "${CQL_CONTEXT}"                                     \
