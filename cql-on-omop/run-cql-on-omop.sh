@@ -209,8 +209,19 @@ fi
 
 if [ -n "${PREVIOUS_RUN_START}" ] ; then
     PREVIOUS_RUN_START_TIMESTAMP="$(echo ${PREVIOUS_RUN_START} | sed -e 's/ /T/')"
+elif [ -z "${SOURCE_DB_CUTOFF_TIMESTAMP}" ] ; then
+    echo -e "\e[1;31mSOURCE_DB_CUTOFF_TIMESTAMP must be set to a timestamp of the form YYYY-MM-DDTHH:MM:SS which specifies the start of the temporal period in which clinical data from the source database should be processed\e[0m"
+    exit 1
+elif [ "${SOURCE_DB_CUTOFF_TIMESTAMP}" = "YYYY-MM-DDTHH:MM:SS" ] ; then
+    echo -e "\e[1;31mThe variable SOURCE_DB_CUTOFF_TIMESTAMP still contains a placeholder value (${SOURCE_DB_CUTOFF_TIMESTAMP}). SOURCE_DB_CUTOFF_TIMESTAMP must be set to a timestamp of the form YYYY-MM-DDTHH:MM:SS which specifies the start of the temporal period in which clinical data from the source database should be processed\e[0m"
+    exit 1
+elif ! ( echo "${SOURCE_DB_CUTOFF_TIMESTAMP}"                               \
+         | grep -Ee '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}' \
+         > /dev/null ) ; then
+    echo -e "\e[1;31mInvalid value in SOURCE_DB_CUTOFF_TIMESTAMP: ${SOURCE_DB_CUTOFF_TIMESTAMP}. SOURCE_DB_CUTOFF_TIMESTAMP must be set to a timestamp of the form YYYY-MM-DDTHH:MM:SS\e[0m"
+    exit 1
 else
-    PREVIOUS_RUN_START_TIMESTAMP="2026-01-01T00:00:00"
+    PREVIOUS_RUN_START_TIMESTAMP="${SOURCE_DB_CUTOFF_TIMESTAMP}"
 fi
 echo "Using previous run start time ${PREVIOUS_RUN_START_TIMESTAMP}"
 

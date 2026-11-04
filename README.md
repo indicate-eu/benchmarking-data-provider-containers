@@ -61,10 +61,13 @@ The most important part of the configuration are the options related to accessin
 
 1. Add connection data for the OMOP CDM v5.4-formatted database which provides the clinical data to `source-database.env` in the root directory of this repository.
 
-2. Enter the database password for that database into the file `source-database-password` in the root directory of this repository.
+2. Replace the template value of the cutoff timestamp variable `SOURCE_DB_CUTOFF_TIMESTAMP` in `source-database.env` with a suitable value.
+   The cutoff timestamp controls the start of the period in which clinical data should be processed.
+
+3. Enter the database password for that database into the file `source-database-password` in the root directory of this repository.
    This option is separate from the remainder of the database configuration so that the password can be handled by the "secrets" mechanism of the container runtime.
 
-3. Choose an arbitrary password for the internal database in the `database` container and enter that password into the file `target-database-password` in the root directory of this repository.
+4. Choose an arbitrary password for the internal database in the `database` container and enter that password into the file `target-database-password` in the root directory of this repository.
    One way to do this is
 
    ```sh
