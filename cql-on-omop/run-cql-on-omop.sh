@@ -197,6 +197,12 @@ if [ -n "${PREVIOUS_RUN_START}" ] ; then
                      AND observation_datetime > timestamp '${PREVIOUS_RUN_START}';" \
               > /dev/null
         else
+            # There is a single incomplete run and no complete
+            # runs. Delete the incomplete data and unset
+            # PREVIOUS_RUN_START so that the run (which is basically a
+            # retry of the initial run) considers all data, starting
+            # from the configured cutoff timestamp.
+            PREVIOUS_RUN_START=""
             echo -e "\e[1;31mDeleting incomplete data\e[0m"
             sql_in_target_db \
               "DELETE FROM ${TARGET_DB_SCHEMA}.observation ;" \
