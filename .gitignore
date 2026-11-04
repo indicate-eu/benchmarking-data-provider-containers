@@ -1,2 +1,4 @@
-source-database-password
-target-database-password
+/source-database-password
+/target-database-password
+/provider-id/
+/key.pem
