@@ -229,7 +229,7 @@ insert_marker ${START_MARKER_CONCEPT_ID} ${THIS_RUN_START}
 
 echo -e "\e[1mComputing quality indicators\e[0m"
 # TODO(moringenj): should not use --password for target db
-CQL_ON_OMOP_DATABASE_PASSWORD=$(cat /run/secrets/source-database-password)
+CQL_ON_OMOP_DATABASE_PASSWORD=$(cat /run/secrets/source-database-password) \
   java -Xmx24000000000                                                     \
     "${JVM_ARGS[@]}"                                                       \
     -jar cql-on-omop-${CQL_ON_OMOP_VERSION}.jar                            \
