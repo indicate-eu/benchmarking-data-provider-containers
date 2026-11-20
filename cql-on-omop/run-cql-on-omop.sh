@@ -9,13 +9,18 @@ function usage() {
     echo "  --extra-classpath <classpath-entry>     (can be supplied multiple times)"
     echo "  --extra-system-property <name>=<value>  (can be supplied multiple times)"
     echo ""
+    echo "cql-on-omop Print Options"
+    echo "  --no-print-messages"
+    echo "  --no-print-errors"
+    echo "  --print-progress"
+    echo ""
     echo "CQL-related Options"
     echo "  --cql-retrieve-max-retry-count <number>        [envvar CQL_RETRIEVE_MAX_RETRY_COUNT]"
     echo "  --cql-retrieve-retry-delay <duration-in-ms>    [envvar CQL_RETRIEVE_RETRY_DELAY]"
     echo "  --cql-context-object-max-retry-count <number>  [envvar CQL_CONTEXT_OBJECT_MAX_RETRY_COUNT]"
 }
 
-OPTION_DATA=$(getopt --options 'h' --longoptions 'help,extra-classpath:,extra-system-property:,cql-retrieve-max-retry-count:,cql-retrieve-retry-delay:,cql-context-object-max-retry-count:' --name "$0" -- "$@")
+OPTION_DATA=$(getopt --options 'h' --longoptions 'help,extra-classpath:,extra-system-property:,no-print-messages,no-print-errors,print-progress,cql-retrieve-max-retry-count:,cql-retrieve-retry-delay:,cql-context-object-max-retry-count:' --name "$0" -- "$@")
 if [ $? -ne 0 ] ; then
     echo ""
     usage
@@ -28,6 +33,7 @@ set -e
 
 JVM_ARGS=()
 CQL_ON_OMOP_ARGS=()
+PRINT_ARGS=()
 while true ; do
     case "$1" in
         '-h'|'--help')
@@ -43,6 +49,11 @@ while true ; do
         '--extra-system-property')
             JVM_ARGS+=("-D$2")
             shift 2
+            continue
+            ;;
+        '--no-print-messages'|'--no-print-errors'|'--print-progress')
+            PRINT_ARGS+=("$1")
+            shift
             continue
             ;;
         '--cql-retrieve-max-retry-count')
@@ -258,7 +269,7 @@ CQL_ON_OMOP_DATABASE_PASSWORD=$(cat /run/secrets/source-database-password) \
       --context-value "${CQL_CONTEXT}"                                     \
       -D"IndicateQiElements.Review Period=${REVIEW_PERIOD}"                \
       --result-name='Results'                                              \
-      --no-print-messages --no-print-errors --print-progress               \
+      "${PRINT_ARGS[@]}"                                                   \
       Main                                                                 \
       dbwrite                                                              \
         ${TARGET_DB_CONNECTION_STRING_ARG}                                 \
